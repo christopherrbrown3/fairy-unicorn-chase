@@ -1,0 +1,11 @@
+node_modules/
+dist/
+test-results/
+playwright-report/
+output/
+.DS_Store
+*.blend1
+*.blend2
+*.log
+.env*
+.impeccable/review/
