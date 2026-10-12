@@ -9,3 +9,4 @@ output/
 *.log
 .env*
 .impeccable/review/
+.playwright-mcp/

@@ -5,7 +5,7 @@ import {tree,mushroom,flower,cloud,crystal,castle,rainbow,candy,potion,obstacle}
 import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
 
 let authoredPotion=null;
-export async function loadWorldAssets(){try{const gltf=await new GLTFLoader().loadAsync(new URL('../../public/assets/models/sparkle-potion.glb',import.meta.url).href);authoredPotion=gltf.scene;}catch{ /* The original procedural bottle is a complete fallback. */ }}
+export async function loadWorldAssets(){try{const gltf=await new GLTFLoader().loadAsync(new URL('assets/models/sparkle-potion.glb',document.baseURI).href);authoredPotion=gltf.scene;}catch{ /* The original procedural bottle is a complete fallback. */ }}
 const rnd=(n)=>{const v=Math.sin(n*127.1+311.7)*43758.5453;return v-Math.floor(v);};
 function place(obj,level,s,lane,extraY=0){const p=coursePoint(level,s,lane);obj.position.set(p.x,p.y+extraY,p.z);obj.rotation.y=p.yaw;return obj;}
 function roadGeometry(level,halfwidth,y=0){const verts=[],indices=[],length=Math.PI*2*level.radius,segments=420;
@@ -15,8 +15,8 @@ function roadGeometry(level,halfwidth,y=0){const verts=[],indices=[],length=Math
 export class World {
   constructor(scene,level){this.scene=scene;this.level=level;this.root=group(scene);this.potions=[];this.butterflies=[];this.chunks=[];
     scene.background=new THREE.Color(level.sky);scene.fog=new THREE.Fog(level.sky,55,155);
-    const ground=mesh(this.root,geometry('ground',()=>new THREE.CylinderGeometry(1100,1100,2,64)),level.ground,[0,-3,0]);
-    for(const [width,y,color] of [[level.width/2+1.3,-.06,level.accent],[level.width/2+.35,-.025,'#fff0d6'],[level.width/2,0,level.road]]){const m=mesh(this.root,roadGeometry(level,width,y),color);m.userData.ownedGeometry=true;}
+    mesh(this.root,geometry('ground',()=>new THREE.CylinderGeometry(1100,1100,2,64)),level.ground,[0,-1.6,0]);
+    for(const [width,y,color] of [[35,-.13,level.ground],[level.width/2+1.3,-.06,level.accent],[level.width/2+.35,-.025,'#fff0d6'],[level.width/2,0,level.road]]){const m=mesh(this.root,roadGeometry(level,width,y),color);m.userData.ownedGeometry=true;}
     const length=Math.PI*2*level.radius;
     for(let j=0;j<16;j++){const chunk=group(this.root);this.chunks.push(chunk);for(let k=0;k<9;k++){
       const s=(j*9+k)/144*length;

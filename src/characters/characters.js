@@ -26,7 +26,7 @@ export function makePony({unicorn=false,hair=CHARACTER.hair,coat=CHARACTER.coat}
   if(unicorn){const horn=cone(head,'#ffde8a',[0,.78,.22],[.105,.68,.105]);horn.rotation.x=.12;for(let i=0;i<3;i++)cylinder(head,'#eeb966',[0,.56+i*.14,.2],[.105-i*.022,.028,.105-i*.022]);}
   else for(const side of [-1,1])for(const [z,y,size] of [[-.35,1.55,.17],[.12,1.35,.13],[-.66,1.24,.11]]){const s=star(body,'#ffdc7b',[side*.56,y,z],size);s.rotation.y=side*Math.PI/2;}
   const legs=[];for(const side of [-1,1])for(const z of [-.59,.61]){
-    const leg=group(root,[side*.36,1.35,z]);cylinder(leg,coat,[0,-.43,0],[.14,.86,.14]);orb(leg,coat,[0,-.72,.02],[.145,.2,.155]);orb(leg,hoof,[0,-1.13,.09],[.19,.15,.26]);bake(leg);legs.push(leg);
+    const leg=group(root,[side*.36,1.35,z]);cylinder(leg,coat,[0,-.43,0],[.14,.86,.14]);orb(leg,coat,[0,-.72,.02],[.145,.2,.155]);cylinder(leg,coat,[0,-.89,.035],[.12,.34,.12]);orb(leg,hoof,[0,-1.13,.09],[.19,.15,.26]);bake(leg);legs.push(leg);
   }
   const tail=group(root,[0,1.66,-.85]);for(let i=0;i<5;i++)tube(tail,hairColor(hair,i),[[.06*(i-2),0,0],[.1*(i-2),.15,-.4],[.12*(i-2),-.22,-.8],[.07*(i-2),-.73,-.98]],.09);bake(tail);
   if(!unicorn){orb(body,'#758ebb',[0,1.85,-.13],[.55,.15,.6]);tube(body,'#d0a572',[[.28,2.22,1.3],[.6,1.95,.8],[.35,2.1,-.15]],.025);tube(body,'#d0a572',[[-.28,2.22,1.3],[-.6,1.95,.8],[-.35,2.1,-.15]],.025);}
