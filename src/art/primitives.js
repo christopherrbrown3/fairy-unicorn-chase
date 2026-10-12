@@ -22,4 +22,4 @@ export function bake(root,recursive=true){
   for(const b of buckets.values()){const merged=mergeGeometries(b.geos);b.geos.forEach(g=>g.dispose());if(merged){const m=new THREE.Mesh(merged,b.material);m.userData.ownedGeometry=true;root.add(m);}}
   return root;
 }
-export function disposeTree(root){root.traverse(o=>{if(o.isMesh&&o.userData.ownedGeometry)o.geometry.dispose();});root.removeFromParent();}
+export function disposeTree(root){root.traverse(o=>{if(o.isMesh&&o.userData.ownedGeometry)o.geometry.dispose();if(o.isMesh&&o.userData.ownedMaterial)o.material.dispose();});root.removeFromParent();}

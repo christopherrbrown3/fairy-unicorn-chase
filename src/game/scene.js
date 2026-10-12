@@ -70,7 +70,7 @@ export class GameScene {
       if(['celebrate','final'].includes(this.mode)&&Math.random()<.3&&!this.reducedMotion){const pos=this.player.position.clone().add(new THREE.Vector3((Math.random()-.5)*10,4+Math.random()*3,(Math.random()-.5)*8));this.particles.emit(pos,['#ffe49e','#f6b4cc','#a9e2ed'][Math.floor(Math.random()*3)],4);}
     }
     const c=this.state;[this.player,this.unicorn].forEach((m,i)=>{const sh=this.shadows[i];sh.position.copy(m.position);sh.position.y-=i===0?(c?.jumpHeight??0):0;sh.position.y+=.035;sh.rotation.z=m.rotation.y;sh.visible=m.visible;});
-    if(this.mode!=='paused'){this.world.update(time,c);this.particles.step(dt);}
+    if(this.mode!=='paused'){this.world.update(time,c,this.camera);this.particles.step(dt);}
     this.renderer.render(this.scene,this.camera);
     if(this.quality==='auto'&&this.mode==='playing'){this.averageFrame=this.averageFrame*.97+raw*1000*.03;if(++this.frameCount===300&&this.averageFrame>24){this.renderer.setPixelRatio(1);this.resize();}}
   }

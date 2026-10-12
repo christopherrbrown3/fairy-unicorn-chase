@@ -12,11 +12,11 @@ await page.getByRole('button',{name:'Let’s play'}).click();await page.waitForT
 await page.evaluate(()=>window.__fairy.advance(3.2));await page.waitForTimeout(160);await shot('boost');
 await page.getByRole('button',{name:'Spray water'}).tap();await page.waitForTimeout(420);await shot('water');
 await page.evaluate(()=>{const g=window.__fairy.game,c=g.state,o=c.items.find(i=>i.kind==='log'||i.kind==='puddle');c.s=o.s-3;c.unicornS=c.s+45;c.lane=o.lane;c.step(.05,c.lane/g.level.width/.39);g.position(g.player,c.s,c.lane,c.jumpHeight);g.updateChaseCamera(1,true);});await page.waitForTimeout(350);await shot('jump');
-await page.evaluate(()=>window.__fairy.advance(180));await page.waitForTimeout(1800);await shot('catch');
+await page.evaluate(()=>{window.__fairy.advance(180);window.__fairy.game.setStageCamera(false,true);});await page.waitForTimeout(500);await shot('catch');
 for(let i=1;i<10;i++){
   await page.getByRole('button',{name:'Continue',exact:true}).click();
   await page.evaluate(()=>window.__fairy.advance(12));await page.waitForTimeout(180);await shot(['meadow','forest','cloud','castle','candy','crystal','garden','night','mountain','palace'][i]);
-  await page.evaluate(()=>window.__fairy.advance(180));await page.waitForTimeout(180);
+  await page.evaluate(()=>{window.__fairy.advance(180);window.__fairy.game.setStageCamera(false,true);});await page.waitForTimeout(180);
 }
 await page.waitForTimeout(1800);await shot('finale');
 await page.getByRole('button',{name:'Our unicorns'}).click();await shot('collection');

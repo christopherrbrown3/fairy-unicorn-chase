@@ -11,17 +11,18 @@ test('root and repository subpath render authored assets without errors',async({
 });
 test('keyboard, held touch controls, multitouch water, pause and preferences',async({page,browserName})=>{
   await page.goto('/?test=1');await ready(page);await page.getByRole('button',{name:'Let’s play'}).click();
-  await page.keyboard.down('ArrowLeft');await expect.poll(async()=>(await snap(page)).lane).toBeLessThan(-2);await page.keyboard.up('ArrowLeft');await expect.poll(async()=>Math.abs((await snap(page)).lane)).toBeLessThan(.2);
-  await page.keyboard.down('d');await expect.poll(async()=>(await snap(page)).lane).toBeGreaterThan(2);await page.keyboard.up('d');
-  const left=await page.locator('#left').boundingBox();await page.mouse.move(left.x+left.width/2,left.y+left.height/2);await page.mouse.down();await expect.poll(async()=>(await snap(page)).lane).toBeLessThan(-2);
+  const advanceInput=seconds=>page.evaluate(seconds=>{const f=window.__fairy;f.advance(seconds,f.game.steer);},seconds);
+  await page.keyboard.down('ArrowLeft');expect(await page.evaluate(()=>window.__fairy.game.steer)).toBe(-1);await advanceInput(.5);expect((await snap(page)).lane).toBeLessThan(-2);await page.keyboard.up('ArrowLeft');await advanceInput(1);expect(Math.abs((await snap(page)).lane)).toBeLessThan(.2);
+  await page.keyboard.down('d');expect(await page.evaluate(()=>window.__fairy.game.steer)).toBe(1);await advanceInput(.5);expect((await snap(page)).lane).toBeGreaterThan(2);await page.keyboard.up('d');
+  const left=await page.locator('#left').boundingBox();await page.mouse.move(left.x+left.width/2,left.y+left.height/2);await page.mouse.down();await advanceInput(.5);expect((await snap(page)).lane).toBeLessThan(-2);
   await page.keyboard.press('Space');await expect.poll(async()=>(await snap(page)).stats.sprays).toBeGreaterThan(0);await page.mouse.up();
-  await expect.poll(()=>page.evaluate(()=>window.__fairy.game.state.cooldown)).toBe(0);
+  await advanceInput(.5);
   await page.getByRole('button',{name:'Spray water'}).tap();await expect.poll(async()=>(await snap(page)).stats.sprays).toBeGreaterThan(1);
   if(browserName==='chromium'){
-    await expect.poll(()=>page.evaluate(()=>window.__fairy.game.state.cooldown)).toBe(0);
+    await advanceInput(.5);
     const water=await page.locator('#water').boundingBox(),cdp=await page.context().newCDPSession(page);
     const points=[{x:left.x+left.width/2,y:left.y+left.height/2,id:1},{x:water.x+water.width/2,y:water.y+water.height/2,id:2}];
-    await cdp.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:points});await expect.poll(async()=>(await snap(page)).lane).toBeLessThan(-2);await expect.poll(async()=>(await snap(page)).stats.sprays).toBeGreaterThan(2);
+    await cdp.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:points});await advanceInput(.5);expect((await snap(page)).lane).toBeLessThan(-2);await expect.poll(async()=>(await snap(page)).stats.sprays).toBeGreaterThan(2);
     await cdp.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});await cdp.detach();
   }
   await page.keyboard.press('Escape');await expect(page.getByRole('heading',{name:'A little breather'})).toBeVisible();const before=await snap(page);await page.waitForTimeout(300);expect((await snap(page)).s).toBe(before.s);

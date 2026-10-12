@@ -20,7 +20,7 @@ export class World {
     const length=Math.PI*2*level.radius;
     for(let j=0;j<16;j++){const chunk=group(this.root);this.chunks.push(chunk);for(let k=0;k<9;k++){
       const s=(j*9+k)/144*length;
-      for(const side of [-1,1]){const seed=j*40+k*2+(side+1)/2+level.id*731,dist=level.width/2+3+rnd(seed)*9;
+      for(const side of [-1,1]){const seed=j*40+k*2+(side+1)/2+level.id*731;let dist=level.width/2+3+rnd(seed)*9;
         let prop;switch(level.theme){
           case 'forest':prop=k%3===0?mushroom(chunk,level.accent,1.8):tree(chunk,level.foliage,1+rnd(seed+2)*.7);break;
           case 'cloud':prop=cloud(chunk,1.2+rnd(seed)*1.8);break;
@@ -29,7 +29,7 @@ export class World {
           case 'crystal':prop=crystal(chunk,['#b5a6f2','#78b9cf','#f2bb96'][k%3],1.4+rnd(seed));break;
           case 'garden':prop=k%3?flower(chunk,['#f399b0','#e7a3d5','#ffdaa1'][k%3],3+rnd(seed)*2):tree(chunk,level.foliage,.7);break;
           case 'night':prop=k%3===0?crystal(chunk,'#9e91cc',.9):tree(chunk,level.foliage,1);star(chunk,'#fff2ba',[0,0,0],.3);break;
-          case 'mountain':prop=tree(chunk,level.foliage,.9);break;
+          case 'mountain':if(k%3===0){prop=group(chunk);cone(prop,'#b2adc4',[0,9,0],[8,23,8]);cone(prop,'#f6f2f7',[0,16.4,0],[3.9,8.3,3.9]);dist=23+rnd(seed)*8;}else prop=tree(chunk,level.foliage,.9);break;
           case 'palace':prop=k%7===0?castle(chunk,level.foliage,1.7,true):flower(chunk,level.accent,2);break;
           default:prop=k%4?flower(chunk,['#f1aac0','#ffe19a','#b49edb'][k%3],1.2+rnd(seed)):tree(chunk,level.foliage,.9+rnd(seed)*.4);
         }
@@ -49,6 +49,12 @@ export class World {
     }
     if(level.theme==='night'){place(orb(landmarks,'#fff0c1',[0,0,0],[6,6,6],{emissive:'#ffe8a4',emissiveIntensity:.4}),level,70,45,40);}
     bake(landmarks);
+    if(level.theme==='night'){
+      this.sky=group(this.root);const shapes=geometry('sky-star',()=>{const shape=new THREE.Shape();for(let i=0;i<10;i++){const a=i*Math.PI/5,r=i%2?.22:.55;i?shape.lineTo(Math.cos(a)*r,Math.sin(a)*r):shape.moveTo(Math.cos(a)*r,Math.sin(a)*r);}return new THREE.ShapeGeometry(shape);});
+      const stars=new THREE.InstancedMesh(shapes,new THREE.MeshBasicMaterial({color:'#fff0bb',side:THREE.DoubleSide,fog:false}),110);stars.userData.ownedMaterial=true;const dummy=new THREE.Object3D();
+      for(let i=0;i<110;i++){const a=rnd(i+199)*Math.PI*2;dummy.position.set(Math.sin(a)*95,12+rnd(i+31)*60,Math.cos(a)*95);dummy.lookAt(0,20,0);dummy.scale.setScalar(.45+rnd(i+13)*.85);dummy.updateMatrix();stars.setMatrixAt(i,dummy.matrix);}this.sky.add(stars);
+      this.moon=mesh(this.sky,geometry('moon',()=>new THREE.SphereGeometry(4,16,12)),'#fff2c0',[0,30,100],[1,1,1],{emissive:'#fff2c0',emissiveIntensity:.5});
+    }
     for(const item of courseItems(level)){
       if(item.kind==='potion'){
         const g=group(this.root);g.name='Potion pickup';
@@ -57,7 +63,8 @@ export class World {
     }
     if(level.theme==='garden')for(let i=0;i<12;i++){const b=group(this.root);for(const side of [-1,1]){const w=orb(b,i%2?'#f2b6d0':'#ffd69c',[side*.4,0,0],[.4,.06,.3]);w.userData.side=side;}b.userData={s:10+i*36,lane:8*Math.sin(i),base:2+rnd(i)*3};this.butterflies.push(b);}
   }
-  update(time,chase){
+  update(time,chase,camera){
+    if(this.sky&&camera){this.sky.position.copy(camera.position);const direction=new THREE.Vector3();camera.getWorldDirection(direction);direction.y=0;direction.normalize();this.moon.position.set(direction.x*100+direction.z*25,31,direction.z*100-direction.x*25);}
     for(const p of this.potions){p.rotation.y=time*.8;p.position.y=p.userData.baseY+Math.sin(time*2+p.userData.s)*.15;const lap=chase?Math.floor(chase.s/chase.lap):0;p.visible=!chase?.collected.has(`${lap}:${p.userData.id}`);}
     for(const b of this.butterflies){place(b,this.level,b.userData.s+Math.sin(time*.2)*5,b.userData.lane,b.userData.base+Math.sin(time*2)*.3);b.children.forEach(w=>w.rotation.z=w.userData.side*Math.sin(time*9)*.55);}
   }
