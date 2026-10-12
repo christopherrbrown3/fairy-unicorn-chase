@@ -44,6 +44,7 @@ test('ten real chases unlock friends, continue, finale and reload persistence',a
     if(i<9)await page.getByRole('button',{name:'Continue',exact:true}).click();
   }
   await expect(page.getByRole('heading',{name:'All ten friends!'})).toBeVisible();expect(await page.evaluate(()=>window.__fairy.game.friends.length)).toBe(10);
+  expect(await page.evaluate(()=>{const g=window.__fairy.game;return !g.world.root.visible&&!!g.celebrationArt&&g.player.visible;})).toBe(true);
   await page.getByRole('button',{name:'Our unicorns'}).click();expect(await page.locator('.collection-tile.found').count()).toBe(10);
   await page.reload();await ready(page);expect(await page.evaluate(()=>window.__fairy.save.completed.length)).toBe(10);
   await page.getByRole('button',{name:'Worlds',exact:true}).click();expect(await page.locator('.world-tile:disabled').count()).toBe(0);expect(errors).toEqual([]);

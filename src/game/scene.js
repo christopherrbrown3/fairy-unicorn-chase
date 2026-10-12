@@ -4,8 +4,8 @@ import {makeRider,makeCollectionUnicorn,animatePony} from '../characters/charact
 import {World} from '../worlds/world.js';
 import {Chase} from './chase.js';
 import {Particles} from './particles.js';
-import {disposeTree,group,mesh,geometry,orb,tube} from '../art/primitives.js';
-import {rainbow} from '../worlds/props.js';
+import {disposeTree,group,mesh,geometry,orb,tube,cylinder} from '../art/primitives.js';
+import {rainbow,flower} from '../worlds/props.js';
 
 export class GameScene {
   constructor(canvas,{onEvent,onFrame,onContextLoss,reducedMotion=false,quality='auto'}={}){
@@ -29,14 +29,19 @@ export class GameScene {
   setQuality(value){this.quality=value;this.renderer.setPixelRatio(this.pixelRatio());this.resize();}
   setWorld(id){this.world?.dispose();if(this.celebrationArt)disposeTree(this.celebrationArt);this.celebrationArt=null;this.friends.forEach(disposeTree);this.friends=[];disposeTree(this.unicorn);this.unicorn=makeCollectionUnicorn(id);this.scene.add(this.unicorn);this.world=new World(this.scene,LEVELS[id]);this.level=LEVELS[id];this.particles.clear();}
   position(model,s,lane=0,y=0){const p=coursePoint(this.level,s,lane);model.position.set(p.x,p.y+y,p.z);model.rotation.y=p.yaw;return p;}
-  showTitle(){if(!this.world||this.level.id!==0)this.setWorld(0);if(this.celebrationArt){disposeTree(this.celebrationArt);this.celebrationArt=null;}this.friends.forEach(disposeTree);this.friends=[];this.mode='title';this.state=null;this.waterStream.visible=false;this.position(this.player,0,0);this.position(this.unicorn,7,-3);this.player.visible=true;this.unicorn.visible=true;this.camera.fov=48;this.camera.updateProjectionMatrix();this.setStageCamera(true);}
+  showTitle(){if(!this.world||this.level.id!==0)this.setWorld(0);if(this.celebrationArt){disposeTree(this.celebrationArt);this.celebrationArt=null;}this.world.root.visible=true;this.friends.forEach(disposeTree);this.friends=[];this.mode='title';this.state=null;this.waterStream.visible=false;this.position(this.player,0,0);this.position(this.unicorn,7,-3);this.player.visible=true;this.unicorn.visible=true;this.camera.fov=48;this.camera.updateProjectionMatrix();this.setStageCamera(true);}
   start(id){this.setWorld(id);this.state=new Chase(this.level);this.mode='playing';this.steer=0;this.waterStream.visible=false;this.position(this.player,0);this.position(this.unicorn,this.state.unicornS);this.camera.fov=52;this.updateChaseCamera(1,true);this.lastTime=performance.now();}
   pause(){if(this.mode==='playing'){this.mode='paused';this.steer=0;}}
   resume(){if(this.mode==='paused'){this.mode='playing';this.lastTime=performance.now();}}
   spray(){return this.mode==='playing'&&this.state.spray();}
   celebrate(final=false){this.mode=final?'final':'celebrate';this.steer=0;this.waterStream.visible=false;const s=this.state.s;this.position(this.player,s,1.7);this.position(this.unicorn,s+.7,-1.7);this.setStageCamera(false,false);
     if(final){this.unicorn.visible=false;for(let i=0;i<10;i++){const u=makeCollectionUnicorn(i);this.scene.add(u);const row=i<5?0:1;this.position(u,s+row*4.5-1,(i%5-2)*2.7);u.scale.setScalar(.72);this.friends.push(u);}this.position(this.player,s-3,0);}
-    this.celebrationArt=group(this.scene);const arc=rainbow(this.celebrationArt,final?1.45:.85);this.position(arc,s-7,0,.5);
+    // A clear celebration island guarantees the portrait camera cannot enter a nearby castle/tree.
+    this.world.root.visible=false;this.celebrationArt=group(this.scene);const base=coursePoint(this.level,s);
+    cylinder(this.celebrationArt,this.level.ground,[base.x,base.y-.6,base.z],[32,1,32]);
+    cylinder(this.celebrationArt,this.level.road,[base.x,base.y-.24,base.z],[16,.25,16]);
+    for(let i=0;i<18;i++){const a=i/18*Math.PI*2,f=flower(this.celebrationArt,[this.level.accent,'#ffe0a0','#eaa6c4'][i%3],1.4);f.position.set(base.x+Math.cos(a)*14,base.y,base.z+Math.sin(a)*14);f.rotation.y=-a;}
+    const arc=rainbow(this.celebrationArt,final?1.45:.85);this.position(arc,s-7,0,.5);
     const heartShape=new THREE.Shape();heartShape.moveTo(0,-.45);heartShape.bezierCurveTo(-.9,.05,-.75,.8,0,.4);heartShape.bezierCurveTo(.75,.8,.9,.05,0,-.45);
     const heartGeo=geometry('celebration-heart',()=>new THREE.ShapeGeometry(heartShape,8));
     for(let i=0;i<12;i++){const heart=mesh(this.celebrationArt,heartGeo,['#ed9ab6','#ffce7e','#a5dbe5'][i%3],[0,0,0],[.32,.32,.32],{side:THREE.DoubleSide});this.position(heart,s-3+(i%3)*2,(i%2?-1:1)*(2.5+Math.floor(i/3)),3+Math.floor(i/3)*.5);heart.userData.baseY=heart.position.y;heart.userData.phase=i;}
