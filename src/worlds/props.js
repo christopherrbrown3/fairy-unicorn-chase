@@ -1,5 +1,7 @@
 import * as THREE from 'three';
-import {orb,cone,cylinder,box,group,star,mesh,geometry,tube,bake} from '../art/primitives.js';
+import {cone,cylinder,box,group,star,mesh,geometry,bake} from '../art/primitives.js';
+// Scenery uses fewer rings than close-up characters and is baked into spatial chunks.
+const orb=(p,c,pos,scale=[1,1,1],extra={})=>mesh(p,geometry('scenery-orb',()=>new THREE.SphereGeometry(1,12,8)),c,pos,scale,extra);
 export function tree(parent,color='#70af88',scale=1){const g=group(parent);cylinder(g,'#b89679',[0,1.5,0],[.24,3,.24]);for(const [x,y,z,r] of [[0,3,0,1.45],[-.75,2.65,.15,1],[.8,2.8,.2,1.05],[.1,3.9,0,.85]])orb(g,color,[x,y,z],[r,r*.92,r]);g.scale.setScalar(scale);return g;}
 export function mushroom(parent,color='#e993ad',scale=1){const g=group(parent);cylinder(g,'#fff1d7',[0,.55,0],[.22,1.1,.22]);orb(g,color,[0,1.2,0],[.8,.4,.8]);for(const [x,z] of [[0,0],[.4,.25],[-.3,.2]])orb(g,'#fff6e9',[x,1.5,z],[.13,.04,.13]);g.scale.setScalar(scale);return g;}
 export function flower(parent,color='#f4a7bd',scale=1){const g=group(parent);cylinder(g,'#639779',[0,.42,0],[.035,.85,.035]);orb(g,'#73b687',[.15,.26,0],[.2,.065,.09]);for(let i=0;i<5;i++){const a=i*Math.PI*2/5;const petal=orb(g,color,[Math.cos(a)*.19,.93+Math.sin(a)*.19,0],[.19,.13,.07]);petal.rotation.z=a;}orb(g,'#ffdb77',[0,.93,.05],[.1,.1,.07]);g.scale.setScalar(scale);return g;}
