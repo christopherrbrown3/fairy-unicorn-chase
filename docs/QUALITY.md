@@ -2,7 +2,7 @@
 
 ## Automated coverage
 
-Seven Node tests cover real pursuit in every world, curve closure, steering and recentering, screen-relative lane direction on multiple bends in all ten courses, potion speed and expiry, automatic jumps, gentle collisions, cosmetic water, save validation and unavailable storage.
+Eight Node tests cover real pursuit in every world, proximity-only captures after an unaligned overtake, curve closure, steering and recentering, screen-relative lane direction on multiple bends in all ten courses, potion speed and expiry, automatic jumps, gentle collisions, cosmetic water, save validation and unavailable storage.
 
 Five browser scenarios run in Chromium and WebKit at 1024 × 768 with touch support (ten passing browser cases). They cover:
 

@@ -134,7 +134,7 @@ Characters and environments are original procedural models with reusable geometr
 
 ## Tested, with room for a real playtest
 
-**Passing:** seven deterministic tests; ten browser cases across Chromium and WebKit; all ten distance-based catches; real potion speed, jumps, water and gentle collisions; keyboard and touch input; projected on-screen steering direction; pause and preferences; persistence and corrupt-save recovery; root/subpath assets; the GitHub Actions deployment; live HTTPS and redirects. The screenshot gallery covers the ten worlds and the main game states.
+**Passing:** eight deterministic tests; ten browser cases across Chromium and WebKit; all ten distance-based catches; real potion speed, jumps, water and gentle collisions; keyboard and touch input; projected on-screen steering direction; pause and preferences; persistence and corrupt-save recovery; root/subpath assets; the GitHub Actions deployment; live HTTPS and redirects. The screenshot gallery covers the ten worlds and the main game states.
 
 **Still to check on a physical iPad:** sustained frame rate, Safari chrome/safe areas, comfortable sound, multitouch feel, and the creative director’s enjoyment. No physical-device testing is claimed. [The device checklist and full coverage notes](docs/QUALITY.md) make that last family playtest straightforward.
 

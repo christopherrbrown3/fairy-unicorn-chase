@@ -1,0 +1,307 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-12T23:26:03.556Z",
+  "title": "Design System: Fairy Unicorn Chase",
+  "extensions": {
+    "colorMeta": {
+      "ink": {
+        "role": "neutral",
+        "displayName": "Story Ink",
+        "tonalRamp": [
+          "oklch(15% 0.0705 256.81)",
+          "oklch(26% 0.0705 256.81)",
+          "oklch(38% 0.0705 256.81)",
+          "oklch(49% 0.0705 256.81)",
+          "oklch(61% 0.0705 256.81)",
+          "oklch(72% 0.0705 256.81)",
+          "oklch(84% 0.0705 256.81)",
+          "oklch(95% 0.0705 256.81)"
+        ]
+      },
+      "blue": {
+        "role": "primary",
+        "displayName": "Adventure Blue",
+        "tonalRamp": [
+          "oklch(15% 0.1290 249.51)",
+          "oklch(26% 0.1290 249.51)",
+          "oklch(38% 0.1290 249.51)",
+          "oklch(49% 0.1290 249.51)",
+          "oklch(61% 0.1290 249.51)",
+          "oklch(72% 0.1290 249.51)",
+          "oklch(84% 0.1290 249.51)",
+          "oklch(95% 0.1290 249.51)"
+        ]
+      },
+      "paper": {
+        "role": "neutral",
+        "displayName": "Warm Paper",
+        "tonalRamp": [
+          "oklch(15% 0.0141 74.43)",
+          "oklch(26% 0.0141 74.43)",
+          "oklch(38% 0.0141 74.43)",
+          "oklch(49% 0.0141 74.43)",
+          "oklch(61% 0.0141 74.43)",
+          "oklch(72% 0.0141 74.43)",
+          "oklch(84% 0.0141 74.43)",
+          "oklch(95% 0.0141 74.43)"
+        ]
+      },
+      "white": {
+        "role": "neutral",
+        "displayName": "White",
+        "tonalRamp": [
+          "oklch(15% 0.0000 89.88)",
+          "oklch(26% 0.0000 89.88)",
+          "oklch(38% 0.0000 89.88)",
+          "oklch(49% 0.0000 89.88)",
+          "oklch(61% 0.0000 89.88)",
+          "oklch(72% 0.0000 89.88)",
+          "oklch(84% 0.0000 89.88)",
+          "oklch(95% 0.0000 89.88)"
+        ]
+      },
+      "secondary-control": {
+        "role": "secondary",
+        "displayName": "Cool Control",
+        "tonalRamp": [
+          "oklch(15% 0.0126 236.63)",
+          "oklch(26% 0.0126 236.63)",
+          "oklch(38% 0.0126 236.63)",
+          "oklch(49% 0.0126 236.63)",
+          "oklch(61% 0.0126 236.63)",
+          "oklch(72% 0.0126 236.63)",
+          "oklch(84% 0.0126 236.63)",
+          "oklch(95% 0.0126 236.63)"
+        ]
+      },
+      "focus-pink": {
+        "role": "secondary",
+        "displayName": "Focus Pink",
+        "tonalRamp": [
+          "oklch(15% 0.1570 358.03)",
+          "oklch(26% 0.1570 358.03)",
+          "oklch(38% 0.1570 358.03)",
+          "oklch(49% 0.1570 358.03)",
+          "oklch(61% 0.1570 358.03)",
+          "oklch(72% 0.1570 358.03)",
+          "oklch(84% 0.1570 358.03)",
+          "oklch(95% 0.1570 358.03)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Title Display",
+        "purpose": "Three stacked title words; responsive exceptions live in the surface brief."
+      },
+      "headline": {
+        "displayName": "Menu Headline",
+        "purpose": "Book and pause headings."
+      },
+      "button": {
+        "displayName": "Action Label",
+        "purpose": "Standard actions."
+      },
+      "button-jumbo": {
+        "displayName": "Jumbo Action",
+        "purpose": "Main Play, Continue and Resume labels."
+      },
+      "supporting": {
+        "displayName": "Supporting Copy",
+        "purpose": "Short book and pause descriptions."
+      }
+    },
+    "shadows": [
+      {
+        "name": "ambient",
+        "value": "0 8px 28px #30456725",
+        "purpose": "Shared controls, HUD surfaces and adventure tiles."
+      },
+      {
+        "name": "primary",
+        "value": "0 10px 28px #275c9830",
+        "purpose": "Blurred blue lift under primary actions."
+      },
+      {
+        "name": "pause-sheet",
+        "value": "0 16px 60px #30456b35",
+        "purpose": "Pause sheet above the muted world."
+      },
+      {
+        "name": "steering",
+        "value": "0 8px 24px #304b6b23",
+        "purpose": "Steering pads over scenery."
+      },
+      {
+        "name": "water",
+        "value": "0 8px 24px #305b7928",
+        "purpose": "Water control over scenery."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease",
+        "value": "cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "Button transform easing."
+      },
+      {
+        "name": "button-transform",
+        "value": "transform 0.18s var(--ease)",
+        "purpose": "Pressed movement; disabled by CSS reduced-motion preference."
+      },
+      {
+        "name": "button-background",
+        "value": "background 0.18s",
+        "purpose": "Control state transitions."
+      },
+      {
+        "name": "chase-progress",
+        "value": "transform 0.2s",
+        "purpose": "Scale progress from the left edge rather than animating width."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "compact-width",
+        "value": "(max-width: 900px)"
+      },
+      {
+        "name": "short-landscape",
+        "value": "(max-height: 600px) and (orientation: landscape)"
+      },
+      {
+        "name": "portrait",
+        "value": "(orientation: portrait)"
+      },
+      {
+        "name": "reduced-motion",
+        "value": "(prefers-reduced-motion: reduce)"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Jumbo Button",
+      "kind": "button",
+      "refersTo": "button-primary-jumbo",
+      "description": "The dominant Play, Continue and Resume action; base landscape dimensions.",
+      "html": "<button class=\"ds-primary ds-jumbo\"><svg class=\"ds-icon\" viewBox=\"0 0 32 32\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"m10 6 13 10-13 10z\" fill=\"currentColor\" stroke=\"none\"/></svg><span>Let’s play</span></button>",
+      "css": ".ds-primary{font-family:Baloo,ui-rounded,system-ui,sans-serif;min-height:66px;display:inline-flex;align-items:center;justify-content:center;gap:14px;padding:14px 28px;border-radius:18px;background:#e6eff5;color:var(--ink,#243e62);font-weight:700;font-size:23px;box-shadow:var(--shadow,0 8px 28px #30456725)}.ds-primary{background:var(--blue,#2874b8);color:#fff;box-shadow:0 10px 28px #275c9830}.ds-jumbo{min-height:88px;font-size:32px;padding:17px 38px;border-radius:24px}.ds-jumbo .ds-icon{width:36px;height:36px}.ds-primary{cursor:pointer;border:0;touch-action:manipulation;transition:transform .18s var(--ease,cubic-bezier(.16,1,.3,1)),background .18s;}.ds-primary:hover:not(:disabled){filter:brightness(1.04)}.ds-primary:focus-visible{outline:4px solid #e76e9c;outline-offset:5px}.ds-primary:active{transform:translateY(3px)}.ds-primary:disabled{cursor:default}@media(prefers-reduced-motion:reduce){.ds-primary{transition:none}}.ds-icon{width:32px;height:32px;flex:none;vertical-align:middle}"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Cool neutral Restart and Home actions.",
+      "html": "<button class=\"ds-secondary\"><svg class=\"ds-icon\" viewBox=\"0 0 32 32\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M6 12a11 11 0 1 1-1 9M6 5v8h8\"/></svg><span>Start this world again</span></button>",
+      "css": ".ds-secondary{font-family:Baloo,ui-rounded,system-ui,sans-serif;min-height:66px;display:inline-flex;align-items:center;justify-content:center;gap:14px;padding:14px 28px;border-radius:18px;background:#e6eff5;color:var(--ink,#243e62);font-weight:700;font-size:23px;box-shadow:var(--shadow,0 8px 28px #30456725)}.ds-secondary{cursor:pointer;border:0;touch-action:manipulation;transition:transform .18s var(--ease,cubic-bezier(.16,1,.3,1)),background .18s;}.ds-secondary:hover:not(:disabled){filter:brightness(1.04)}.ds-secondary:focus-visible{outline:4px solid #e76e9c;outline-offset:5px}.ds-secondary:active{transform:translateY(3px)}.ds-secondary:disabled{cursor:default}@media(prefers-reduced-motion:reduce){.ds-secondary{transition:none}}.ds-icon{width:32px;height:32px;flex:none;vertical-align:middle}"
+    },
+    {
+      "name": "Paper Button",
+      "kind": "button",
+      "refersTo": "button-paper",
+      "description": "A supporting collection action beside Continue or Play again.",
+      "html": "<button class=\"ds-paper\"><svg class=\"ds-icon\" viewBox=\"0 0 32 32\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M16 8q-5-5-12-3v21q7-2 12 3 5-5 12-3V5q-7-2-12 3Zm0 0v21\"/></svg><span>Our unicorns</span></button>",
+      "css": ".ds-paper{font-family:Baloo,ui-rounded,system-ui,sans-serif;min-height:66px;display:inline-flex;align-items:center;justify-content:center;gap:14px;padding:14px 28px;border-radius:18px;background:#e6eff5;color:var(--ink,#243e62);font-weight:700;font-size:23px;box-shadow:var(--shadow,0 8px 28px #30456725)}.ds-paper{background:var(--paper,#fff8ef)}.ds-paper{cursor:pointer;border:0;touch-action:manipulation;transition:transform .18s var(--ease,cubic-bezier(.16,1,.3,1)),background .18s;}.ds-paper:hover:not(:disabled){filter:brightness(1.04)}.ds-paper:focus-visible{outline:4px solid #e76e9c;outline-offset:5px}.ds-paper:active{transform:translateY(3px)}.ds-paper:disabled{cursor:default}@media(prefers-reduced-motion:reduce){.ds-paper{transition:none}}.ds-icon{width:32px;height:32px;flex:none;vertical-align:middle}"
+    },
+    {
+      "name": "Quiet Button",
+      "kind": "button",
+      "refersTo": "button-quiet",
+      "description": "A secondary destination without a filled surface.",
+      "html": "<button class=\"ds-quiet\"><svg class=\"ds-icon\" viewBox=\"0 0 32 32\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"m3 7 9-3 9 4 8-4v21l-8 4-9-4-9 3zm9-3v21m9-17v21\"/></svg><span>Worlds</span></button>",
+      "css": ".ds-quiet{font-family:Baloo,ui-rounded,system-ui,sans-serif;min-height:66px;display:inline-flex;align-items:center;justify-content:center;gap:14px;padding:14px 28px;border-radius:18px;background:#e6eff5;color:var(--ink,#243e62);font-weight:700;font-size:23px;box-shadow:var(--shadow,0 8px 28px #30456725)}.ds-quiet{background:transparent;box-shadow:none;padding:14px 8px;font-size:21px;min-height:72px}.ds-quiet .ds-icon{width:28px;height:28px}.ds-quiet{cursor:pointer;border:0;touch-action:manipulation;transition:transform .18s var(--ease,cubic-bezier(.16,1,.3,1)),background .18s;}.ds-quiet:hover:not(:disabled){filter:brightness(1.04)}.ds-quiet:focus-visible{outline:4px solid #e76e9c;outline-offset:5px}.ds-quiet:active{transform:translateY(3px)}.ds-quiet:disabled{cursor:default}@media(prefers-reduced-motion:reduce){.ds-quiet{transition:none}}.ds-icon{width:32px;height:32px;flex:none;vertical-align:middle}"
+    },
+    {
+      "name": "Round Sound Button",
+      "kind": "button",
+      "refersTo": "button-round",
+      "description": "An icon-only circular sound toggle with an accessible label.",
+      "html": "<button class=\"ds-round\" aria-label=\"Mute sound\" aria-pressed=\"true\"><svg class=\"ds-icon\" viewBox=\"0 0 32 32\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M4 12h6l7-6v20l-7-6H4zM22 11q7 5 0 10M25 6q11 10 0 20\"/></svg></button>",
+      "css": ".ds-round{font-family:Baloo,ui-rounded,system-ui,sans-serif;display:grid;place-items:center;min-width:72px;min-height:72px;border-radius:50%;background:#fff8efef;color:var(--ink,#243e62);box-shadow:var(--shadow,0 8px 28px #30456725)}.ds-round{cursor:pointer;border:0;touch-action:manipulation;transition:transform .18s var(--ease,cubic-bezier(.16,1,.3,1)),background .18s;}.ds-round:hover:not(:disabled){filter:brightness(1.04)}.ds-round:focus-visible{outline:4px solid #e76e9c;outline-offset:5px}.ds-round:active{transform:translateY(3px)}.ds-round:disabled{cursor:default}@media(prefers-reduced-motion:reduce){.ds-round{transition:none}}.ds-round .ds-icon{width:30px;height:30px}"
+    },
+    {
+      "name": "Steering Pad",
+      "kind": "button",
+      "refersTo": "button-steering",
+      "description": "A large held touch control; left and right share this treatment.",
+      "html": "<button class=\"ds-steer\" aria-label=\"Steer left\"><svg class=\"ds-icon\" viewBox=\"0 0 32 32\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"m20 7-10 9 10 9\"/></svg></button>",
+      "css": ".ds-steer{display:grid;place-items:center;width:124px;height:110px;border-radius:30px;background:#fff8efcf;color:#335b7b;box-shadow:0 8px 24px #304b6b23;touch-action:none}.ds-steer .ds-icon{width:64px;height:64px;stroke-width:3}.ds-steer{cursor:pointer;border:0;touch-action:manipulation;transition:transform .18s var(--ease,cubic-bezier(.16,1,.3,1)),background .18s;}.ds-steer:hover:not(:disabled){filter:brightness(1.04)}.ds-steer:focus-visible{outline:4px solid #e76e9c;outline-offset:5px}.ds-steer:active{transform:translateY(3px)}.ds-steer:disabled{cursor:default}@media(prefers-reduced-motion:reduce){.ds-steer{transition:none}}.ds-steer{touch-action:none}.ds-steer:active,.ds-steer.ds-held{background:#d8eafb;transform:translateY(3px)}"
+    },
+    {
+      "name": "Water Control",
+      "kind": "button",
+      "refersTo": "button-water",
+      "description": "A separate circular droplet action beside right steering.",
+      "html": "<button class=\"ds-water\" aria-label=\"Spray water\"><svg class=\"ds-icon\" viewBox=\"0 0 32 32\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M16 3C13 8 6 15 6 21a10 10 0 0 0 20 0C26 15 19 8 16 3Z\"/><path d=\"M11 21q0 5 5 5\"/></svg></button>",
+      "css": ".ds-water{width:100px;height:100px;border-radius:50%;display:grid;place-items:center;background:#a1dbefdd;color:#2e77a2;box-shadow:0 8px 24px #305b7928;touch-action:none}.ds-water .ds-icon{width:48px;height:48px;fill:#d8f5fb99}.ds-water{cursor:pointer;border:0;touch-action:manipulation;transition:transform .18s var(--ease,cubic-bezier(.16,1,.3,1)),background .18s;}.ds-water:hover:not(:disabled){filter:brightness(1.04)}.ds-water:focus-visible{outline:4px solid #e76e9c;outline-offset:5px}.ds-water:active{transform:translateY(3px)}.ds-water:disabled{cursor:default}@media(prefers-reduced-motion:reduce){.ds-water{transition:none}}.ds-water{touch-action:none}.ds-water:active,.ds-water.ds-held{background:#62bddb;transform:translateY(3px)}"
+    },
+    {
+      "name": "Picture and Motion Preferences",
+      "kind": "input",
+      "description": "Compact native preferences from the pause sheet.",
+      "html": "<div class=\"ds-preferences\"><label>Picture<select aria-label=\"Picture quality\"><option>Automatic</option><option>Gentle</option><option>Crisp</option></select></label><label class=\"ds-motion\"><input type=\"checkbox\"/>Gentle motion</label></div>",
+      "css": ".ds-preferences{font-family:Baloo,ui-rounded,system-ui,sans-serif;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:16px;margin-top:8px;font-size:16px;color:#4f637f}.ds-preferences label{display:flex;align-items:center;gap:8px}.ds-preferences select{font-family:Baloo,ui-rounded,system-ui,sans-serif;border:0;border-radius:10px;background:#e2eaf0;color:var(--ink,#243e62);padding:10px;min-height:44px;cursor:pointer}.ds-preferences input{accent-color:var(--blue,#2874b8);width:23px;height:23px}.ds-motion{padding:4px 10px}.ds-preferences select:focus-visible,.ds-preferences input:focus-visible{outline:4px solid #e76e9c;outline-offset:5px}"
+    },
+    {
+      "name": "Adventure Navigation",
+      "kind": "nav",
+      "description": "Two quiet title destinations using the original map and book SVGs.",
+      "html": "<nav class=\"ds-nav\" aria-label=\"Adventure menus\"><button class=\"ds-link\"><svg class=\"ds-icon\" viewBox=\"0 0 32 32\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"m3 7 9-3 9 4 8-4v21l-8 4-9-4-9 3zm9-3v21m9-17v21\"/></svg><span>Worlds</span></button><button class=\"ds-link\"><svg class=\"ds-icon\" viewBox=\"0 0 32 32\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M16 8q-5-5-12-3v21q7-2 12 3 5-5 12-3V5q-7-2-12 3Zm0 0v21\"/></svg><span>Unicorns</span></button></nav>",
+      "css": ".ds-nav{display:flex;gap:20px;margin-top:14px}.ds-link{font-family:Baloo,ui-rounded,system-ui,sans-serif;min-height:66px;display:inline-flex;align-items:center;justify-content:center;gap:14px;padding:14px 28px;border-radius:18px;background:#e6eff5;color:var(--ink,#243e62);font-weight:700;font-size:23px;box-shadow:var(--shadow,0 8px 28px #30456725)}.ds-link{background:transparent;box-shadow:none;padding:14px 8px;font-size:21px;min-height:72px}.ds-link .ds-icon{width:28px;height:28px}.ds-link{cursor:pointer;border:0;touch-action:manipulation;transition:transform .18s var(--ease,cubic-bezier(.16,1,.3,1)),background .18s;}.ds-link:hover:not(:disabled){filter:brightness(1.04)}.ds-link:focus-visible{outline:4px solid #e76e9c;outline-offset:5px}.ds-link:active{transform:translateY(3px)}.ds-link:disabled{cursor:default}@media(prefers-reduced-motion:reduce){.ds-link{transition:none}}.ds-icon{width:32px;height:32px;flex:none;vertical-align:middle}"
+    },
+    {
+      "name": "Pause Sheet",
+      "kind": "card",
+      "refersTo": "pause-sheet",
+      "description": "Warm paper and a broader soft shadow group the pause actions.",
+      "html": "<div class=\"ds-sheet\"><h2>A little breather</h2><p>Mia & Glender will wait for you</p><button class=\"ds-primary ds-jumbo\"><svg class=\"ds-icon\" viewBox=\"0 0 32 32\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"m10 6 13 10-13 10z\" fill=\"currentColor\" stroke=\"none\"/></svg><span>Keep chasing</span></button></div>",
+      "css": ".ds-sheet{font-family:Baloo,ui-rounded,system-ui,sans-serif;background:var(--paper,#fff8ef);color:var(--ink,#243e62);border-radius:24px;box-shadow:0 16px 60px #30456b35;padding:34px 40px;display:flex;flex-direction:column;align-items:stretch;gap:16px;max-width:560px;text-align:center}.ds-sheet h2{margin:0;font-size:42px;font-weight:800;line-height:1.05;letter-spacing:-.025em;text-wrap:balance}.ds-sheet p{font-size:20px;margin:-4px 0 6px}.ds-primary{font-family:Baloo,ui-rounded,system-ui,sans-serif;min-height:66px;display:inline-flex;align-items:center;justify-content:center;gap:14px;padding:14px 28px;border-radius:18px;background:#e6eff5;color:var(--ink,#243e62);font-weight:700;font-size:23px;box-shadow:var(--shadow,0 8px 28px #30456725)}.ds-primary{background:var(--blue,#2874b8);color:#fff;box-shadow:0 10px 28px #275c9830}.ds-jumbo{min-height:88px;font-size:32px;padding:17px 38px;border-radius:24px}.ds-jumbo .ds-icon{width:36px;height:36px}.ds-primary{cursor:pointer;border:0;touch-action:manipulation;transition:transform .18s var(--ease,cubic-bezier(.16,1,.3,1)),background .18s;}.ds-primary:hover:not(:disabled){filter:brightness(1.04)}.ds-primary:focus-visible{outline:4px solid #e76e9c;outline-offset:5px}.ds-primary:active{transform:translateY(3px)}.ds-primary:disabled{cursor:default}@media(prefers-reduced-motion:reduce){.ds-primary{transition:none}}.ds-icon{width:32px;height:32px;flex:none;vertical-align:middle}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Playable Storybook",
+    "overview": "Rounded original 3D figurines inhabit magical pastel landscapes. Soft lighting, sculpted hair, expressive faces, broad curving tracks, flowers and physical landmarks supply the storybook character. The interface uses warm paper, sturdy rounded lettering and generous controls to keep that world readable.\n\nThe world remains animated behind the title and celebrations. Paper menus provide a quieter place to choose worlds and revisit friends. Preserve Mia's blonde hair, blue dress and wings; Glender's yellow mane, yellow tail and body stars; and white unicorn bodies with distinct mane colors. Exact provisional appearance choices remain in `DESIGN_NOTES.md`.",
+    "keyCharacteristics": [
+      "Dimensional characters and recognizable scenery, with original artwork.",
+      "Warm paper, blue actions, navy ink and pink/gold accents.",
+      "Large icon-led controls and short, friendly labels.",
+      "Galloping, wing motion, water magic and shared celebrations."
+    ],
+    "rules": [
+      {
+        "name": "The World Palette Rule",
+        "body": "Keep the interface palette stable across worlds; distinguish worlds through scenery, landmarks and the configured environment colors.",
+        "section": "colors"
+      },
+      {
+        "name": "The Short Label Rule",
+        "body": "Pair actions with the original SVG icons and concise words; reserve reading for menus and brief encouragement.",
+        "section": "typography"
+      },
+      {
+        "name": "The Clear World Rule",
+        "body": "Keep the chase corridor and character silhouettes unobstructed by menus, encouragement and touch controls.",
+        "section": "layout"
+      },
+      {
+        "name": "The Soft Lift Rule",
+        "body": "Raised interface surfaces use blurred, tinted shadows; do not restore the removed hard offset primary-button shadow.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "**Do** preserve confirmed character colors, powers and recognizable silhouettes.",
+      "**Do** reuse the paper/blue/ink hierarchy while each world contributes its own scenery.",
+      "**Do** retain large touch targets, visible keyboard focus and safe-area clearance.",
+      "**Do** keep portraits and celebrations unobstructed, with all ten friends visible in the finale.",
+      "**Do** keep provisional names, coat choices and tuning editable through configuration and documented in `DESIGN_NOTES.md`."
+    ],
+    "donts": [
+      "**Don't** add an eyebrow above the title or restore the removed hard offset primary shadow.",
+      "**Don't** replace original icons or dimensional artwork with glyph icons or placeholder figures.",
+      "**Don't** add text-heavy instructions or developer controls to the play surface.",
+      "**Don't** treat browser viewport captures as physical iPad performance or touch validation."
+    ]
+  }
+}
