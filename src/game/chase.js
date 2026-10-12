@@ -50,7 +50,14 @@ export class Chase {
     this.s += this.speed * dt;
     const assist = clamp((this.time - this.level.assistanceAfter) / 22, 0, 1);
     const leash = this.distance > 85 ? 1 : 0;
-    const unicornSpeed = this.level.unicornSpeed - assist * 2.2 - leash;
+    let unicornSpeed = this.level.unicornSpeed - assist * 2.2 - leash;
+    const gap = this.unicornS - this.s;
+    const needsAlignment = Math.abs(this.lane - this.unicornLane) >= 2.5 + assist;
+    // Stay playfully alongside an overtake until the rider lines up. Adjust speed,
+    // never teleport position or celebrate a unicorn far behind the rider.
+    if (gap < 2 || (gap < 6 && needsAlignment)) {
+      unicornSpeed = Math.max(unicornSpeed, this.speed + 1);
+    }
     this.unicornS += unicornSpeed * dt;
     // The unicorn eases toward the middle as the player gets close.
     this.unicornLane =
@@ -93,7 +100,7 @@ export class Chase {
       }
     }
     if (
-      this.distance <= 3.8 &&
+      Math.abs(this.unicornS - this.s) <= 3.8 &&
       Math.abs(this.lane - this.unicornLane) < 2.5 + assist
     ) {
       this.caught = true;

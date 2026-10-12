@@ -25,7 +25,7 @@ test("every chase is physically catchable even without steering", () => {
     const c = new Chase(l);
     for (let i = 0; i < 3600 && !c.caught; i++) c.step(0.05);
     assert.ok(c.caught, l.name);
-    assert.ok(c.distance <= 3.8);
+    assert.ok(Math.abs(c.unicornS - c.s) <= 3.8);
     assert.ok(c.time > (l.id === 0 ? 15 : 45));
     assert.ok(c.time < 120);
   }
@@ -48,6 +48,19 @@ test("positive lane is camera-right and negative lane is camera-left on every be
       assert.ok(screenRight(right) > 1.99, `${level.name} right`);
       assert.ok(screenRight(left) < -1.99, `${level.name} left`);
     }
+});
+test("an unaligned overtake stays within reach and catches only at actual proximity", () => {
+  const c = new Chase(LEVELS[0]);
+  for (let i = 0; i < 1600; i++) c.step(0.05, 1);
+  assert.equal(c.caught, false);
+  assert.ok(c.unicornS - c.s > 0 && c.unicornS - c.s < 7);
+  for (let i = 0; i < 100 && !c.caught; i++) c.step(0.05, 0);
+  assert.ok(c.caught);
+  assert.ok(Math.abs(c.unicornS - c.s) <= 3.8);
+  const far = new Chase(LEVELS[0]);
+  far.s = 200; far.unicornS = 50;
+  far.step(0.05);
+  assert.equal(far.caught, false);
 });
 test("potions increase real speed, and boost expires", () => {
   const c = new Chase(LEVELS[0]);
