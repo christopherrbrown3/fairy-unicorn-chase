@@ -17,7 +17,7 @@ Fairy Unicorn Chase. Mia has blonde hair, a blue dress, fairy wings and water-sp
 Models and scenery are original procedural artwork, with a Blender-authored potion asset. No copyrighted racing-game characters, artwork, sounds or tracks are used.
 
 ## Tuning and implementation choices
-Current baseline speed is 10 world units/second. A potion adds 4.6 for four seconds; lane limits stay generous during boosts. The first lead is 54 units; later leads 67.5–79.5. Assistance starts at 30 seconds in the meadow and 45 in later worlds, gradually easing unicorn speed. Capture requires separation at most 3.8 units plus generous lane alignment. Looped courses prevent unwinnable endpoints.
+Current baseline speed is 10 world units/second. A potion adds 4.6 in the introductory meadow and 2.5 in later worlds, for four seconds; lane limits stay generous during boosts. The first lead is 54 units; later leads 67.5–79.5. Assistance starts at 30 seconds in the meadow and 45 in later worlds, gradually easing unicorn speed. Capture requires separation at most 3.8 units plus generous lane alignment. Looped courses prevent unwinnable endpoints. Deterministic no-steering play catches the first unicorn in about 23 seconds and later friends in 61–70 seconds; steering toward more bottles can finish sooner.
 
 White unicorns have soft lilac hooves, friendly pink muzzles and gold horns. Mane and tail color both vary; Prism has rainbow locks. Celebrations gather Mia, Glender and the caught friend, with hearts, sparkles and an actual 3D rainbow. The finale adds all ten unicorns.
 

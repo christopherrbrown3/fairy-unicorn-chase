@@ -16,7 +16,7 @@ export const LEVELS = worlds.map(([name,unicorn,theme,sky,ground,road,foliage,ac
   id:i,name,unicorn,theme,sky,ground,road,foliage,accent,mane:MANES[i],
   width: i===0 ? 12 : 10.5, radius: 215+i*4, bends: 10+i*1.8,
   playerSpeed:10, unicornSpeed:10.18+i*.035, lead:i===0?54:66+i*1.5,
-  assistanceAfter:i===0?30:45, boostSpeed:4.6, boostDuration:4,
+  assistanceAfter:i===0?30:45, boostSpeed:i===0?4.6:2.5, boostDuration:4,
 }));
 export const CHARACTER = { coat:'#e8ad86', hair:'#ffcf53', dress:'#4399e2', skin:'#ffe0c3', wings:'#a9e1fa' };
 export const MAGIC = { waterCosmetic:true, sprayDuration:1.3, sprayCooldown:.4, particles:90 };

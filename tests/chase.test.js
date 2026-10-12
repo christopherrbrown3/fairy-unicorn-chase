@@ -10,7 +10,7 @@ test('all ten courses close smoothly and expose distinct unicorns',()=>{
   for(const l of LEVELS){const a=coursePoint(l,0),b=coursePoint(l,2*Math.PI*l.radius);assert.ok(Math.hypot(a.x-b.x,a.z-b.z)<.001);}
 });
 test('every chase is physically catchable even without steering',()=>{
-  for(const l of LEVELS){const c=new Chase(l);for(let i=0;i<3600&&!c.caught;i++) c.step(.05);assert.ok(c.caught,l.name);assert.ok(c.distance<=3.8);assert.ok(c.time>8);}
+  for(const l of LEVELS){const c=new Chase(l);for(let i=0;i<3600&&!c.caught;i++) c.step(.05);assert.ok(c.caught,l.name);assert.ok(c.distance<=3.8);assert.ok(c.time>(l.id===0?15:45));assert.ok(c.time<120);}
 });
 test('steering responds and recenters; boundaries are forgiving',()=>{
   const c=new Chase(LEVELS[0]);for(let i=0;i<40;i++)c.step(.05,-1);assert.ok(c.lane<-4);for(let i=0;i<40;i++)c.step(.05,0);assert.ok(Math.abs(c.lane)<.02);
