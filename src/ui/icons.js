@@ -1,0 +1,26 @@
+const paths={
+  play:'<path d="m10 6 13 10-13 10z" fill="currentColor" stroke="none"/>',
+  left:'<path d="m20 7-10 9 10 9"/>',right:'<path d="m12 7 10 9-10 9"/>',
+  water:'<path d="M16 3C13 8 6 15 6 21a10 10 0 0 0 20 0C26 15 19 8 16 3Z"/><path d="M11 21q0 5 5 5"/>',
+  pause:'<path d="M11 7v18M21 7v18"/>',home:'<path d="m4 15 12-11 12 11M8 12v15h16V12M14 27v-8h5v8"/>',
+  sound:'<path d="M4 12h6l7-6v20l-7-6H4zM22 11q7 5 0 10M25 6q11 10 0 20"/>',
+  mute:'<path d="M4 12h6l7-6v20l-7-6H4zM22 12l7 8m0-8-7 8"/>',
+  star:'<path d="m16 3 4 8 9 2-7 6 2 10-8-5-8 5 2-10-7-6 9-2z"/>',
+  book:'<path d="M16 8q-5-5-12-3v21q7-2 12 3 5-5 12-3V5q-7-2-12 3Zm0 0v21"/>',
+  map:'<path d="m3 7 9-3 9 4 8-4v21l-8 4-9-4-9 3zm9-3v21m9-17v21"/>',
+  back:'<path d="m13 7-9 9 9 9M4 16h24"/>',
+  restart:'<path d="M6 12a11 11 0 1 1-1 9M6 5v8h8"/>',
+  lock:'<rect x="7" y="14" width="18" height="15" rx="4"/><path d="M11 14V9a5 5 0 0 1 10 0v5m-5 6v3"/>',
+  check:'<path d="m6 16 7 7L27 8"/>',
+  cloud:'<path d="M9 25a7 7 0 0 1-1-14 9 9 0 0 1 17-1 7.5 7.5 0 0 1-1 15Z"/>',
+  tree:'<path d="m16 3-9 11h5L5 23h22l-7-9h5zM16 23v7"/>',
+  castle:'<path d="M4 28V9h5v6h5V5h5v10h5V9h5v19ZM13 28v-8h7v8"/>',
+  candy:'<circle cx="16" cy="12" r="9"/><path d="M16 21v10m-4-16q9 2 7-5-2-4-6 0"/>',
+  crystal:'<path d="m16 3 10 12-10 15L6 15zm0 0v27M6 15h20"/>',
+  flower:'<path d="M16 19v12m0-4q-8 1-8-5 6-1 8 5"/><circle cx="16" cy="12" r="3"/><path d="M16 8c-8-11-13 3-4 4-12 6 1 14 4 4 7 11 15-1 4-4 11-6-1-14-4-4Z"/>',
+  moon:'<path d="M24 25A13 13 0 0 1 13 3a12 12 0 0 0 11 22Z"/>',
+  mountain:'<path d="m2 28 13-23 15 23ZM10 14l5 3 4-4"/>',
+  rainbow:'<path d="M3 27v-8a13 13 0 0 1 26 0v8M8 27v-8a8 8 0 0 1 16 0v8m-11 0v-8a3 3 0 0 1 6 0v8"/>',
+};
+export const icon=(name,cls='')=>`<svg class="icon ${cls}" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${paths[name]||paths.star}</svg>`;
+export const worldIcon=['rainbow','tree','cloud','castle','candy','crystal','flower','moon','mountain','castle'];
