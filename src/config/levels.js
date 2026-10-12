@@ -37,8 +37,8 @@ export function courseItems(level) {
   const length=Math.PI*2*level.radius;
   for(let s=30,k=0;s<length;s+=level.id===0?47:63,k++) {
     items.push({id:`p${k}`,kind:'potion',s,lane:[0,-2.6,2.6,0,1.6,-1.6][k%6],radius:1.9});
-    if(k%3===1) items.push({id:`j${k}`,kind:k%2?'puddle':'log',s:s+18,lane:[0,2.5,-2.5][k%3],radius:1.8});
-    if(k%4===2) items.push({id:`o${k}`,kind:level.theme==='crystal'?'crystal':'tree',s:s+25,lane:k%2?-2.7:2.7,radius:1.2});
+    if(k%3===1) items.push({id:`j${k}`,kind:k%2?'puddle':'log',s:s+18,lane:[0,2.5,-2.5][Math.floor(k/3)%3],radius:1.8});
+    if(k%4===2) items.push({id:`o${k}`,kind:level.theme==='crystal'?'crystal':'tree',s:s+25,lane:Math.floor(k/4)%2?-2.7:2.7,radius:1.2});
   }
   return items;
 }

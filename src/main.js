@@ -38,7 +38,7 @@ document.addEventListener('visibilitychange',()=>{if(document.hidden&&game?.mode
 await loadWorldAssets();
 try{
   game=new GameScene(document.querySelector('#world'),{quality:save.quality,reducedMotion:save.reducedMotion,onContextLoss:()=>{audio.playing=false;view.show('<section class="error-screen"><h2>The magic is taking a breather</h2><p>Your collected friends are safe. Reload to keep playing.</p><button class="button primary" data-action="reload">Reload</button></section>','error');},onEvent:(event,c)=>{
-    audio.event(event);if(event==='boost')view.encourage('Sparkle speed!');if(event==='jump')view.encourage('Wheee!');if(event==='bump')view.encourage('A little bump — keep going!');
+    if(event!=='catch')audio.event(event);if(event==='boost')view.encourage('Sparkle speed!');if(event==='jump')view.encourage('Wheee!');if(event==='bump')view.encourage('A little bump — keep going!');
     if(event==='catch'){save=completeLevel(save,c.level.id);persist();const final=save.completed.length===10;audio.playing=false;game.celebrate(final);audio.event(final?'final':'catch');view.complete(c.level,save,final);}
   },onFrame:c=>{view.update(c);audio.tick(game.elapsed,c.speed);if(input.waterHeld&&c.cooldown<=0)spray();}});
   portraits=renderPortraits();input=new Input(game,{onPause:pause,onSpray:spray});view.onRender=()=>input.bind();audio.toggle(save.sound);view.title(save);
