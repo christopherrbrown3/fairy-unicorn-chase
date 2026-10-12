@@ -10,8 +10,15 @@ Fairy Unicorn Chase. Mia has blonde hair, a blue dress, fairy wings and water-sp
 - Unicorn nicknames: Blossom, Violet, Skye, Sunny, Clover, Amber, Rosie, Ripple, Lilac and Prism. These are suggestions, not child-confirmed names.
 - Water is joyful cosmetic magic only. It never hurts or slows the unicorn, and is optional to win.
 - Chase tuning: auto-run, generous lanes and boundaries, four-second potion boosts, subtle assistance after a longer chase. Catch always depends on real distance and lane alignment.
-- UI: illustrated storybook adventure with large soft blue/coral controls and original icon artwork. All visual choices can be revised by the creative director.
+- UI: illustrated storybook adventure with large soft blue controls, paper menus, pink accents and original icon artwork. All visual choices can be revised by the creative director.
 - Music and effects: original synthesized chimes, hoofbeats and gentle melodic accompaniment. No downloaded game sounds.
 
 ## Artistic ownership
 Models and scenery are original procedural artwork, with a Blender-authored potion asset. No copyrighted racing-game characters, artwork, sounds or tracks are used.
+
+## Tuning and implementation choices
+Current baseline speed is 10 world units/second. A potion adds 4.6 for four seconds; lane limits stay generous during boosts. The first lead is 54 units; later leads 67.5–79.5. Assistance starts at 30 seconds in the meadow and 45 in later worlds, gradually easing unicorn speed. Capture requires separation at most 3.8 units plus generous lane alignment. Looped courses prevent unwinnable endpoints.
+
+White unicorns have soft lilac hooves, friendly pink muzzles and gold horns. Mane and tail color both vary; Prism has rainbow locks. Celebrations gather Mia, Glender and the caught friend, with hearts, sparkles and an actual 3D rainbow. The finale adds all ten unicorns.
+
+Asset reuse licensing for original code/art/audio remains unassigned. Third-party software and the self-hosted Baloo 2 font retain their licenses in docs/CREDITS.md.
