@@ -12,8 +12,10 @@ test('root and repository subpath render authored assets without errors',async({
 test('keyboard, held touch controls, multitouch water, pause and preferences',async({page,browserName})=>{
   await page.goto('/?test=1');await ready(page);await page.getByRole('button',{name:'Let’s play'}).click();
   const advanceInput=seconds=>page.evaluate(seconds=>{const f=window.__fairy;f.advance(seconds,f.game.steer);},seconds);
-  await page.keyboard.down('ArrowLeft');expect(await page.evaluate(()=>window.__fairy.game.steer)).toBe(-1);await advanceInput(.5);expect((await snap(page)).lane).toBeLessThan(-2);await page.keyboard.up('ArrowLeft');await advanceInput(1);expect(Math.abs((await snap(page)).lane)).toBeLessThan(.2);
-  await page.keyboard.down('d');expect(await page.evaluate(()=>window.__fairy.game.steer)).toBe(1);await advanceInput(.5);expect((await snap(page)).lane).toBeGreaterThan(2);await page.keyboard.up('d');
+  const screenX=()=>page.evaluate(()=>{const g=window.__fairy.game,p=g.player.position.clone();p.y+=1.5;return p.project(g.camera).x;});
+  const centerX=await screenX();
+  await page.keyboard.down('ArrowLeft');expect(await page.evaluate(()=>window.__fairy.game.steer)).toBe(-1);await advanceInput(.5);expect((await snap(page)).lane).toBeLessThan(-2);expect(await screenX()).toBeLessThan(centerX-.1);await page.keyboard.up('ArrowLeft');await advanceInput(1);expect(Math.abs((await snap(page)).lane)).toBeLessThan(.2);
+  await page.keyboard.down('d');expect(await page.evaluate(()=>window.__fairy.game.steer)).toBe(1);await advanceInput(.5);expect((await snap(page)).lane).toBeGreaterThan(2);expect(await screenX()).toBeGreaterThan(centerX+.1);await page.keyboard.up('d');
   const left=await page.locator('#left').boundingBox();await page.mouse.move(left.x+left.width/2,left.y+left.height/2);await page.mouse.down();await advanceInput(.5);expect((await snap(page)).lane).toBeLessThan(-2);
   await page.keyboard.press('Space');await expect.poll(async()=>(await snap(page)).stats.sprays).toBeGreaterThan(0);await page.mouse.up();
   await advanceInput(.5);

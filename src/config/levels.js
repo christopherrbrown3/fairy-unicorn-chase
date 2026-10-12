@@ -29,7 +29,8 @@ export function coursePoint(level,s,lateral=0) {
   const tx=Math.cos(t)*r+Math.sin(t)*dr, tz=Math.sin(t)*r-Math.cos(t)*dr;
   const norm=Math.hypot(tx,tz), fx=tx/norm, fz=tz/norm;
   const h=(level.theme==='mountain'?2.5:level.theme==='cloud'?1.2:.35)*Math.sin(t*4);
-  return {x:x+fz*lateral,y:h,z:z-fx*lateral,fx,fz,yaw:Math.atan2(fx,fz)};
+  // In a chase camera, forward × up is screen-right: (-fz, 0, fx).
+  return {x:x-fz*lateral,y:h,z:z+fx*lateral,fx,fz,yaw:Math.atan2(fx,fz)};
 }
 
 export function courseItems(level) {

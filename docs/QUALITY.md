@@ -2,12 +2,12 @@
 
 ## Automated coverage
 
-Six Node tests cover real pursuit in every world, curve closure, steering and recentering, potion speed and expiry, automatic jumps, gentle collisions, cosmetic water, save validation and unavailable storage.
+Seven Node tests cover real pursuit in every world, curve closure, steering and recentering, screen-relative lane direction on multiple bends in all ten courses, potion speed and expiry, automatic jumps, gentle collisions, cosmetic water, save validation and unavailable storage.
 
 Five browser scenarios run in Chromium and WebKit at 1024 × 768 with touch support (ten passing browser cases). They cover:
 
 - Custom-domain root and repository subpath, entry point, no failed asset requests or runtime errors, and actual Mia/Glender/unicorn meshes and Blender potion.
-- Arrow/A/D input, held pointer steering, touch water, Chromium two-finger steering plus water, pause/resume and saved sound/picture/motion preferences.
+- Arrow/A/D input with projected on-screen movement matching the arrow direction, held pointer steering, touch water, Chromium two-finger steering plus water, pause/resume and saved sound/picture/motion preferences.
 - Potion pickup with actual increased movement speed, automatic jump triggers and gentle obstacle contact.
 - Locked worlds, all ten genuine distance-based catches, Continue, collection unlocks, ten-unicorn finale, reload persistence and unlocked replay.
 - Corrupt storage recovery, portrait hint and touch targets at least 80 CSS px.
@@ -18,7 +18,7 @@ The opt-in `?test=1` API advances the same physical simulation faster. It does n
 
 The real rendered game was captured at 1024 × 768. `docs/screenshots/` includes the title, ten worlds, boost, water spray, automatic jump, friendly catch, world menu, collection and final group celebration, plus the 390 × 844 portrait hint. JPEGs total approximately 1 MB.
 
-The review corrected disconnected hoof geometry, terrain alignment, an overly subtle water stream, missing nearby mountain silhouettes, the night sky, and accessible names for the portrait Back button. Test-accelerated celebration cameras are settled before capture. Characters stay visible in the approved landscape captures.
+The review corrected disconnected hoof geometry, terrain alignment, an overly subtle water stream, missing nearby mountain silhouettes, the night sky, and accessible names for the portrait Back button. Celebrations now use a flower-ringed island so the portrait camera cannot enter course scenery. Test-accelerated celebration cameras are settled before capture. The owner's reported reversed steering was corrected in the lateral basis, camera basis and road winding, with unit and browser screen-direction regression checks.
 
 ## Performance choices
 

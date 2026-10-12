@@ -10,7 +10,7 @@ const rnd=(n)=>{const v=Math.sin(n*127.1+311.7)*43758.5453;return v-Math.floor(v
 function place(obj,level,s,lane,extraY=0){const p=coursePoint(level,s,lane);obj.position.set(p.x,p.y+extraY,p.z);obj.rotation.y=p.yaw;return obj;}
 function roadGeometry(level,halfwidth,y=0){const verts=[],indices=[],length=Math.PI*2*level.radius,segments=420;
   for(let i=0;i<=segments;i++)for(const side of [-1,1]){const p=coursePoint(level,i/segments*length,side*halfwidth);verts.push(p.x,p.y+y,p.z);}
-  for(let i=0;i<segments;i++){const a=i*2;indices.push(a,a+2,a+1,a+1,a+2,a+3);}const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(verts,3));g.setIndex(indices);g.computeVertexNormals();return g;
+  for(let i=0;i<segments;i++){const a=i*2;indices.push(a,a+1,a+2,a+1,a+3,a+2);}const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(verts,3));g.setIndex(indices);g.computeVertexNormals();return g;
 }
 export class World {
   constructor(scene,level){this.scene=scene;this.level=level;this.root=group(scene);this.potions=[];this.butterflies=[];this.chunks=[];

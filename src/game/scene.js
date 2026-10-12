@@ -54,7 +54,7 @@ export class GameScene {
     this.stageLook=look;this.stageCam=cam;if(title||snap){this.camera.position.copy(cam);this.camera.lookAt(look);}
   }
   updateChaseCamera(dt,snap=false){const c=this.state,p=coursePoint(this.level,c.s),f=new THREE.Vector3(p.fx,0,p.fz),base=new THREE.Vector3(p.x,p.y,p.z);
-    const cam=base.clone().addScaledVector(f,-10.8).add(new THREE.Vector3(0,6.1,0));const side=new THREE.Vector3(p.fz,0,-p.fx);cam.addScaledVector(side,c.lane*.28);
+    const cam=base.clone().addScaledVector(f,-10.8).add(new THREE.Vector3(0,6.1,0));const side=new THREE.Vector3(-p.fz,0,p.fx);cam.addScaledVector(side,c.lane*.28);
     const ahead=coursePoint(this.level,c.s+10,c.lane*.2),look=new THREE.Vector3(ahead.x,ahead.y+1.2,ahead.z);
     this.camera.position.lerp(cam,snap?1:1-Math.exp(-dt*6));this.camera.lookAt(look);
     const target=52+(c.boost>0&&!this.reducedMotion?3:0);this.camera.fov+=(target-this.camera.fov)*(1-Math.exp(-dt*3));this.camera.updateProjectionMatrix();

@@ -15,6 +15,13 @@ test('every chase is physically catchable even without steering',()=>{
 test('steering responds and recenters; boundaries are forgiving',()=>{
   const c=new Chase(LEVELS[0]);for(let i=0;i<40;i++)c.step(.05,-1);assert.ok(c.lane<-4);for(let i=0;i<40;i++)c.step(.05,0);assert.ok(Math.abs(c.lane)<.02);
 });
+test('positive lane is camera-right and negative lane is camera-left on every bend',()=>{
+  for(const level of LEVELS)for(const s of [0,70,300,750,1200]){
+    const center=coursePoint(level,s),right=coursePoint(level,s,2),left=coursePoint(level,s,-2);
+    const screenRight=p=>(p.x-center.x)*-center.fz+(p.z-center.z)*center.fx;
+    assert.ok(screenRight(right)>1.99,`${level.name} right`);assert.ok(screenRight(left)<-1.99,`${level.name} left`);
+  }
+});
 test('potions increase real speed, and boost expires',()=>{
   const c=new Chase(LEVELS[0]);c.s=29;c.unicornS=80;c.step(.05);assert.equal(c.stats.potions,1);for(let i=0;i<10;i++)c.step(.05);assert.ok(c.speed>13);c.items=[];for(let i=0;i<100;i++)c.step(.05);assert.equal(c.boost,0);assert.ok(c.speed<10.1);
 });
