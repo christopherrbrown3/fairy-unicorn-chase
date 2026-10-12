@@ -15,7 +15,7 @@ const page = await browser.newPage({
 });
 const errors = [];
 page.on("pageerror", (e) => errors.push(e.message));
-await page.goto("http://127.0.0.1:5173/?test=1");
+await page.goto(`${process.env.CAPTURE_URL || "http://127.0.0.1:5173"}/?test=1`);
 await page.waitForFunction(() => window.__fairy?.screen === "title");
 await page.evaluate(() => document.fonts.ready);
 const shot = async (name) => {
