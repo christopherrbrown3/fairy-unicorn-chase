@@ -4,7 +4,7 @@ import {makeRider,makeCollectionUnicorn,animatePony} from '../characters/charact
 import {World} from '../worlds/world.js';
 import {Chase} from './chase.js';
 import {Particles} from './particles.js';
-import {disposeTree,group,mesh,geometry} from '../art/primitives.js';
+import {disposeTree,group,mesh,geometry,orb,tube} from '../art/primitives.js';
 import {rainbow} from '../worlds/props.js';
 
 export class GameScene {
@@ -16,6 +16,9 @@ export class GameScene {
     const sun=new THREE.DirectionalLight('#fff6e3',3.2);sun.position.set(-30,60,30);this.scene.add(sun);
     this.camera=new THREE.PerspectiveCamera(52,1,.1,230);this.lastTime=performance.now();this.elapsed=0;
     this.player=makeRider();this.scene.add(this.player);this.unicorn=makeCollectionUnicorn(0);this.scene.add(this.unicorn);
+    this.waterStream=group(this.player);this.waterStream.name='Mia water magic';this.waterDrops=[];
+    const stream=tube(this.waterStream,'#48bcec',[[.46,2.7,.6],[.5,3.5,2.1],[.5,3.65,3.6],[.5,3,5.8]],.035);stream.material=stream.material.clone();stream.material.transparent=true;stream.material.opacity=.55;
+    for(let i=0;i<14;i++){const drop=orb(this.waterStream,i%3?'#49b9ed':'#8ae6fa',[0,0,0],[.095,.16,.095],{emissive:'#218abe',emissiveIntensity:.12,roughness:.25});this.waterDrops.push(drop);}this.waterStream.visible=false;
     this.shadowRoot=group(this.scene);this.shadows=[0,1].map(()=>{const s=mesh(this.shadowRoot,geometry('shadow',()=>new THREE.CircleGeometry(1,24)),'#344959',[0,0,0],[.85,1.35,1],{transparent:true,opacity:.13,depthWrite:false});s.rotation.x=-Math.PI/2;return s;});
     this.particles=new Particles(this.scene);this.steer=0;this.mode='title';this.state=null;this.friends=[];this.averageFrame=16;this.frameCount=0;this.uiTick=0;
     canvas.addEventListener('webglcontextlost',e=>{e.preventDefault();this.mode='paused';onContextLoss?.();});
@@ -26,12 +29,12 @@ export class GameScene {
   setQuality(value){this.quality=value;this.renderer.setPixelRatio(this.pixelRatio());this.resize();}
   setWorld(id){this.world?.dispose();if(this.celebrationArt)disposeTree(this.celebrationArt);this.celebrationArt=null;this.friends.forEach(disposeTree);this.friends=[];disposeTree(this.unicorn);this.unicorn=makeCollectionUnicorn(id);this.scene.add(this.unicorn);this.world=new World(this.scene,LEVELS[id]);this.level=LEVELS[id];this.particles.clear();}
   position(model,s,lane=0,y=0){const p=coursePoint(this.level,s,lane);model.position.set(p.x,p.y+y,p.z);model.rotation.y=p.yaw;return p;}
-  showTitle(){if(!this.world||this.level.id!==0)this.setWorld(0);this.mode='title';this.state=null;this.position(this.player,0,0);this.position(this.unicorn,7,-3);this.player.visible=true;this.unicorn.visible=true;this.camera.fov=48;this.camera.updateProjectionMatrix();this.setStageCamera(true);}
-  start(id){this.setWorld(id);this.state=new Chase(this.level);this.mode='playing';this.steer=0;this.position(this.player,0);this.position(this.unicorn,this.state.unicornS);this.camera.fov=52;this.updateChaseCamera(1,true);this.lastTime=performance.now();}
+  showTitle(){if(!this.world||this.level.id!==0)this.setWorld(0);if(this.celebrationArt){disposeTree(this.celebrationArt);this.celebrationArt=null;}this.mode='title';this.state=null;this.waterStream.visible=false;this.position(this.player,0,0);this.position(this.unicorn,7,-3);this.player.visible=true;this.unicorn.visible=true;this.camera.fov=48;this.camera.updateProjectionMatrix();this.setStageCamera(true);}
+  start(id){this.setWorld(id);this.state=new Chase(this.level);this.mode='playing';this.steer=0;this.waterStream.visible=false;this.position(this.player,0);this.position(this.unicorn,this.state.unicornS);this.camera.fov=52;this.updateChaseCamera(1,true);this.lastTime=performance.now();}
   pause(){if(this.mode==='playing'){this.mode='paused';this.steer=0;}}
   resume(){if(this.mode==='paused'){this.mode='playing';this.lastTime=performance.now();}}
   spray(){return this.mode==='playing'&&this.state.spray();}
-  celebrate(final=false){this.mode=final?'final':'celebrate';this.steer=0;const s=this.state.s;this.position(this.player,s,1.7);this.position(this.unicorn,s+.7,-1.7);this.setStageCamera(false,false);
+  celebrate(final=false){this.mode=final?'final':'celebrate';this.steer=0;this.waterStream.visible=false;const s=this.state.s;this.position(this.player,s,1.7);this.position(this.unicorn,s+.7,-1.7);this.setStageCamera(false,false);
     if(final){this.unicorn.visible=false;for(let i=0;i<10;i++){const u=makeCollectionUnicorn(i);this.scene.add(u);const row=i<5?0:1;this.position(u,s+row*4.5-1,(i%5-2)*2.7);u.scale.setScalar(.72);this.friends.push(u);}this.position(this.player,s-3,0);}
     this.celebrationArt=group(this.scene);const arc=rainbow(this.celebrationArt,final?1.45:.85);this.position(arc,s-7,0,.5);
     const heartShape=new THREE.Shape();heartShape.moveTo(0,-.45);heartShape.bezierCurveTo(-.9,.05,-.75,.8,0,.4);heartShape.bezierCurveTo(.75,.8,.9,.05,0,-.45);
@@ -56,6 +59,7 @@ export class GameScene {
       const c=this.state;c.step(dt,this.steer);const p=this.position(this.player,c.s,c.lane,c.jumpHeight);this.position(this.unicorn,c.unicornS,c.unicornLane);
       animatePony(this.player,time,{boost:c.boost>0,jump:c.jumpHeight,steer:this.steer,water:c.water,reduced:this.reducedMotion});animatePony(this.unicorn,time);
       this.updateChaseCamera(dt);
+      this.waterStream.visible=c.water>0;this.waterDrops.forEach((drop,i)=>{const t=(time*1.6+i/14)%1;drop.position.set(.5+Math.sin(i)*.05,2.7+Math.sin(t*Math.PI)*.95,.6+t*5.6);drop.scale.set(.08+t*.05,.13+t*.08,.08+t*.05);});
       if(c.water>0){const source=this.player.localToWorld(new THREE.Vector3(.42,2.75,.4));this.particles.emit(source,'#79d8fc',3,new THREE.Vector3(p.fx*10,3,p.fz*10));}
       if(c.boost>0&&!this.reducedMotion)this.particles.emit(this.player.position.clone().add(new THREE.Vector3(0,.6,0)),'#ffe49e',2);
       for(const event of c.drainEvents())this.onEvent?.(event,c);
