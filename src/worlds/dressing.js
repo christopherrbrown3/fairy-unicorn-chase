@@ -50,11 +50,25 @@ export function dressVerge(root, level) {
     0.45,
   );
   const isCloud = level.theme === "cloud";
-  const grassMat = material(grassColor.getStyle(), {
+  const grassMat = new THREE.MeshStandardMaterial({
+    color: grassColor,
     vertexColors: true,
     side: THREE.DoubleSide,
     roughness: 0.95,
   });
+  const windTime = { value: 0 };
+  grassMat.onBeforeCompile = (shader) => {
+    shader.uniforms.windTime = windTime;
+    shader.vertexShader =
+      `uniform float windTime;\n${shader.vertexShader}`.replace(
+        "#include <begin_vertex>",
+        `#include <begin_vertex>
+      vec4 anchor = instanceMatrix * vec4(0.0,0.0,0.0,1.0);
+      float wind = sin(anchor.x*0.43+anchor.z*0.31+windTime*1.7);
+      transformed.x += wind * position.y * position.y * 0.28;
+      transformed.z += cos(anchor.z*0.27+windTime*1.2) * position.y * position.y * 0.13;`,
+      );
+  };
   const stoneMat = material(level.theme === "crystal" ? "#9296c5" : "#bdbaa5", {
     roughness: 0.9,
   });
@@ -110,6 +124,12 @@ export function dressVerge(root, level) {
     stones.computeBoundingSphere();
     root.add(stones);
   }
+  return {
+    update: (time) => {
+      windTime.value = time;
+    },
+    dispose: () => grassMat.dispose(),
+  };
 }
 
 export class AmbientMagic {

@@ -24,6 +24,7 @@ import {
 } from "./props.js";
 import { terrainMaterial } from "../art/atmosphere.js";
 import { dressVerge, AmbientMagic } from "./dressing.js";
+import { WaterGardens } from "./water.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
 let authoredPotion = null;
@@ -102,7 +103,8 @@ export class World {
       });
       m.userData.ownedMaterial = true;
     }
-    dressVerge(this.root, level);
+    this.verge = dressVerge(this.root, level);
+    this.water = new WaterGardens(this.root, level);
     this.ambient = new AmbientMagic(this.root, level);
     const length = Math.PI * 2 * level.radius;
     for (let j = 0; j < 16; j++) {
@@ -419,6 +421,8 @@ export class World {
       );
     }
     this.ambient.update(time, chase?.s ?? 0);
+    this.verge.update(time);
+    this.water.update(time);
     for (const p of this.potions) {
       p.rotation.y = time * 0.8;
       p.position.y =
@@ -441,6 +445,8 @@ export class World {
   }
   dispose() {
     this.ambient.dispose();
+    this.verge.dispose();
+    this.water.dispose();
     disposeTree(this.root);
   }
 }

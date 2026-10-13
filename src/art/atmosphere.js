@@ -11,6 +11,8 @@ export class Atmosphere {
         horizon: { value: new THREE.Color() },
         sunColor: { value: new THREE.Color() },
         sunStrength: { value: 1 },
+        time: { value: 0 },
+        night: { value: 0 },
       },
       vertexShader: `varying vec3 skyDirection;
         void main() {
@@ -19,13 +21,30 @@ export class Atmosphere {
         }`,
       fragmentShader: `varying vec3 skyDirection;
         uniform vec3 zenith, horizon, sunColor;
-        uniform float sunStrength;
+        uniform float sunStrength, time, night;
+        float hash(vec2 p) { return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453); }
+        float noise(vec2 p) {
+          vec2 i=floor(p), f=fract(p); f=f*f*(3.0-2.0*f);
+          return mix(mix(hash(i),hash(i+vec2(1,0)),f.x),mix(hash(i+vec2(0,1)),hash(i+1.0),f.x),f.y);
+        }
+        float billows(vec2 p) {
+          return noise(p)*0.57+noise(p*2.03+7.1)*0.28+noise(p*4.07)*0.15;
+        }
         void main() {
           vec3 d = normalize(skyDirection);
           float height = smoothstep(-0.05, 0.8, d.y);
           vec3 color = mix(horizon, zenith, pow(height, 0.65));
           float sun = max(dot(d, normalize(vec3(-0.6, 0.45, 0.55))), 0.0);
           color += sunColor * (pow(sun, 28.0) * 0.17 + pow(sun, 400.0) * 0.28) * sunStrength;
+          vec2 cloudUv = d.xz / max(d.y + 0.22, 0.1) * 2.8 + vec2(time * 0.008, 0.0);
+          float cloud = billows(cloudUv);
+          float coverage = smoothstep(0.49,0.67,cloud) * smoothstep(0.02,0.22,d.y);
+          vec3 cloudColor = mix(vec3(0.69,0.79,0.88),vec3(1.0,0.97,0.90),smoothstep(0.48,0.78,cloud));
+          color = mix(color,cloudColor,coverage*sunStrength*0.9);
+          // A restrained ribbon of aurora belongs only to the starlight world.
+          float curtain = sin(d.x*5.0+d.z*4.0+time*0.06)*0.055+0.15;
+          float aurora = exp(-pow((d.y-curtain)*14.0,2.0));
+          color += mix(vec3(0.06,0.3,0.27),vec3(0.18,0.09,0.3),noise(d.xz*6.0)) * aurora * night;
           gl_FragColor = vec4(color, 1.0);
           #include <colorspace_fragment>
         }`,
@@ -51,10 +70,13 @@ export class Atmosphere {
     this.material.uniforms.horizon.value.copy(horizon);
     this.material.uniforms.sunColor.value.set(dark ? "#a8bfff" : "#fff2cc");
     this.material.uniforms.sunStrength.value = dark ? 0.08 : 1;
+    this.material.uniforms.night.value = level.theme === "night" ? 1 : 0;
+    if (level.theme === "crystal") this.material.uniforms.sunStrength.value = 0;
     return horizon;
   }
-  update(camera) {
+  update(camera, time = 0) {
     this.mesh.position.copy(camera.position);
+    this.material.uniforms.time.value = time;
   }
   dispose() {
     this.mesh.geometry.dispose();
@@ -94,7 +116,7 @@ export function terrainMaterial(
         `#include <color_fragment>
         float patches = terrainNoise(terrainPosition.xz * ${road ? "0.65" : "0.13"});
         float grain = terrainNoise(terrainPosition.xz * ${road ? "13.0" : "3.3"});
-        diffuseColor.rgb *= 0.88 + patches * 0.16 + grain * 0.07;
+        diffuseColor.rgb *= 0.82 + patches * 0.25 + grain * 0.07;
         ${
           road
             ? `float edgeFade = smoothstep(0.84, 1.0, abs(terrainUv.x * 2.0 - 1.0) + (patches - 0.5) * 0.07);
