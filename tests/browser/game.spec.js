@@ -10,6 +10,9 @@ test("root and repository subpath render authored assets without errors", async 
 }) => {
   const errors = [];
   page.on("pageerror", (e) => errors.push(e.message));
+  page.on("console", (m) => {
+    if (m.type() === "error") errors.push(m.text());
+  });
   page.on("response", (r) => {
     if (r.status() >= 400) errors.push(`${r.status()} ${r.url()}`);
   });
@@ -160,6 +163,9 @@ test("ten real chases unlock friends, continue, finale and reload persistence", 
 }) => {
   const errors = [];
   page.on("pageerror", (e) => errors.push(e.message));
+  page.on("console", (m) => {
+    if (m.type() === "error") errors.push(m.text());
+  });
   await page.goto("/?test=1");
   await ready(page);
   await page.getByRole("button", { name: "Worlds", exact: true }).click();
