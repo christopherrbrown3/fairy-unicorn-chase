@@ -113,13 +113,13 @@ components:
 
 **Creative North Star: "The Playable Storybook"**
 
-Rounded original 3D figurines inhabit magical pastel landscapes. Soft lighting, sculpted hair, expressive faces, broad curving tracks, flowers and physical landmarks supply the storybook character. The interface uses warm paper, sturdy rounded lettering and generous controls to keep that world readable.
+Rounded original 3D figurines inhabit magical pastel landscapes. Flowing tapered hair, layered eyes, butterfly wings and a scalloped dress give the characters their storybook detail. Textured curving paths, planted verges, layered hills and recognizable landmarks supply environmental depth. The interface uses warm paper, sturdy rounded lettering and generous controls to keep that world readable.
 
 The world remains animated behind the title and celebrations. Paper menus provide a quieter place to choose worlds and revisit friends. Preserve Mia's blonde hair, blue dress and wings; Glender's yellow mane, yellow tail and body stars; and white unicorn bodies with distinct mane colors. Exact provisional appearance choices remain in `DESIGN_NOTES.md`.
 
 **Key Characteristics:**
 
-- Dimensional characters and recognizable scenery, with original artwork.
+- Expressive dimensional characters and richly planted scenery, with original artwork.
 - Warm paper, blue actions, navy ink and pink/gold accents.
 - Large icon-led controls and short, friendly labels.
 - Galloping, wing motion, water magic and shared celebrations.
@@ -128,7 +128,7 @@ Recorded from `src/styles/game.css`, `src/ui/view.js`, `src/game/scene.js` and t
 
 ## Colors
 
-Pastel world colors sit behind a stable warm-paper interface. Frontmatter holds reusable interface values; `src/config/levels.js` owns each world's scenery palette.
+Pastel world colors sit behind a stable warm-paper interface. Frontmatter holds reusable interface values; `src/config/levels.js` owns each world's scenery palette. Character, prop and fairy-light colors belong to the original 3D artwork rather than the interface token palette.
 
 ### Primary
 
@@ -177,7 +177,11 @@ Spacing entries are observed recurring steps, not an implied mathematical scale.
 
 ## Elevation & Depth
 
-3D volume, broad light, fog and layered scenery establish environmental depth. Mesh materials normally use roughness 0.72. Rendering uses sRGB output and ACES filmic tone mapping at exposure 1.18, with warm hemisphere and directional lighting. Low-opacity ground discs anchor the rider and chased unicorn without dynamic shadow maps.
+3D volume, textured paths, a continuous horizon sky, fog and layered hills establish environmental depth. Rendering uses sRGB output and ACES filmic tone mapping at exposure 1.05. Daytime lighting combines warm hemisphere fill (1.65), a warm directional key (2.65) and a cool rim (0.9); night and cave worlds use cooler fill (1.1), a moonlit key (1.7) and a lilac rim.
+
+Automatic and Crisp picture quality enable one 1024 × 1024 PCF directional shadow map centered on the rider. Soft fading contact shadows anchor the rider and chased unicorn in every quality mode; Gentle disables the map. Automatic starts with a pixel-ratio cap of 1.5 and, when the sustained frame sample exceeds 24 ms at frame 300 during play, lowers the ratio to 1 and disables mapped shadows. Crisp caps the ratio at 2. These are implemented performance controls, not a physical iPad performance claim.
+
+Shared mesh materials normally use roughness 0.72. Hair, wings and quartz use smoother materials; terrain uses roughness 0.96 with world-space color variation and feathered path edges. Chunked geometry and instanced grass/pebbles keep the richer scenery bounded without postprocessing or external terrain textures.
 
 UI elevation uses blurred tinted shadows: shared ambient lift, blue-tinted primary lift and a broader pause-sheet shadow. Exact values live in the sidecar alongside touch-control shadows. The title retains a light text-shadow for lettering separation.
 
@@ -185,7 +189,7 @@ UI elevation uses blurred tinted shadows: shared ambient lift, blue-tinted prima
 
 ## Shapes
 
-Sculpted rounded silhouettes define characters, hair, wings and much of the scenery. Physical landmarks retain recognizable geometry, including castles, crystals and mountain peaks.
+Sculpted rounded silhouettes define characters and much of the scenery. Hair locks taper into flowing ends; blue/lilac butterfly wings carry pearl-colored contours and veins; the blue dress has a scalloped hem. Branching trees, arched castle openings, faceted quartz and floating cloud islands retain recognizable forms.
 
 Corners are purpose-based: tile, control, sheet and steering radii are recorded in frontmatter. Sound, pause and water use circles. Original inline SVG icons use rounded caps and joins, with 2.5-unit default strokes in a 32-unit viewBox and heavier steering arrows.
 

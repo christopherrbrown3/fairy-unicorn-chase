@@ -23,3 +23,13 @@ Implementation is complete. The remaining owner activity is a physical iPad/chil
 
 ## Validation
 Eight deterministic tests and ten browser cases passed locally in Chromium and WebKit. Root/subpath asset checks passed. GitHub Actions build, five Chromium cases and Pages deployment passed, including steering-fix run https://github.com/christopherrbrown3/fairy-unicorn-chase/actions/runs/38321320666. Nineteen real screenshots captured and inspected. Independent visual review scored both requested mechanical fixes resolved and returned ship at that scope. The polished README and gallery were committed separately near the end; GitHub's rendered README loaded all seven inline images correctly and every local documentation link exists. Physical iPad testing remains unperformed. See docs/QUALITY.md for the owner's device checklist.
+
+## Graphics refinement — October 13
+
+- [x] Refine characters with flowing tapered hair, layered eyes, butterfly wings and a scalloped dress.
+- [x] Add textured paths, planted verges, layered hills, floating islands and detailed castle/quartz landmarks.
+- [x] Add daylight/moonlit lighting, a horizon sky, mapped shadows and a low-cost quality fallback.
+- [x] Refresh all 19 real screenshots, including character framing on portrait.
+- [x] Pass all eight Node tests and ten Chromium/WebKit cases, with corrected steering retained.
+
+The graphics build rendered without browser console errors. A short meadow sample on Apple M2/Metal measured 16.5 ms median and 19 ms p95 with shadows enabled. Quality-mode switching and Automatic fallback were checked at runtime; four consecutive world replacements retained stable GPU resource counts. These are desktop observations; physical iPad testing remains unperformed. Independent visual review found the supplied graphics direction met, with one documentation correction to the stale lighting paragraph.

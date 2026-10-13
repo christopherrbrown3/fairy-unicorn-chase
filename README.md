@@ -71,7 +71,7 @@ Turn an iPad sideways, tap **Let’s play**, and follow the unicorn. There is no
 | Spray water | Tap or hold the blue droplet; steering can continue | Space |
 | Pause / resume | Tap Pause, then Keep chasing | Escape, or use the buttons |
 
-Pause also offers Restart, Home, sound, picture quality, and Gentle motion. **Automatic** picture quality caps resolution and can lower it if rendering stays slow; choose **Gentle** on a less powerful device. The game remains playable muted, and sound starts only after a browser-permitted user gesture.
+Pause also offers Restart, Home, sound, picture quality, and Gentle motion. **Automatic** picture quality caps resolution and can lower it and turn off detailed shadows if rendering stays slow; choose **Gentle** on a less powerful device. The game remains playable muted, and sound starts only after a browser-permitted user gesture.
 
 ## Run locally
 
@@ -130,7 +130,7 @@ The static JavaScript modules use **Three.js + WebGL**, **Vite**, **Web Audio**,
 | Menus, icons and touch controls | [src/ui](src/ui), [game.css](src/styles/game.css) |
 | Save schema and graceful recovery | [src/game/save.js](src/game/save.js) |
 
-Characters and environments are original procedural models with reusable geometry and animation pivots. The sparkly potion is an optimized, original Blender GLB, with a procedural fallback. Its [authoring script](tools/blender_potion.py) creates a separate scene and exports only that scene. Scenery is merged into spatial chunks; particles and render resolution are bounded; level resources are disposed on replacement.
+Characters and environments are original procedural models with reusable geometry and animation pivots. The sparkly potion is an optimized, original Blender GLB, with a procedural fallback. Its [authoring script](tools/blender_potion.py) creates a separate scene and exports only that scene. Scenery is merged into spatial chunks, with instanced grass and pebbles. Flowing hair, butterfly wings, soft shadows, textured paths, layered hills, floating islands and moonlit lighting give the worlds more depth. Particles, shadow maps and render resolution are bounded; level resources are disposed on replacement.
 
 ## Tested, with room for a real playtest
 

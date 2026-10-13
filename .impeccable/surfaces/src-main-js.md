@@ -15,7 +15,7 @@ Scope: the title, playable chase, world book, collection book, pause sheet and c
 
 **THESIS:** Ride with Mia and Glender and discover one friendly unicorn in each of ten magical worlds through an easy, forgiving chase.
 
-**OWN-WORLD:** Rounded dimensional original figurines and magical pastel landscapes, with recognizable physical scenery and original icons. Soft lighting, friendly faces, yellow sculpted hair and a readable blue dress establish the storybook world. No copied racing assets.
+**OWN-WORLD:** Rounded dimensional original figurines and magical pastel landscapes, with recognizable physical scenery and original icons. Level-specific daylight/moonlight, soft shadows, layered eyes, tapered yellow hair, a scalloped blue dress and veined butterfly wings establish the storybook world. Textured paths, planted verges and layered hills deepen the ten settings. No copied racing assets.
 
 **STORY:** Title → chase → friendly catch → Continue, an unlocked world and a revealed collection friend → a ten-friend family finale.
 
@@ -25,7 +25,7 @@ Scope: the title, playable chase, world book, collection book, pause sheet and c
 
 ## Composition and responsive behavior
 
-- Title: copy occupies 45% of the landscape width with a 64px left inset; a light-to-transparent wash makes the text readable while leaving the figures visible. At widths up to 900px the title is 72px. Short landscape uses clamp(43px, 6vw, 68px); portrait uses clamp(55px, 12vw, 90px), 80% copy width and no lower-right note.
+- Title: copy occupies 45% of the landscape width with a 64px left inset; a light-to-transparent wash makes the text readable while leaving the figures visible. At widths up to 900px the title is 72px. Short landscape uses clamp(43px, 6vw, 68px); portrait uses clamp(55px, 12vw, 90px), 80% copy width and no lower-right note. Below a camera aspect of 0.8, the title camera pulls back and raises its look target so Mia and Glender appear below the menu.
 - Books: ten tiles in five columns on landscape, with a 1120px maximum grid width; portrait uses two columns and scrolls above 100px of bottom clearance. World tiles combine a themed landmark and the actual rendered unicorn portrait. Collection silhouettes reveal in full color after a catch.
 - Chase: world label left, distance meter center and pause right. Steering anchors to opposite lower corners. Water sits beside right steering. Base steering pads are 124×110px and water is 100×100px; short landscape uses 110×95px and 88×88px, while portrait uses 95×95px and 80×80px. Portrait hides the distance meter and moves controls above the rotation hint. Preserve meaningful icon labels and room for small hands.
 - Celebration: copy above and actions below the visible 3D family. The course is hidden so scenery cannot obstruct the island portrait camera. The finale uses two rows of five unicorns with Mia and Glender visible behind the friends. Hearts and sparkles accompany the physical rainbow.
@@ -35,3 +35,7 @@ Scope: the title, playable chase, world book, collection book, pause sheet and c
 The finish reviewer returned ship after the eyebrow and hard primary shadow were removed and the finale capture showed Mia, Glender and all ten unicorns clearly. Source-backed evidence is in src/styles/game.css, src/ui/view.js and src/game/scene.js. Reviewed captures are docs/screenshots/title.jpg, meadow.jpg, water.jpg, catch.jpg, worlds.jpg, collection.jpg, finale.jpg and portrait.jpg, plus the ten world captures: meadow, forest, cloud, castle, candy, crystal, garden, night, mountain and palace.
 
 The primary HTTPS game URL was verified live by the build thread. Browser landscape/portrait captures establish rendered appearance; physical iPad performance and real multitouch comfort remain owner checks. World names, unicorn nicknames, Glender's base coat, additional appearance details and tuning remain provisional in DESIGN_NOTES.md. The owner delegated unspecified art and technical choices; this document does not claim child approval of those choices.
+
+## Graphics refinement evidence
+
+The October graphics pass preserves the established storybook direction and all interface tokens. All 19 gallery captures were refreshed and validated. The independent reviewer found character identity, material, typography, world differentiation, controls and celebrations matched the supplied refinement direction; its sole material correction was the stale lighting paragraph in DESIGN.md. That paragraph now records exposure 1.05, the implemented daylight/moonlit lighting and quality-dependent shadow maps. All eight Node tests and ten Chromium/WebKit cases passed. Physical iPad testing remains an owner check.

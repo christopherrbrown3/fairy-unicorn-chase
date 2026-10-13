@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-10-12T23:26:03.556Z",
+  "generatedAt": "2026-10-13T11:32:38.091758Z",
   "title": "Design System: Fairy Unicorn Chase",
   "extensions": {
     "colorMeta": {
@@ -185,7 +185,7 @@
       "kind": "button",
       "refersTo": "button-primary-jumbo",
       "description": "The dominant Play, Continue and Resume action; base landscape dimensions.",
-      "html": "<button class=\"ds-primary ds-jumbo\"><svg class=\"ds-icon\" viewBox=\"0 0 32 32\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"m10 6 13 10-13 10z\" fill=\"currentColor\" stroke=\"none\"/></svg><span>Let’s play</span></button>",
+      "html": "<button class=\"ds-primary ds-jumbo\"><svg class=\"ds-icon\" viewBox=\"0 0 32 32\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"m10 6 13 10-13 10z\" fill=\"currentColor\" stroke=\"none\"/></svg><span>Let\u2019s play</span></button>",
       "css": ".ds-primary{font-family:Baloo,ui-rounded,system-ui,sans-serif;min-height:66px;display:inline-flex;align-items:center;justify-content:center;gap:14px;padding:14px 28px;border-radius:18px;background:#e6eff5;color:var(--ink,#243e62);font-weight:700;font-size:23px;box-shadow:var(--shadow,0 8px 28px #30456725)}.ds-primary{background:var(--blue,#2874b8);color:#fff;box-shadow:0 10px 28px #275c9830}.ds-jumbo{min-height:88px;font-size:32px;padding:17px 38px;border-radius:24px}.ds-jumbo .ds-icon{width:36px;height:36px}.ds-primary{cursor:pointer;border:0;touch-action:manipulation;transition:transform .18s var(--ease,cubic-bezier(.16,1,.3,1)),background .18s;}.ds-primary:hover:not(:disabled){filter:brightness(1.04)}.ds-primary:focus-visible{outline:4px solid #e76e9c;outline-offset:5px}.ds-primary:active{transform:translateY(3px)}.ds-primary:disabled{cursor:default}@media(prefers-reduced-motion:reduce){.ds-primary{transition:none}}.ds-icon{width:32px;height:32px;flex:none;vertical-align:middle}"
     },
     {
@@ -261,9 +261,9 @@
   ],
   "narrative": {
     "northStar": "The Playable Storybook",
-    "overview": "Rounded original 3D figurines inhabit magical pastel landscapes. Soft lighting, sculpted hair, expressive faces, broad curving tracks, flowers and physical landmarks supply the storybook character. The interface uses warm paper, sturdy rounded lettering and generous controls to keep that world readable.\n\nThe world remains animated behind the title and celebrations. Paper menus provide a quieter place to choose worlds and revisit friends. Preserve Mia's blonde hair, blue dress and wings; Glender's yellow mane, yellow tail and body stars; and white unicorn bodies with distinct mane colors. Exact provisional appearance choices remain in `DESIGN_NOTES.md`.",
+    "overview": "Rounded original 3D figurines inhabit magical pastel landscapes. Flowing tapered hair, layered eyes, butterfly wings and a scalloped dress give the characters their storybook detail. Textured curving paths, planted verges, layered hills and recognizable landmarks supply environmental depth. The interface uses warm paper, sturdy rounded lettering and generous controls to keep that world readable.\n\nThe world remains animated behind the title and celebrations. Paper menus provide a quieter place to choose worlds and revisit friends. Preserve Mia's blonde hair, blue dress and wings; Glender's yellow mane, yellow tail and body stars; and white unicorn bodies with distinct mane colors. Exact provisional appearance choices remain in `DESIGN_NOTES.md`.",
     "keyCharacteristics": [
-      "Dimensional characters and recognizable scenery, with original artwork.",
+      "Expressive dimensional characters and richly planted scenery, with original artwork.",
       "Warm paper, blue actions, navy ink and pink/gold accents.",
       "Large icon-led controls and short, friendly labels.",
       "Galloping, wing motion, water magic and shared celebrations."

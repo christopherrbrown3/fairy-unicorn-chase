@@ -16,15 +16,19 @@ The opt-in `?test=1` API advances the same physical simulation faster. It does n
 
 ## Screenshot review
 
-The real rendered game was captured at 1024 × 768. `docs/screenshots/` includes the title, ten worlds, boost, water spray, automatic jump, friendly catch, world menu, collection and final group celebration, plus the 390 × 844 portrait hint. JPEGs total approximately 1 MB.
+The real rendered game was captured at 1024 × 768. `docs/screenshots/` includes the title, ten worlds, boost, water spray, automatic jump, friendly catch, world menu, collection and final group celebration, plus the 390 × 844 portrait hint. The gallery is refreshed after visual changes; file sizes remain suitable for the README.
 
 The review corrected disconnected hoof geometry, terrain alignment, an overly subtle water stream, missing nearby mountain silhouettes, the night sky, and accessible names for the portrait Back button. Celebrations now use a flower-ringed island so the portrait camera cannot enter course scenery. Test-accelerated celebration cameras are settled before capture. The owner's reported reversed steering was corrected in the lateral basis, camera basis and road winding, with unit and browser screen-direction regression checks.
 
 ## Performance choices
 
-WebGL rendering; no WebGPU or postprocessing. Scenery is merged by material into spatial chunks. Props use lower-detail meshes than characters. Particle count is bounded at 160; water adds fourteen small droplets while active. Pixel ratio starts at at most 1.5 in Automatic, can be reduced after a sustained slow frame sample, and can be set to Gentle (1) or Crisp (at most 2). Original compressed font is approximately 33 KB; authored potion approximately 28 KB; JavaScript approximately 182 KB gzipped.
+WebGL rendering; no WebGPU or postprocessing. Scenery is merged by material into spatial chunks. Props use lower-detail meshes than characters. Roadside grass and pebbles use spatially chunked instancing, and terrain color variation and the sky each render without additional texture downloads. Particle count is bounded at 160; water adds fourteen small droplets while active. Pixel ratio starts at at most 1.5 in Automatic, can be reduced after a sustained slow frame sample, and can be set to Gentle (1) or Crisp (at most 2). Automatic/Crisp use a single 1024 px directional shadow map; Gentle uses soft contact shadows. Automatic also disables the shadow map when the sustained slow-frame threshold is reached. Original compressed font is approximately 33 KB; authored potion approximately 28 KB; JavaScript approximately 188 KB gzipped.
 
-Geometry created for a world or character is disposed during level changes. Shared primitives, materials and the loaded GLB are reused. The player remains a single persistent model. Context loss displays a reload action; completed progress is already saved. Backgrounding pauses active play.
+Geometry and terrain materials created for a world or character, including the instanced planting buffers, are disposed during level changes. Shared primitives, materials and the loaded GLB are reused. The player remains a single persistent model. Context loss displays a reload action; completed progress is already saved. Backgrounding pauses active play.
+
+## October graphics validation
+
+The graphics refinement refreshed all 19 gallery captures, including all ten worlds and portrait framing. The terrain, sky and character shaders rendered without browser console errors. A short 180-frame meadow sample in Chromium on this Mac's Apple M2/Metal GPU measured a 16.5 ms median and 19 ms 95th percentile with detailed shadows enabled; this is a desktop observation, not an iPad guarantee. Manual runtime checks verified Gentle/Crisp shadow switching and Automatic's resolution/shadow fallback. Four consecutive meadow replacements retained the same GPU geometry/texture counts. All eight Node tests and ten Chromium/WebKit cases passed after the graphics update.
 
 ## Owner's physical iPad check — still required
 
