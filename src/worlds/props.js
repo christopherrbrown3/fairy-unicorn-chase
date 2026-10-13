@@ -8,6 +8,7 @@ import {
   mesh,
   geometry,
   bake,
+  tube,
 } from "../art/primitives.js";
 // Scenery uses fewer rings than close-up characters and is baked into spatial chunks.
 const orb = (p, c, pos, scale = [1, 1, 1], extra = {}) =>
@@ -21,14 +22,52 @@ const orb = (p, c, pos, scale = [1, 1, 1], extra = {}) =>
   );
 export function tree(parent, color = "#70af88", scale = 1) {
   const g = group(parent);
-  cylinder(g, "#b89679", [0, 1.5, 0], [0.24, 3, 0.24]);
-  for (const [x, y, z, r] of [
-    [0, 3, 0, 1.45],
-    [-0.75, 2.65, 0.15, 1],
-    [0.8, 2.8, 0.2, 1.05],
-    [0.1, 3.9, 0, 0.85],
-  ])
-    orb(g, color, [x, y, z], [r, r * 0.92, r]);
+  const bark = "#a97e65";
+  mesh(
+    g,
+    geometry(
+      "tree-trunk",
+      () => new THREE.CylinderGeometry(0.16, 0.34, 3.2, 9),
+    ),
+    bark,
+    [0, 1.6, 0],
+  );
+  for (const side of [-1, 1]) {
+    const branch = cylinder(
+      g,
+      bark,
+      [side * 0.36, 2.05, 0.04],
+      [0.1, 1.3, 0.1],
+    );
+    branch.rotation.z = -side * 0.6;
+    orb(g, bark, [side * 0.22, 0.13, 0.1], [0.46, 0.16, 0.23]);
+  }
+  const shades = [0, -0.04, 0.035, 0.065, -0.02];
+  const clumps = [
+    [0, 3.25, 0, 1.3],
+    [-0.88, 2.85, 0.12, 0.93],
+    [0.82, 3.04, 0.18, 1.05],
+    [-0.27, 4.12, -0.12, 0.86],
+    [0.27, 3.1, -0.78, 0.93],
+  ];
+  clumps.forEach(([x, y, z, r], i) => {
+    const tone = new THREE.Color(color).offsetHSL(0, 0, shades[i]).getStyle();
+    orb(g, tone, [x, y, z], [r, r * 0.92, r]);
+    for (let n = 0; n < 4; n++) {
+      const a = n * 2.4 + i;
+      mesh(
+        g,
+        geometry("leaf-lobe", () => new THREE.SphereGeometry(1, 8, 6)),
+        tone,
+        [
+          x + Math.cos(a) * r * 0.72,
+          y + r * 0.32 + Math.sin(a) * r * 0.35,
+          z + Math.sin(a) * r * 0.6,
+        ],
+        [r * 0.47, r * 0.46, r * 0.45],
+      );
+    }
+  });
   g.scale.setScalar(scale);
   return g;
 }
@@ -36,6 +75,7 @@ export function mushroom(parent, color = "#e993ad", scale = 1) {
   const g = group(parent);
   cylinder(g, "#fff1d7", [0, 0.55, 0], [0.22, 1.1, 0.22]);
   orb(g, color, [0, 1.2, 0], [0.8, 0.4, 0.8]);
+  orb(g, "#ead2bd", [0, 1.08, 0], [0.71, 0.11, 0.71]);
   for (const [x, z] of [
     [0, 0],
     [0.4, 0.25],
@@ -48,7 +88,10 @@ export function mushroom(parent, color = "#e993ad", scale = 1) {
 export function flower(parent, color = "#f4a7bd", scale = 1) {
   const g = group(parent);
   cylinder(g, "#639779", [0, 0.42, 0], [0.035, 0.85, 0.035]);
-  orb(g, "#73b687", [0.15, 0.26, 0], [0.2, 0.065, 0.09]);
+  const leaf = orb(g, "#73b687", [0.15, 0.26, 0], [0.2, 0.065, 0.09]);
+  leaf.rotation.z = 0.35;
+  const leaf2 = orb(g, "#5f9b7c", [-0.12, 0.43, 0.01], [0.15, 0.05, 0.075]);
+  leaf2.rotation.z = -0.4;
   for (let i = 0; i < 5; i++) {
     const a = (i * Math.PI * 2) / 5;
     const petal = orb(
@@ -59,7 +102,8 @@ export function flower(parent, color = "#f4a7bd", scale = 1) {
     );
     petal.rotation.z = a;
   }
-  orb(g, "#ffdb77", [0, 0.93, 0.05], [0.1, 0.1, 0.07]);
+  orb(g, "#ffdb77", [0, 0.93, 0.07], [0.12, 0.12, 0.085]);
+  orb(g, "#ffecc1", [-0.024, 0.968, 0.145], [0.042, 0.034, 0.016]);
   g.scale.setScalar(scale);
   return g;
 }
@@ -77,23 +121,62 @@ export function cloud(parent, scale = 1) {
 }
 export function crystal(parent, color = "#9cabea", scale = 1) {
   const g = group(parent);
-  for (let i = 0; i < 3; i++) {
-    const c = cone(
+  const geo = geometry("quartz", () => {
+    const points = [
+      new THREE.Vector2(0, -0.5),
+      new THREE.Vector2(0.8, -0.35),
+      new THREE.Vector2(1, 0.3),
+      new THREE.Vector2(0, 0.65),
+    ];
+    return new THREE.LatheGeometry(points, 6);
+  });
+  for (let i = 0; i < 4; i++) {
+    const tone = new THREE.Color(color)
+      .offsetHSL(0, 0, (i - 1) * 0.025)
+      .getStyle();
+    const c = mesh(
       g,
-      color,
-      [(i - 1) * 0.45, 1.2 - i * 0.15, 0],
-      [0.42, 2.5 - i * 0.3, 0.42],
+      geo,
+      tone,
+      [(i - 1.5) * 0.44, 1.1 - i * 0.12, Math.sin(i * 2) * 0.2],
+      [0.44, 2.3 - i * 0.22, 0.44],
       {
         emissive: color,
-        emissiveIntensity: 0.12,
-        roughness: 0.32,
-        metalness: 0.1,
+        emissiveIntensity: 0.22,
+        roughness: 0.22,
+        metalness: 0.24,
+        flatShading: true,
       },
     );
-    c.rotation.z = (i - 1) * -0.17;
+    c.rotation.z = (i - 1.5) * -0.17;
   }
+  orb(g, "#837caa", [0, 0.13, 0], [1.0, 0.2, 0.6]);
   g.scale.setScalar(scale);
   return g;
+}
+function archedWindow(parent, x, y, z, scale = 1) {
+  const geo = geometry("arched-window", () => {
+    const s = new THREE.Shape();
+    s.moveTo(-0.22, 0);
+    s.lineTo(0.22, 0);
+    s.lineTo(0.22, 0.52);
+    s.absarc(0, 0.52, 0.22, 0, Math.PI, false);
+    s.closePath();
+    return new THREE.ShapeGeometry(s, 12);
+  });
+  mesh(parent, geo, "#759dbd", [x, y, z], [scale, scale, 1]);
+  box(
+    parent,
+    "#ffdfb0",
+    [x, y + 0.3 * scale, z + 0.015],
+    [0.035 * scale, 0.58 * scale, 0.025],
+  );
+  box(
+    parent,
+    "#fff0d8",
+    [x, y - 0.025 * scale, z + 0.02],
+    [0.56 * scale, 0.09 * scale, 0.12],
+  );
 }
 export function castle(parent, color = "#bea9d5", scale = 1, palace = false) {
   const g = group(parent);
@@ -104,11 +187,32 @@ export function castle(parent, color = "#bea9d5", scale = 1, palace = false) {
     cylinder(g, "#e7c06f", [x, 7.05, 0], [0.04, 1, 0.04]);
     const flag = box(g, "#e78fae", [x + 0.35, 7.4, 0], [0.65, 0.38, 0.04]);
     flag.rotation.z = -0.12;
-    for (const y of [1.5, 3])
-      box(g, "#779bc2", [x, y, 0.79], [0.4, 0.7, 0.035]);
+    for (const y of [1.1, 2.8]) archedWindow(g, x, y, 0.805);
+    for (const y of [0.3, 4.55])
+      cylinder(g, "#e1c9d2", [x, y, 0], [0.86, 0.16, 0.86]);
   }
-  box(g, "#92a8c9", [0, 1, 1.42], [1.35, 2, 0.04]);
-  orb(g, color, [0, 2, 1.43], [0.68, 0.7, 0.05]);
+  box(g, "#c8a9b7", [0, 0.3, 1.7], [2.1, 0.25, 1.1]);
+  box(g, "#ddc3ce", [0, 0.1, 2.1], [2.6, 0.18, 1.1]);
+  box(g, "#708ca8", [0, 1, 1.42], [1.35, 2, 0.04]);
+  orb(g, "#708ca8", [0, 2, 1.43], [0.675, 0.675, 0.05]);
+  mesh(
+    g,
+    geometry(
+      "castle-door-arch",
+      () => new THREE.TorusGeometry(0.76, 0.09, 6, 20, Math.PI),
+    ),
+    "#fff0d4",
+    [0, 2, 1.49],
+  );
+  for (const x of [-0.76, 0.76])
+    box(g, "#fff0d4", [x, 1.0, 1.49], [0.18, 2, 0.13]);
+  for (const x of [-1.7, 1.7]) archedWindow(g, x, 2.4, 1.43, 1.2);
+  for (let i = -3; i <= 3; i++)
+    box(g, "#f8edf0", [i * 0.69, 4.15, 1.15], [0.4, 0.5, 0.55]);
+  box(g, "#d8bfce", [0, 3.85, 1.43], [5, 0.13, 0.16]);
+  box(g, "#e391b6", [0, 3.37, 1.47], [0.5, 0.7, 0.035]);
+  star(g, "#ffe9ac", [0, 3.4, 1.5], 0.15);
+
   if (palace) {
     cylinder(g, "#fff3dc", [0, 4, 0], [1.3, 2, 1.3]);
     orb(g, "#e7c378", [0, 5.5, 0], [1.5, 1.5, 1.5]);

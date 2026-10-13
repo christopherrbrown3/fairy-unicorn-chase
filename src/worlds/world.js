@@ -22,6 +22,8 @@ import {
   potion,
   obstacle,
 } from "./props.js";
+import { terrainMaterial } from "../art/atmosphere.js";
+import { dressVerge, AmbientMagic } from "./dressing.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
 let authoredPotion = null;
@@ -47,6 +49,7 @@ function place(obj, level, s, lane, extraY = 0) {
 }
 function roadGeometry(level, halfwidth, y = 0) {
   const verts = [],
+    uvs = [],
     indices = [],
     length = Math.PI * 2 * level.radius,
     segments = 420;
@@ -54,6 +57,7 @@ function roadGeometry(level, halfwidth, y = 0) {
     for (const side of [-1, 1]) {
       const p = coursePoint(level, (i / segments) * length, side * halfwidth);
       verts.push(p.x, p.y + y, p.z);
+      uvs.push((side + 1) / 2, i / segments);
     }
   for (let i = 0; i < segments; i++) {
     const a = i * 2;
@@ -61,6 +65,7 @@ function roadGeometry(level, halfwidth, y = 0) {
   }
   const g = new THREE.BufferGeometry();
   g.setAttribute("position", new THREE.Float32BufferAttribute(verts, 3));
+  g.setAttribute("uv", new THREE.Float32BufferAttribute(uvs, 2));
   g.setIndex(indices);
   g.computeVertexNormals();
   return g;
@@ -75,21 +80,30 @@ export class World {
     this.chunks = [];
     scene.background = new THREE.Color(level.sky);
     scene.fog = new THREE.Fog(level.sky, 55, 155);
-    mesh(
+    const ground = mesh(
       this.root,
       geometry("ground", () => new THREE.CylinderGeometry(1100, 1100, 2, 64)),
       level.ground,
       [0, -1.6, 0],
     );
+    ground.material = terrainMaterial(level.ground);
+    ground.userData.ownedMaterial = true;
     for (const [width, y, color] of [
       [35, -0.13, level.ground],
-      [level.width / 2 + 1.3, -0.06, level.accent],
-      [level.width / 2 + 0.35, -0.025, "#fff0d6"],
+      [level.width / 2 + 0.15, -0.025, level.ground],
       [level.width / 2, 0, level.road],
     ]) {
       const m = mesh(this.root, roadGeometry(level, width, y), color);
       m.userData.ownedGeometry = true;
+      m.material = terrainMaterial(color, {
+        road: color === level.road,
+        edge: level.ground,
+        halfwidth: width,
+      });
+      m.userData.ownedMaterial = true;
     }
+    dressVerge(this.root, level);
+    this.ambient = new AmbientMagic(this.root, level);
     const length = Math.PI * 2 * level.radius;
     for (let j = 0; j < 16; j++) {
       const chunk = group(this.root);
@@ -181,20 +195,71 @@ export class World {
             side * dist,
             level.theme === "cloud" ? -1.4 : 0,
           );
-          if (["meadow", "forest", "castle", "palace"].includes(level.theme)) {
-            for (let f = 0; f < 2; f++)
+          prop.rotation.y += (rnd(seed + 55) - 0.5) * 0.6;
+          if (
+            (level.theme === "castle" && k % 8 === 0) ||
+            (level.theme === "palace" && k % 7 === 0) ||
+            level.theme === "candy"
+          )
+            prop.rotation.y += Math.PI;
+          if (
+            ["meadow", "forest", "castle", "palace", "garden"].includes(
+              level.theme,
+            )
+          ) {
+            for (let f = 0; f < 4; f++)
               place(
-                flower(chunk, ["#f1aac0", "#ffe19a", "#b9a5de"][f % 3], 0.9),
+                flower(
+                  chunk,
+                  ["#f1aac0", "#ffe19a", "#b9a5de"][f % 3],
+                  0.55 + rnd(seed + f + 7) * 0.55,
+                ),
                 level,
-                s + f * 2,
-                side * (level.width / 2 + 1.8 + f),
+                s + f * 0.8 - 1.2,
+                side * (level.width / 2 + 0.9 + rnd(seed + f + 12) * 2.6),
               );
           }
         }
       }
       bake(chunk);
+      chunk.traverse((o) => {
+        if (o.isMesh) o.castShadow = true;
+      });
     }
     const landmarks = group(this.root);
+    for (let i = 0; i < 28; i++) {
+      const s = (i / 28) * length;
+      if (!["crystal", "cloud"].includes(level.theme)) {
+        for (const side of [-1, 1]) {
+          const tone = new THREE.Color(level.foliage)
+            .lerp(new THREE.Color(level.sky), 0.2 + 0.2 * rnd(i + 14))
+            .getStyle();
+          const hill = orb(
+            landmarks,
+            tone,
+            [0, 0, 0],
+            [21 + rnd(i + 3) * 14, 8 + rnd(i + 5) * 12, 26 + rnd(i + 9) * 13],
+          );
+          place(hill, level, s, side * (48 + rnd(i + 8) * 35), -3.5);
+        }
+      }
+      if (level.theme === "cloud") {
+        const island = group(landmarks);
+        orb(island, "#b8d7c5", [0, 0, 0], [5, 0.65, 4]);
+        const rock = cone(island, "#c5bcda", [0, -2.8, 0], [4, 6, 3.5]);
+        rock.rotation.z = Math.PI;
+        tree(island, "#b0cce5", 0.8).position.set(-1, 0, 0);
+        flower(island, "#ffdba0", 1.5).position.set(2, 0.4, 1);
+        cloud(island, 1.5).position.set(0, -4, 0);
+        place(
+          island,
+          level,
+          s,
+          (i % 2 ? 1 : -1) * (24 + rnd(i) * 18),
+          2 + rnd(i + 7) * 6,
+        );
+      }
+    }
     for (let i = 0; i < 8; i++) {
       const s = (i * length) / 8;
       if (["meadow", "cloud", "mountain", "palace"].includes(level.theme))
@@ -353,6 +418,7 @@ export class World {
         direction.z * 100 - direction.x * 25,
       );
     }
+    this.ambient.update(time, chase?.s ?? 0);
     for (const p of this.potions) {
       p.rotation.y = time * 0.8;
       p.position.y =
@@ -374,6 +440,7 @@ export class World {
     }
   }
   dispose() {
+    this.ambient.dispose();
     disposeTree(this.root);
   }
 }

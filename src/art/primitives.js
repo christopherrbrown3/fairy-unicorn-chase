@@ -26,13 +26,14 @@ export function mesh(
   const m = new THREE.Mesh(geo, material(color, extra));
   m.position.set(...pos);
   m.scale.set(...scale);
+  m.receiveShadow = true;
   parent.add(m);
   return m;
 }
 export const orb = (p, c, pos, scale = [1, 1, 1], extra = {}) =>
   mesh(
     p,
-    geometry("sphere", () => new THREE.SphereGeometry(1, 16, 12)),
+    geometry("sphere", () => new THREE.SphereGeometry(1, 24, 18)),
     c,
     pos,
     scale,
@@ -64,13 +65,54 @@ export const box = (p, c, pos, scale = [1, 1, 1]) =>
     pos,
     scale,
   );
-export function tube(p, c, points, radius = 0.05) {
+export function tube(p, c, points, radius = 0.05, extra = {}) {
   const curve = new THREE.CatmullRomCurve3(
     points.map((v) => new THREE.Vector3(...v)),
   );
-  const m = mesh(p, new THREE.TubeGeometry(curve, 12, radius, 6, false), c);
+  const m = mesh(
+    p,
+    new THREE.TubeGeometry(
+      curve,
+      Math.max(16, Math.min(96, points.length * 3)),
+      radius,
+      8,
+      false,
+    ),
+    c,
+    undefined,
+    undefined,
+    extra,
+  );
   m.userData.ownedGeometry = true;
   return m;
+}
+// Rounded, tapered locks avoid a cut-pipe silhouette at the ends of hair.
+export function lock(p, c, points, radius = 0.1) {
+  const curve = new THREE.CatmullRomCurve3(
+    points.map((v) => new THREE.Vector3(...v)),
+  );
+  const geo = new THREE.TubeGeometry(curve, 20, radius, 8, false);
+  const positions = geo.attributes.position;
+  const point = new THREE.Vector3();
+  for (let ring = 0; ring <= 20; ring++) {
+    const t = ring / 20,
+      center = curve.getPointAt(t);
+    const taper =
+      (0.8 + Math.sin(t * Math.PI) * 0.24) * (1 - Math.pow(t, 3) * 0.96);
+    for (let j = 0; j <= 8; j++) {
+      const index = ring * 9 + j;
+      point
+        .fromBufferAttribute(positions, index)
+        .sub(center)
+        .multiplyScalar(taper)
+        .add(center);
+      positions.setXYZ(index, point.x, point.y, point.z);
+    }
+  }
+  geo.computeVertexNormals();
+  const result = mesh(p, geo, c, undefined, undefined, { roughness: 0.42 });
+  result.userData.ownedGeometry = true;
+  return result;
 }
 export function starGeometry() {
   return geometry("star", () => {
@@ -123,6 +165,7 @@ export function bake(root, recursive = true) {
     if (merged) {
       const m = new THREE.Mesh(merged, b.material);
       m.userData.ownedGeometry = true;
+      m.receiveShadow = true;
       root.add(m);
     }
   }
@@ -130,6 +173,7 @@ export function bake(root, recursive = true) {
 }
 export function disposeTree(root) {
   root.traverse((o) => {
+    if (o.isInstancedMesh) o.dispose();
     if (o.isMesh && o.userData.ownedGeometry) o.geometry.dispose();
     if (o.isMesh && o.userData.ownedMaterial) o.material.dispose();
   });

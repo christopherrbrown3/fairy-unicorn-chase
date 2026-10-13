@@ -22,3 +22,11 @@ Current baseline speed is 10 world units/second. A potion adds 4.6 in the introd
 White unicorns have soft lilac hooves, friendly pink muzzles and gold horns. Mane and tail color both vary; Prism has rainbow locks. Celebrations gather Mia, Glender and the caught friend on a flower-ringed island, with hearts, sparkles and an actual 3D rainbow. This clear presentation prevents nearby course scenery from obscuring the portrait camera. The finale adds all ten unicorns.
 
 Asset reuse licensing for original code/art/audio remains unassigned. Third-party software and the self-hosted Baloo 2 font retain their licenses in docs/CREDITS.md.
+
+## Graphics refinement — October 2026
+
+The owner requested improved graphics within the existing playable storybook. Characters now have tapered flowing locks, layered eyes, a scalloped dress and blue/lilac butterfly wings with pearl-colored veins. The ten mane assignments and confirmed child character traits remain the visual anchors.
+
+Worlds use textured soil and grass, feathered path edges, layered hills, grass clumps and pebbles, clustered flowers, branching trees, faceted quartz, arched castle windows and floating cloud islands. A continuous horizon sky and level-specific key/fill/rim lighting distinguish daytime and moonlit worlds. Fairy lights drift beside the route; Gentle motion holds them still.
+
+One 1024 px directional shadow map adds character and nearby scenery shadows in Automatic/Crisp. Gentle uses soft contact shadows; Automatic can drop the shadow map and resolution after a sustained slow frame sample. Instanced grass and stones are split into spatial chunks. No postprocessing or external texture downloads are required. Physical iPad performance still needs a device check.

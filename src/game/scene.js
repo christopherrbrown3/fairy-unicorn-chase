@@ -17,6 +17,7 @@ import {
   tube,
   cylinder,
 } from "../art/primitives.js";
+import { Atmosphere, contactShadowMaterial } from "../art/atmosphere.js";
 import { rainbow, flower } from "../worlds/props.js";
 
 export class GameScene {
@@ -43,12 +44,31 @@ export class GameScene {
     this.renderer.setPixelRatio(this.pixelRatio());
     this.renderer.outputColorSpace = THREE.SRGBColorSpace;
     this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    this.renderer.toneMappingExposure = 1.18;
+    this.renderer.toneMappingExposure = 1.05;
+    this.renderer.shadowMap.enabled = quality !== "low";
+    this.renderer.shadowMap.type = THREE.PCFShadowMap;
     this.scene = new THREE.Scene();
-    this.scene.add(new THREE.HemisphereLight("#fff5e8", "#6a8f8c", 2.5));
-    const sun = new THREE.DirectionalLight("#fff6e3", 3.2);
-    sun.position.set(-30, 60, 30);
-    this.scene.add(sun);
+    this.fill = new THREE.HemisphereLight("#fff5e8", "#668f91", 1.65);
+    this.scene.add(this.fill);
+    this.sun = new THREE.DirectionalLight("#fff0d5", 2.65);
+    this.sun.castShadow = true;
+    this.sun.shadow.mapSize.set(1024, 1024);
+    Object.assign(this.sun.shadow.camera, {
+      left: -26,
+      right: 26,
+      top: 26,
+      bottom: -26,
+      near: 1,
+      far: 110,
+    });
+    this.sun.shadow.bias = -0.0003;
+    this.sun.shadow.normalBias = 0.075;
+    this.sun.shadow.radius = 2;
+    this.scene.add(this.sun, this.sun.target);
+    this.rim = new THREE.DirectionalLight("#c5e7ff", 0.9);
+    this.rim.position.set(30, 12, -40);
+    this.scene.add(this.rim);
+    this.atmosphere = new Atmosphere(this.scene);
     this.camera = new THREE.PerspectiveCamera(52, 1, 0.1, 230);
     this.lastTime = performance.now();
     this.elapsed = 0;
@@ -88,12 +108,13 @@ export class GameScene {
     this.shadows = [0, 1].map(() => {
       const s = mesh(
         this.shadowRoot,
-        geometry("shadow", () => new THREE.CircleGeometry(1, 24)),
+        geometry("shadow", () => new THREE.PlaneGeometry(2, 2)),
         "#344959",
         [0, 0, 0],
-        [0.85, 1.35, 1],
+        [1.05, 1.65, 1],
         { transparent: true, opacity: 0.13, depthWrite: false },
       );
+      s.material = contactShadowMaterial();
       s.rotation.x = -Math.PI / 2;
       return s;
     });
@@ -114,6 +135,7 @@ export class GameScene {
       this.renderer.setSize(innerWidth, innerHeight, false);
       this.camera.aspect = innerWidth / innerHeight;
       this.camera.updateProjectionMatrix();
+      if (this.mode === "title" && this.level) this.setStageCamera(true);
     };
     addEventListener("resize", this.resize);
     this.resize();
@@ -130,7 +152,19 @@ export class GameScene {
   setQuality(value) {
     this.quality = value;
     this.renderer.setPixelRatio(this.pixelRatio());
+    this.setShadows(value !== "low");
+    this.frameCount = 0;
+    this.averageFrame = 16;
     this.resize();
+  }
+  setShadows(enabled) {
+    this.renderer.shadowMap.enabled = enabled;
+    this.scene.traverse((o) => {
+      if (o.material) {
+        const materials = Array.isArray(o.material) ? o.material : [o.material];
+        materials.forEach((m) => (m.needsUpdate = true));
+      }
+    });
   }
   setWorld(id) {
     this.world?.dispose();
@@ -143,6 +177,16 @@ export class GameScene {
     this.scene.add(this.unicorn);
     this.world = new World(this.scene, LEVELS[id]);
     this.level = LEVELS[id];
+    const dark = ["night", "crystal"].includes(this.level.theme);
+    this.scene.fog.color.copy(this.atmosphere.setLevel(this.level));
+    this.scene.fog.near = dark ? 48 : 70;
+    this.scene.fog.far = dark ? 150 : 185;
+    this.fill.color.set(dark ? "#c4c7ff" : "#fff5e8");
+    this.fill.groundColor.set(dark ? "#575b89" : "#668f91");
+    this.fill.intensity = dark ? 1.1 : 1.65;
+    this.sun.color.set(dark ? "#c5d6ff" : "#fff0d5");
+    this.sun.intensity = dark ? 1.7 : 2.65;
+    this.rim.color.set(dark ? "#d6a6f1" : "#c5e7ff");
     this.particles.clear();
   }
   position(model, s, lane = 0, y = 0) {
@@ -288,14 +332,23 @@ export class GameScene {
       f = new THREE.Vector3(p.fx, 0, p.fz),
       right = new THREE.Vector3(p.fz, 0, -p.fx),
       base = new THREE.Vector3(p.x, p.y, p.z);
-    const distance = this.mode === "final" ? 18 : 10;
+    const portraitTitle = title && this.camera.aspect < 0.8;
+    const distance = this.mode === "final" || portraitTitle ? 18 : 10;
     const cam = base
       .clone()
       .addScaledVector(f, distance * 0.85)
       .addScaledVector(right, distance * 0.72)
-      .add(new THREE.Vector3(0, this.mode === "final" ? 7 : 5.2, 0));
+      .add(
+        new THREE.Vector3(
+          0,
+          this.mode === "final" || portraitTitle ? 7 : 5.2,
+          0,
+        ),
+      );
     const look = base.clone().add(new THREE.Vector3(0, 1.9, 0));
-    if (title) {
+    if (portraitTitle) {
+      look.y = base.y + 6.4;
+    } else if (title) {
       look.addScaledVector(right, -4.1);
       cam.addScaledVector(right, -3.6);
     }
@@ -434,16 +487,24 @@ export class GameScene {
       sh.position.y += 0.035;
       sh.rotation.z = m.rotation.y;
       sh.visible = m.visible;
+      const jump = i === 0 ? (c?.jumpHeight ?? 0) : 0;
+      sh.material.uniforms.opacity.value = 0.24 / (1 + jump * 0.6);
+      sh.scale.set(1.05 + jump * 0.18, 1.65 + jump * 0.18, 1);
     });
     if (this.mode !== "paused") {
-      this.world.update(time, c, this.camera);
+      this.world.update(this.reducedMotion ? 0 : time, c, this.camera);
       this.particles.step(dt);
     }
+    this.atmosphere.update(this.camera);
+    const focus = this.player.position;
+    this.sun.target.position.copy(focus);
+    this.sun.position.copy(focus).add(new THREE.Vector3(-18, 32, 14));
     this.renderer.render(this.scene, this.camera);
     if (this.quality === "auto" && this.mode === "playing") {
       this.averageFrame = this.averageFrame * 0.97 + raw * 1000 * 0.03;
       if (++this.frameCount === 300 && this.averageFrame > 24) {
         this.renderer.setPixelRatio(1);
+        this.setShadows(false);
         this.resize();
       }
     }
@@ -452,6 +513,8 @@ export class GameScene {
     this.renderer.setAnimationLoop(null);
     removeEventListener("resize", this.resize);
     this.world?.dispose();
+    this.atmosphere.dispose();
+    this.shadows.forEach((s) => s.material.dispose());
     this.renderer.dispose();
   }
 }
@@ -465,8 +528,10 @@ export function renderPortraits() {
   renderer.setSize(220, 180);
   renderer.setPixelRatio(1);
   renderer.outputColorSpace = THREE.SRGBColorSpace;
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 1.05;
   const scene = new THREE.Scene();
-  scene.add(new THREE.HemisphereLight("#ffffff", "#b8adb6", 3));
+  scene.add(new THREE.HemisphereLight("#ffffff", "#9d8fac", 1.8));
   const sun = new THREE.DirectionalLight("#fff4e5", 3);
   sun.position.set(3, 8, 5);
   scene.add(sun);
