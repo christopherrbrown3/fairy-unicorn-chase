@@ -364,6 +364,21 @@ export function makeMia() {
     );
   }
   const wings = [];
+  const wingMaterial = new THREE.MeshPhysicalMaterial({
+    color: "#ffffff",
+    vertexColors: true,
+    side: THREE.DoubleSide,
+    transparent: true,
+    opacity: 0.82,
+    depthWrite: false,
+    roughness: 0.34,
+    metalness: 0.08,
+    iridescence: 0.75,
+    iridescenceIOR: 1.3,
+    iridescenceThicknessRange: [180, 380],
+    clearcoat: 0.25,
+    clearcoatRoughness: 0.3,
+  });
   for (const side of [-1, 1]) {
     const w = group(body, [side * 0.16, 0.6, -0.22]);
     const shape = new THREE.Shape();
@@ -396,6 +411,8 @@ export function makeMia() {
       depthWrite: false,
     });
     membrane.name = "Pearlescent butterfly wing";
+    membrane.material = wingMaterial;
+    membrane.userData.ownedMaterial = true;
     const outline = shape.getPoints(32).map((p) => [p.x * side, p.y, -0.085]);
     tube(w, "#ecf9ec", outline, 0.017);
     for (const points of [
@@ -434,7 +451,32 @@ export function makeMia() {
       [0.61, -0.39],
     ])
       orb(w, "#fff4c4", [x * side, y, -0.11], [0.025, 0.025, 0.018]);
+    for (const [x, y, rx, ry] of [
+      [0.62, 0.5, 0.12, 0.18],
+      [0.43, -0.31, 0.115, 0.12],
+    ]) {
+      const ring = [];
+      for (let i = 0; i <= 32; i++) {
+        const a = (i / 32) * Math.PI * 2;
+        ring.push([
+          (x + Math.cos(a) * rx) * side,
+          y + Math.sin(a) * ry,
+          -0.105,
+        ]);
+      }
+      tube(w, "#e6f4cd", ring, 0.01);
+      orb(w, "#b2dbe8", [x * side, y, -0.1], [rx * 0.67, ry * 0.7, 0.009]);
+      orb(
+        w,
+        "#f9efc6",
+        [(x - 0.015) * side, y + 0.025, -0.113],
+        [0.024, 0.034, 0.009],
+      );
+    }
     bake(w);
+    w.children.forEach((o) => {
+      if (o.material === wingMaterial) o.userData.ownedMaterial = true;
+    });
     w.traverse((o) => {
       if (o.isMesh) o.receiveShadow = false;
     });

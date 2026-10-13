@@ -25,6 +25,7 @@ import {
 import { terrainMaterial } from "../art/atmosphere.js";
 import { dressVerge, AmbientMagic } from "./dressing.js";
 import { WaterGardens } from "./water.js";
+import { makeButterfly, animateButterfly } from "../characters/butterfly.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
 let authoredPotion = null;
@@ -387,22 +388,22 @@ export class World {
         bake(g);
       }
     }
-    if (level.theme === "garden")
-      for (let i = 0; i < 12; i++) {
-        const b = group(this.root);
-        for (const side of [-1, 1]) {
-          const w = orb(
-            b,
-            i % 2 ? "#f2b6d0" : "#ffd69c",
-            [side * 0.4, 0, 0],
-            [0.4, 0.06, 0.3],
-          );
-          w.userData.side = side;
-        }
+    if (
+      ["garden", "meadow", "forest", "castle", "palace"].includes(level.theme)
+    )
+      for (let i = 0; i < (level.theme === "garden" ? 28 : 14); i++) {
+        const b = makeButterfly(this.root, i);
+        const count = level.theme === "garden" ? 28 : 14;
+        b.scale.setScalar(
+          level.theme === "garden" ? 0.82 + rnd(i + 31) * 0.38 : 0.58,
+        );
         b.userData = {
-          s: 10 + i * 36,
-          lane: 8 * Math.sin(i),
-          base: 2 + rnd(i) * 3,
+          ...b.userData,
+          s: 15 + (i * length) / count,
+          lane: (i % 2 ? 1 : -1) * (level.width / 2 + 0.6 + rnd(i + 16) * 3),
+          base: 1.5 + rnd(i) * 1.8,
+          phase: i * 1.71,
+          escort: level.theme === "garden" && i < 2,
         };
         this.butterflies.push(b);
       }
@@ -431,16 +432,20 @@ export class World {
       p.visible = !chase?.collected.has(`${lap}:${p.userData.id}`);
     }
     for (const b of this.butterflies) {
+      const escort = b.userData.escort;
+      const anchor = escort
+        ? (chase?.s ?? 0) + 9 + b.userData.phase * 5
+        : b.userData.s;
       place(
         b,
         this.level,
-        b.userData.s + Math.sin(time * 0.2) * 5,
-        b.userData.lane,
-        b.userData.base + Math.sin(time * 2) * 0.3,
+        anchor + Math.sin(time * 0.48 + b.userData.phase) * 3,
+        (escort ? Math.sign(b.userData.lane) * 4.6 : b.userData.lane) +
+          Math.cos(time * 0.7 + b.userData.phase) * (escort ? 0.5 : 1.3),
+        b.userData.base + Math.sin(time * 1.8 + b.userData.phase) * 0.42,
       );
-      b.children.forEach(
-        (w) => (w.rotation.z = w.userData.side * Math.sin(time * 9) * 0.55),
-      );
+      b.rotation.y += Math.cos(time * 0.48 + b.userData.phase) * 0.55;
+      animateButterfly(b, time, b.userData.phase);
     }
   }
   dispose() {
