@@ -30,3 +30,15 @@ The owner requested improved graphics within the existing playable storybook. Ch
 Worlds use textured soil and grass, feathered path edges, layered hills, grass clumps and pebbles, clustered flowers, branching trees, faceted quartz, arched castle windows and floating cloud islands. A continuous horizon sky and level-specific key/fill/rim lighting distinguish daytime and moonlit worlds. Fairy lights drift beside the route; Gentle motion holds them still.
 
 One 1024 px directional shadow map adds character and nearby scenery shadows in Automatic/Crisp. Gentle uses soft contact shadows; Automatic can drop the shadow map and resolution after a sustained slow frame sample. Instanced grass and stones are split into spatial chunks. No postprocessing or external texture downloads are required. Physical iPad performance still needs a device check.
+
+## Further graphics refinement — living scenery
+
+The second graphics request adds drifting billowed clouds, a soft aurora in Starlight Valley, wind-bent grass and rippling lily ponds with reeds and stones. Ponds appear in the meadow, forest, castle, crystal, garden, night and palace settings. They are scenery outside the playable path. Flowers have eight cupped petals and detailed centers.
+
+Mia has layered blonde hair down her back, a pale embroidered hem, tiny dress stars and a small nose and eyebrows. Mia and the ponies blink at staggered intervals. The ponies have bending knees, subtle head movement and spiral gold horns on the unicorns. These are provisional additions to the confirmed character traits.
+
+Potion speed leaves a six-color ribbon following Glender's actual travelled path, including turns and jumps. It fades over 0.65 seconds and keeps at most 40 samples. Magic particles have a soft four-point sparkle and individual lifetime fades. Gentle motion freezes the sky, wind and water and omits the ribbon. Pause freezes the scene clock. The sky, ponds and ribbon each use one rendering pass rather than extra reflection or postprocessing passes.
+
+The owner's butterfly feedback prompted a separate model replacement. Garden butterflies now have scalloped upper and lower lobes, thin patterned wings, radial veins, contrasting borders, cream edge spots and paired eyespots. Small bodies, eyes and curled antennae complete their silhouettes. Four coordinated color varieties flutter on separate hinges and drift along the verges; two garden butterflies accompany the rider so their patterns remain visible during play. Smaller butterflies appear in the meadow, forest, castle and palace. Mia's blue/lilac wings gain delicate eyespot motifs and a pearlescent material whose sheen changes with the viewing angle.
+
+The finish review identified intersecting butterfly wing layers and a dark mirrored fairy wing. Butterfly panels now remain parallel through their hinged flutter; mirroring Mia’s entire finished wing preserves its face winding and blue/lilac lighting. These changes retain the same character palette and controls.

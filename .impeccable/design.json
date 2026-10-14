@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-10-13T11:32:38.091758Z",
+  "generatedAt": "2026-10-14T12:27:36.152747Z",
   "title": "Design System: Fairy Unicorn Chase",
   "extensions": {
     "colorMeta": {
@@ -261,12 +261,12 @@
   ],
   "narrative": {
     "northStar": "The Playable Storybook",
-    "overview": "Rounded original 3D figurines inhabit magical pastel landscapes. Flowing tapered hair, layered eyes, butterfly wings and a scalloped dress give the characters their storybook detail. Textured curving paths, planted verges, layered hills and recognizable landmarks supply environmental depth. The interface uses warm paper, sturdy rounded lettering and generous controls to keep that world readable.\n\nThe world remains animated behind the title and celebrations. Paper menus provide a quieter place to choose worlds and revisit friends. Preserve Mia's blonde hair, blue dress and wings; Glender's yellow mane, yellow tail and body stars; and white unicorn bodies with distinct mane colors. Exact provisional appearance choices remain in `DESIGN_NOTES.md`.",
+    "overview": "Rounded original 3D figurines inhabit magical pastel landscapes. Blinking eyes, flowing tapered hair, pearlescent fairy wings and a scalloped dress give the characters their storybook detail. Patterned butterflies, wind-bent grass, drifting clouds and rippling lily ponds animate the planted scenery around textured paths and recognizable landmarks. The interface uses warm paper, sturdy rounded lettering and generous controls to keep that world readable.\n\nThe world remains animated behind the title and celebrations. Paper menus provide a quieter place to choose worlds and revisit friends. Preserve Mia's blonde hair, blue dress and wings; Glender's yellow mane, yellow tail and body stars; and white unicorn bodies with distinct mane colors. Exact provisional appearance choices remain in `DESIGN_NOTES.md`.",
     "keyCharacteristics": [
-      "Expressive dimensional characters and richly planted scenery, with original artwork.",
+      "Expressive dimensional characters, patterned butterflies and living planted scenery, with original artwork.",
       "Warm paper, blue actions, navy ink and pink/gold accents.",
       "Large icon-led controls and short, friendly labels.",
-      "Galloping, wing motion, water magic and shared celebrations."
+      "Galloping, hinged wing flutter, water magic, fading rainbow boosts and shared celebrations."
     ],
     "rules": [
       {
