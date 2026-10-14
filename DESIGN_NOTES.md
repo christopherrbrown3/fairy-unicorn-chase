@@ -42,3 +42,7 @@ Potion speed leaves a six-color ribbon following Glender's actual travelled path
 The owner's butterfly feedback prompted a separate model replacement. Garden butterflies now have scalloped upper and lower lobes, thin patterned wings, radial veins, contrasting borders, cream edge spots and paired eyespots. Small bodies, eyes and curled antennae complete their silhouettes. Four coordinated color varieties flutter on separate hinges and drift along the verges; two garden butterflies accompany the rider so their patterns remain visible during play. Smaller butterflies appear in the meadow, forest, castle and palace. Mia's blue/lilac wings gain delicate eyespot motifs and a pearlescent material whose sheen changes with the viewing angle.
 
 The finish review identified intersecting butterfly wing layers and a dark mirrored fairy wing. Butterfly panels now remain parallel through their hinged flutter; mirroring Mia’s entire finished wing preserves its face winding and blue/lilac lighting. These changes retain the same character palette and controls.
+
+## October 14 additions
+
+The creative director requested Spooky House, Minecraft, and Pokémon, in that order. Each is a separate task and release; publish and verify one before implementing the next. Spooky House is gentle: smiling pumpkins, friendly ghosts, moonlit purple houses, and a wide illuminated hallway. Boo and the pale-green mane are provisional. Existing ten-world saves retain their collected friends and unlock world 11.

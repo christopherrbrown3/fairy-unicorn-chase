@@ -217,7 +217,7 @@ A warm-paper sheet groups Resume, Restart and Home with compact sound, picture-q
 
 ### Celebration Stage
 
-Course scenery is hidden for a clear flower-ringed island, a physical rainbow, floating hearts and sparkles. A catch frames Mia, Glender and the newly found unicorn; the finale frames Mia, Glender and all ten unicorns. Copy sits above the family and actions below it. Maintain this clear portrait stage so nearby trees or buildings cannot obscure the group.
+Course scenery is hidden for a clear flower-ringed island, a physical rainbow, floating hearts and sparkles. A catch frames Mia, Glender and the newly found unicorn; the finale frames Mia, Glender and all eleven unicorns. The friends are split dynamically into two independently centered rows, currently six and five. Copy sits above the family and actions below it. Maintain this clear portrait stage so nearby trees or buildings cannot obscure the group.
 
 ### Living Scenery and Magic
 
@@ -234,7 +234,7 @@ Gentle motion holds scenery animation at a fixed time, omits new boost ribbons a
 - **Do** preserve confirmed character colors, powers and recognizable silhouettes.
 - **Do** reuse the paper/blue/ink hierarchy while each world contributes its own scenery.
 - **Do** retain large touch targets, visible keyboard focus and safe-area clearance.
-- **Do** keep portraits and celebrations unobstructed, with all ten friends visible in the finale.
+- **Do** keep portraits and celebrations unobstructed, with all eleven friends visible in the finale.
 - **Do** keep provisional names, coat choices and tuning editable through configuration and documented in `DESIGN_NOTES.md`.
 
 ### Don't:

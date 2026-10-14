@@ -1,3 +1,4 @@
+import { LEVELS } from "../config/levels.js";
 export const SAVE_KEY = "fairy-unicorn-chase:v1";
 export const freshSave = () => ({
   version: 1,
@@ -14,7 +15,7 @@ export function sanitizeSave(value) {
       ...new Set(
         Array.isArray(value.completed)
           ? value.completed.filter(
-              (n) => Number.isInteger(n) && n >= 0 && n < 10,
+              (n) => Number.isInteger(n) && n >= 0 && n < LEVELS.length,
             )
           : [],
       ),
@@ -42,7 +43,7 @@ export function writeSave(storage, save) {
   }
 }
 export function unlockCount(save) {
-  return Math.min(10, Math.max(1, ...save.completed.map((i) => i + 2)));
+  return Math.min(LEVELS.length, Math.max(1, ...save.completed.map((i) => i + 2)));
 }
 export function completeLevel(save, id) {
   return sanitizeSave({ ...save, completed: [...save.completed, id] });

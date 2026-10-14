@@ -1,4 +1,5 @@
 // Real rendered gameplay gallery. Test hooks only accelerate the physical chase.
+import { LEVELS } from "../src/config/levels.js";
 import { chromium } from "@playwright/test";
 import { mkdir } from "node:fs/promises";
 await mkdir("docs/screenshots", { recursive: true });
@@ -60,24 +61,11 @@ await page.evaluate(() => {
 });
 await page.waitForTimeout(500);
 await shot("catch");
-for (let i = 1; i < 10; i++) {
+for (let i = 1; i < LEVELS.length; i++) {
   await page.getByRole("button", { name: "Continue", exact: true }).click();
   await page.evaluate(() => window.__fairy.advance(12));
   await page.waitForTimeout(180);
-  await shot(
-    [
-      "meadow",
-      "forest",
-      "cloud",
-      "castle",
-      "candy",
-      "crystal",
-      "garden",
-      "night",
-      "mountain",
-      "palace",
-    ][i],
-  );
+  await shot(LEVELS[i].theme);
   await page.evaluate(() => {
     window.__fairy.advance(180);
     window.__fairy.game.setStageCamera(false, true);

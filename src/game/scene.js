@@ -179,7 +179,7 @@ export class GameScene {
     this.scene.add(this.unicorn);
     this.world = new World(this.scene, LEVELS[id]);
     this.level = LEVELS[id];
-    const dark = ["night", "crystal"].includes(this.level.theme);
+    const dark = ["night", "crystal", "spooky"].includes(this.level.theme);
     this.scene.fog.color.copy(this.atmosphere.setLevel(this.level));
     this.scene.fog.near = dark ? 48 : 70;
     this.scene.fog.far = dark ? 150 : 185;
@@ -257,11 +257,13 @@ export class GameScene {
     this.setStageCamera(false, false);
     if (final) {
       this.unicorn.visible = false;
-      for (let i = 0; i < 10; i++) {
+      for (let i = 0; i < LEVELS.length; i++) {
         const u = makeCollectionUnicorn(i);
         this.scene.add(u);
-        const row = i < 5 ? 0 : 1;
-        this.position(u, s + row * 4.5 - 1, ((i % 5) - 2) * 2.7);
+        const columns = Math.ceil(LEVELS.length / 2);
+        const row = Math.floor(i / columns);
+        const inRow = Math.min(columns, LEVELS.length - row * columns);
+        this.position(u, s + row * 4.5 - 1, ((i % columns) - (inRow - 1) / 2) * 2.7);
         u.scale.setScalar(0.72);
         this.friends.push(u);
       }
@@ -547,7 +549,7 @@ export function renderPortraits() {
   camera.position.set(4, 3.3, 6);
   camera.lookAt(0, 1.3, 0);
   const images = [];
-  for (let i = 0; i < 10; i++) {
+  for (let i = 0; i < LEVELS.length; i++) {
     const u = makeCollectionUnicorn(i);
     scene.add(u);
     renderer.render(scene, camera);

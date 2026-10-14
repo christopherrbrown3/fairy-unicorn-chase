@@ -59,7 +59,7 @@ export class Atmosphere {
     scene.add(this.mesh);
   }
   setLevel(level) {
-    const dark = ["night", "crystal"].includes(level.theme);
+    const dark = ["night", "crystal", "spooky"].includes(level.theme);
     const horizon = new THREE.Color(level.sky).lerp(
       new THREE.Color(dark ? "#7872a9" : "#fff1d9"),
       dark ? 0.25 : 0.16,
