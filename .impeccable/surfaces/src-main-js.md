@@ -13,22 +13,22 @@ Scope: the title, playable chase, world book, collection book, pause sheet and c
 
 ## Built direction contract
 
-**THESIS:** Ride with Mia and Glender and discover one friendly unicorn in each of twelve magical worlds through an easy, forgiving chase.
+**THESIS:** Ride with Mia and Glender and discover one friendly unicorn in each of thirteen magical worlds through an easy, forgiving chase.
 
-**OWN-WORLD:** Rounded dimensional original figurines and magical pastel landscapes, with recognizable physical scenery and original icons. Level-specific daylight/moonlight, soft shadows, layered eyes, tapered yellow hair, a scalloped blue dress and veined butterfly wings establish the storybook world. Textured paths, planted verges and layered hills deepen the twelve settings. No copied racing assets.
+**OWN-WORLD:** Rounded dimensional original figurines and magical pastel landscapes, with recognizable physical scenery and original icons. Level-specific daylight/moonlight, soft shadows, layered eyes, tapered yellow hair, a scalloped blue dress and veined butterfly wings establish the storybook world. Textured paths, planted verges and layered hills deepen the thirteen settings. No copied racing assets.
 
-**STORY:** Title → chase → friendly catch → Continue, an unlocked world and a revealed collection friend → a twelve-friend family finale.
+**STORY:** Title → chase → friendly catch → Continue, an unlocked world and a revealed collection friend → a thirteen-friend family finale.
 
 **FIRST VIEWPORT:** The actual meadow scene shows Mia riding yellow-haired, starred Glender. The oversized three-line Baloo title and one giant blue Play action occupy the left; Mia and Glender remain visible on the right. Worlds and Unicorns are quiet secondary destinations; sound is at the top right. No eyebrow is present.
 
-**FORM:** A full-viewport real Three.js world; a character-led title; paper adventure-book menus with twelve illustrated world/friend tiles; a sparse top HUD and widely separated steering/water controls; friendly portrait celebrations on a clear flower-ringed island under a physical 3D rainbow, with all twelve unicorns in the finale. The concept seed was 2b92a0b2; the pinned rounded pastel storybook direction overrode the roll. No comp or quality card was selected, and no ordered-form selection is claimed.
+**FORM:** A full-viewport real Three.js world; a character-led title; paper adventure-book menus with thirteen illustrated world/friend tiles; a sparse top HUD and widely separated steering/water controls; friendly portrait celebrations on a clear flower-ringed island under a physical 3D rainbow, with all thirteen unicorns in the finale. The concept seed was 2b92a0b2; the pinned rounded pastel storybook direction overrode the roll. No comp or quality card was selected, and no ordered-form selection is claimed.
 
 ## Composition and responsive behavior
 
 - Title: copy occupies 45% of the landscape width with a 64px left inset; a light-to-transparent wash makes the text readable while leaving the figures visible. At widths up to 900px the title is 72px. Short landscape uses clamp(43px, 6vw, 68px); portrait uses clamp(55px, 12vw, 90px), 80% copy width and no lower-right note. Below a camera aspect of 0.8, the title camera pulls back and raises its look target so Mia and Glender appear below the menu.
-- Books: twelve tiles in five columns on landscape, with a 1120px maximum grid width; portrait uses two columns and scrolls above 100px of bottom clearance. World tiles combine a themed landmark and the actual rendered unicorn portrait. Collection silhouettes reveal in full color after a catch.
+- Books: thirteen tiles in five columns on landscape, with a 1120px maximum grid width; portrait uses two columns and scrolls above 100px of bottom clearance. World tiles combine a themed landmark and the actual rendered unicorn portrait. Collection silhouettes reveal in full color after a catch.
 - Chase: world label left, distance meter center and pause right. Steering anchors to opposite lower corners. Water sits beside right steering. Base steering pads are 124×110px and water is 100×100px; short landscape uses 110×95px and 88×88px, while portrait uses 95×95px and 80×80px. Portrait hides the distance meter and moves controls above the rotation hint. Preserve meaningful icon labels and room for small hands.
-- Celebration: copy above and actions below the visible 3D family. The course is hidden so scenery cannot obstruct the island portrait camera. The finale dynamically splits the unicorns into two independently centered rows, currently six and six, with Mia and Glender visible behind the friends. Hearts and sparkles accompany the physical rainbow.
+- Celebration: copy above and actions below the visible 3D family. The course is hidden so scenery cannot obstruct the island portrait camera. The finale dynamically splits the unicorns into two independently centered rows, currently seven and six, with Mia and Glender visible behind the friends. Hearts and sparkles accompany the physical rainbow.
 
 ## Evidence and remaining decisions
 
@@ -53,3 +53,7 @@ Implementation evidence is in `src/config/levels.js`, `src/worlds/spooky.js`, `s
 ## Minecraft Meadow v1.2.0
 
 World 12 adds Pixel, an emerald-maned white unicorn. Custom procedural cube oaks, layered grass-and-dirt blocks, diamond ore, pigs, friendly creepers, torches, and broad mine gateways establish the Minecraft theme. Stepped hills and rectangular clouds replace rounded scenery in this world; the original fairy and pony artwork and controls remain. The current finale has twelve friends in two centered rows of six. Evidence: `src/worlds/minecraft.js`, `src/worlds/world.js`, and `.impeccable/review/minecraft/{tablet,phone,finale,collection-phone}.png`.
+
+## Pokémon Park v1.3.0
+
+World 13 adds Spark, a cobalt-maned white unicorn, in a pastel park with custom procedural Pikachu, Bulbasaur, Squirtle, Poké Balls, broad garden gateways, and Pokémon Centers. The fairy and pony, controls, and gentle chase stay consistent. The current finale contains thirteen friends in centered rows of seven and six. Source: `src/worlds/pokemon.js` and `src/worlds/world.js`; review captures: `.impeccable/review/pokemon/{tablet,phone,finale,collection-phone}.png`. Earlier release records describe their own shipped counts.

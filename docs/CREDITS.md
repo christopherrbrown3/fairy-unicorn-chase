@@ -27,3 +27,7 @@ There are no Nintendo characters, models, music, textures or track designs. Arca
 ### Minecraft Meadow
 
 Minecraft-themed scenery uses custom procedural models created for this game. No Minecraft textures, models, music, or sound files are distributed. Minecraft names and recognizable game concepts belong to their respective owners; this is an unofficial fan-made level.
+
+### Pokémon Park
+
+Pikachu, Bulbasaur, Squirtle, Poké Balls, and Pokémon Center scenery are custom procedural fan models created for this level. No official models, textures, music, or sound files are distributed. Pokémon names and characters belong to their respective owners; this is an unofficial fan-made level.

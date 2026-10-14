@@ -28,6 +28,7 @@ import { WaterGardens } from "./water.js";
 import { makeButterfly, animateButterfly } from "../characters/butterfly.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
+import { pokeBall, pikachu, bulbasaur, squirtle, pokemonCenter, pokeGate } from "./pokemon.js";
 import { grassBlock, blockTree, diamondOre, blockPig, friendlyCreeper, torch, blockHill, mineGate, blockCloud } from "./minecraft.js";
 import { spookyHouse, spookyHall, pumpkin, friendlyGhost } from "./spooky.js";
 
@@ -122,6 +123,14 @@ export class World {
           let dist = level.width / 2 + 3 + rnd(seed) * 9;
           let prop;
           switch (level.theme) {
+            case "pokemon":
+              prop = k % 6 === 0 ? pikachu(chunk, 1.3)
+                : k % 6 === 1 ? flower(chunk, level.accent, 1.8)
+                : k % 6 === 2 ? bulbasaur(chunk, 1.2)
+                : k % 6 === 3 ? tree(chunk, level.foliage, 0.85)
+                : k % 6 === 4 ? squirtle(chunk, 1.3)
+                : pokeBall(chunk, 1.15);
+              break;
             case "minecraft":
               prop = [blockTree, grassBlock, blockPig, diamondOre, blockTree, friendlyCreeper][k % 6](chunk);
               break;
@@ -213,13 +222,14 @@ export class World {
           if (
             (level.theme === "castle" && k % 8 === 0) ||
             (level.theme === "palace" && k % 7 === 0) ||
+            level.theme === "pokemon" ||
             level.theme === "minecraft" ||
             (level.theme === "spooky" && k % 4 === 0) ||
             level.theme === "candy"
           )
             prop.rotation.y += Math.PI;
           if (
-            ["meadow", "forest", "castle", "palace", "garden"].includes(
+            ["meadow", "forest", "castle", "palace", "garden", "pokemon"].includes(
               level.theme,
             )
           ) {
@@ -305,6 +315,16 @@ export class World {
           -55,
           30,
         );
+      }
+      if (level.theme === "pokemon") {
+        const gate = place(pokeGate(landmarks), level, s + 65, 0);
+        gate.rotation.y += Math.PI;
+        const welcome = place(pikachu(landmarks, 1.4), level, s + 38, -7);
+        welcome.rotation.y += Math.PI;
+        if (i % 2 === 0) {
+          const center = place(pokemonCenter(landmarks), level, s + 48, 21);
+          center.rotation.y += Math.PI;
+        }
       }
       if (level.theme === "minecraft") {
         place(mineGate(landmarks), level, s + 60, 0);
@@ -422,7 +442,7 @@ export class World {
       }
     }
     if (
-      ["garden", "meadow", "forest", "castle", "palace"].includes(level.theme)
+      ["garden", "meadow", "forest", "castle", "palace", "pokemon"].includes(level.theme)
     )
       for (let i = 0; i < (level.theme === "garden" ? 28 : 14); i++) {
         const b = makeButterfly(this.root, i);
