@@ -28,6 +28,7 @@ import { WaterGardens } from "./water.js";
 import { makeButterfly, animateButterfly } from "../characters/butterfly.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
+import { grassBlock, blockTree, diamondOre, blockPig, friendlyCreeper, torch, blockHill, mineGate, blockCloud } from "./minecraft.js";
 import { spookyHouse, spookyHall, pumpkin, friendlyGhost } from "./spooky.js";
 
 let authoredPotion = null;
@@ -121,6 +122,9 @@ export class World {
           let dist = level.width / 2 + 3 + rnd(seed) * 9;
           let prop;
           switch (level.theme) {
+            case "minecraft":
+              prop = [blockTree, grassBlock, blockPig, diamondOre, blockTree, friendlyCreeper][k % 6](chunk);
+              break;
             case "spooky":
               prop = k % 4 === 0 ? spookyHouse(chunk, 1.3) : k % 2 ? pumpkin(chunk, 1.2) : tree(chunk, level.foliage, 1);
               if (k % 4 === 0) dist += 4;
@@ -209,6 +213,7 @@ export class World {
           if (
             (level.theme === "castle" && k % 8 === 0) ||
             (level.theme === "palace" && k % 7 === 0) ||
+            level.theme === "minecraft" ||
             (level.theme === "spooky" && k % 4 === 0) ||
             level.theme === "candy"
           )
@@ -240,7 +245,10 @@ export class World {
     const landmarks = group(this.root);
     for (let i = 0; i < 28; i++) {
       const s = (i / 28) * length;
-      if (!["crystal", "cloud"].includes(level.theme)) {
+      if (level.theme === "minecraft") {
+        for (const side of [-1, 1]) place(blockHill(landmarks, 1 + rnd(i) * 0.6), level, s, side * (42 + rnd(i + 8) * 24));
+      }
+      if (!["crystal", "cloud", "minecraft"].includes(level.theme)) {
         for (const side of [-1, 1]) {
           const tone = new THREE.Color(level.foliage)
             .lerp(new THREE.Color(level.sky), 0.2 + 0.2 * rnd(i + 14))
@@ -298,6 +306,13 @@ export class World {
           30,
         );
       }
+      if (level.theme === "minecraft") {
+        place(mineGate(landmarks), level, s + 60, 0);
+        for (const side of [-1, 1]) {
+          place(torch(landmarks), level, s + 30, side * 6.4);
+          place(grassBlock(landmarks, 2), level, s + 12, side * 7);
+        }
+      }
       if (level.theme === "spooky") place(spookyHall(landmarks), level, s + 52, 0);
       if (level.theme === "crystal") {
         place(
@@ -321,7 +336,7 @@ export class World {
         const p = coursePoint(level, s, -35);
         star(landmarks, "#fff0b4", [p.x, 18 + rnd(i) * 14, p.z], 0.75);
       }
-      place(cloud(landmarks, 2.5 + rnd(i) * 3), level, s, 45, 25 + rnd(i) * 15);
+      place((level.theme === "minecraft" ? blockCloud : cloud)(landmarks, 2.5 + rnd(i) * 3), level, s, 45, 25 + rnd(i) * 15);
     }
     if (["night", "spooky"].includes(level.theme)) {
       place(
@@ -399,7 +414,9 @@ export class World {
         g.userData = { ...item, baseY: g.position.y };
         this.potions.push(g);
       } else {
-        const g = obstacle(this.root, item.kind);
+        const g = level.theme === "minecraft" && item.kind === "tree"
+          ? blockTree(this.root, 0.65)
+          : obstacle(this.root, item.kind);
         place(g, level, item.s, item.lane);
         bake(g);
       }
