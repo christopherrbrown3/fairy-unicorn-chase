@@ -1,4 +1,5 @@
 import { test, expect } from "@playwright/test";
+import { LEVELS } from "../../src/config/levels.js";
 const ready = async (page) => {
   await page.waitForFunction(
     () => window.__fairy?.game && window.__fairy?.screen === "title",
@@ -158,10 +159,10 @@ test("real potion speed, automatic jump and harmless collision work in rendered 
   });
   expect((await snap(page)).stats.bumps).toBeGreaterThan(0);
 });
-test("ten real chases unlock friends, continue, finale and reload persistence", async ({
+test("all real chases unlock friends, continue, finale and reload persistence", async ({
   page,
 }) => {
-  // This scenario builds all ten worlds and reloads the saved collection.
+  // This scenario builds all worlds and reloads the saved collection.
   // Software WebGL on CI needs more time than a single-world interaction.
   test.setTimeout(180000);
   const errors = [];
@@ -172,25 +173,25 @@ test("ten real chases unlock friends, continue, finale and reload persistence", 
   await page.goto("/?test=1");
   await ready(page);
   await page.getByRole("button", { name: "Worlds", exact: true }).click();
-  expect(await page.locator(".world-tile:disabled").count()).toBe(9);
+  expect(await page.locator(".world-tile:disabled").count()).toBe(LEVELS.length - 1);
   await page
     .getByRole("button", { name: "Rainbow Meadow", exact: true })
     .click();
-  for (let i = 0; i < 10; i++) {
+  for (let i = 0; i < LEVELS.length; i++) {
     await page.evaluate(() => window.__fairy.advance(180));
     expect((await snap(page)).caught).toBe(true);
     expect((await snap(page)).distance).toBeLessThanOrEqual(3.8);
     expect(
       await page.evaluate(() => window.__fairy.save.completed.length),
     ).toBe(i + 1);
-    if (i < 9)
+    if (i < LEVELS.length - 1)
       await page.getByRole("button", { name: "Continue", exact: true }).click();
   }
   await expect(
-    page.getByRole("heading", { name: "All ten friends!" }),
+    page.getByRole("heading", { name: `All ${LEVELS.length} friends!` }),
   ).toBeVisible();
   expect(await page.evaluate(() => window.__fairy.game.friends.length)).toBe(
-    10,
+    LEVELS.length,
   );
   expect(
     await page.evaluate(() => {
@@ -199,11 +200,11 @@ test("ten real chases unlock friends, continue, finale and reload persistence", 
     }),
   ).toBe(true);
   await page.getByRole("button", { name: "Our unicorns" }).click();
-  expect(await page.locator(".collection-tile.found").count()).toBe(10);
+  expect(await page.locator(".collection-tile.found").count()).toBe(LEVELS.length);
   await page.reload();
   await ready(page);
   expect(await page.evaluate(() => window.__fairy.save.completed.length)).toBe(
-    10,
+    LEVELS.length,
   );
   await page.getByRole("button", { name: "Worlds", exact: true }).click();
   expect(await page.locator(".world-tile:disabled").count()).toBe(0);

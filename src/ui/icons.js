@@ -1,4 +1,5 @@
 const paths = {
+  spooky: '<path d="M7 28V14L3 15 10 5l6 6 5-8 8 12-5-1v14ZM13 28v-7h6v7M9 15h3m8 0h3M16 8V3"/>',
   play: '<path d="m10 6 13 10-13 10z" fill="currentColor" stroke="none"/>',
   left: '<path d="m20 7-10 9 10 9"/>',
   right: '<path d="m12 7 10 9-10 9"/>',
@@ -41,4 +42,5 @@ export const worldIcon = [
   "moon",
   "mountain",
   "castle",
+  "spooky",
 ];

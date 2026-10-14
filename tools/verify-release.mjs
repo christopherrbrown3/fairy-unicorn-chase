@@ -1,0 +1,54 @@
+// Isolated release smoke check, including migration from the previous release.
+import { chromium, webkit } from "playwright";
+import { mkdir } from "node:fs/promises";
+import assert from "node:assert/strict";
+import { LEVELS } from "../src/config/levels.js";
+
+const url = process.env.VERIFY_URL || "http://127.0.0.1:4173";
+const dir = process.env.VERIFY_OUTPUT || `.impeccable/review/${LEVELS.at(-1).theme}`;
+await mkdir(dir, { recursive: true });
+const browser = await (process.env.VERIFY_BROWSER === "webkit" ? webkit : chromium).launch();
+try {
+  const context = await browser.newContext({ viewport: { width: 1024, height: 768 }, hasTouch: true });
+  const page = await context.newPage();
+  page.setDefaultTimeout(60000);
+  const errors = [];
+  page.on("pageerror", e => errors.push(e.message));
+  page.on("response", r => { if (r.status() >= 400) errors.push(`${r.status()} ${r.url()}`); });
+  await page.goto(`${url}/?test=1`);
+  await page.waitForFunction(() => window.__fairy?.screen === "title");
+  await page.evaluate(count => localStorage.setItem("fairy-unicorn-chase:v1", JSON.stringify({version: 1, completed: Array.from({length: count - 1}, (_, i) => i), sound: false, quality: "high", reducedMotion: true})), LEVELS.length);
+  await page.reload();
+  await page.waitForFunction(() => window.__fairy?.screen === "title");
+  await page.getByRole("button", {name: "Worlds", exact: true}).click();
+  assert.equal(await page.locator(".world-tile").count(), LEVELS.length);
+  assert.equal(await page.locator(".world-tile:disabled").count(), 0);
+  await page.getByRole("button", {name: LEVELS.at(-1).name, exact: true}).click();
+  await page.evaluate(() => { window.__fairy.advance(2); window.__fairy.game.pause(); });
+  await page.waitForTimeout(600);
+  await page.screenshot({path: `${dir}/tablet.png`});
+  await page.setViewportSize({width: 844, height: 390});
+  await page.waitForTimeout(300);
+  await page.screenshot({path: `${dir}/phone.png`});
+  const metrics = await page.evaluate(() => window.__fairy.snapshot());
+  await page.setViewportSize({width: 1024, height: 768});
+  await page.evaluate(() => { window.__fairy.game.resume(); window.__fairy.advance(180); window.__fairy.game.setStageCamera(false, true); });
+  await page.getByRole("heading", {name: `All ${LEVELS.length} friends!`, exact: true}).waitFor();
+  assert.equal(await page.evaluate(() => window.__fairy.game.friends.length), LEVELS.length);
+  await page.waitForTimeout(600);
+  await page.screenshot({path: `${dir}/finale.png`});
+  await page.getByRole("button", {name: "Our unicorns", exact: true}).click();
+  assert.equal(await page.locator(".collection-tile.found").count(), LEVELS.length);
+  assert.equal(await page.locator("img").evaluateAll(images => images.every(img => img.complete && img.naturalWidth > 0)), true);
+  await page.setViewportSize({width: 390, height: 844});
+  await page.locator(".collection-tile").last().scrollIntoViewIfNeeded();
+  await page.screenshot({path: `${dir}/collection-phone.png`});
+  await page.reload();
+  await page.waitForFunction(() => window.__fairy?.screen === "title");
+  const save = await page.evaluate(() => window.__fairy.save);
+  assert.equal(save.completed.length, LEVELS.length);
+  assert.equal(save.sound, false);
+  assert.equal(save.reducedMotion, true);
+  assert.deepEqual(errors, []);
+  console.log(JSON.stringify({url, world: LEVELS.at(-1).name, count: LEVELS.length, saveMigration: "passed", collection: "passed", finale: "passed", errors, metrics, screenshots: dir}));
+} finally { await browser.close(); }

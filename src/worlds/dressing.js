@@ -147,7 +147,7 @@ export class AmbientMagic {
       "position",
       new THREE.Float32BufferAttribute(positions, 3),
     );
-    const dark = ["night", "forest", "crystal"].includes(level.theme);
+    const dark = ["night", "forest", "crystal", "spooky"].includes(level.theme);
     const mat = new THREE.ShaderMaterial({
       transparent: true,
       depthWrite: false,

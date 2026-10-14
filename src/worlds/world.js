@@ -28,6 +28,8 @@ import { WaterGardens } from "./water.js";
 import { makeButterfly, animateButterfly } from "../characters/butterfly.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
+import { spookyHouse, spookyHall, pumpkin, friendlyGhost } from "./spooky.js";
+
 let authoredPotion = null;
 export async function loadWorldAssets() {
   try {
@@ -79,6 +81,7 @@ export class World {
     this.root = group(scene);
     this.potions = [];
     this.butterflies = [];
+    this.ghosts = [];
     this.chunks = [];
     scene.background = new THREE.Color(level.sky);
     scene.fog = new THREE.Fog(level.sky, 55, 155);
@@ -118,6 +121,10 @@ export class World {
           let dist = level.width / 2 + 3 + rnd(seed) * 9;
           let prop;
           switch (level.theme) {
+            case "spooky":
+              prop = k % 4 === 0 ? spookyHouse(chunk, 1.3) : k % 2 ? pumpkin(chunk, 1.2) : tree(chunk, level.foliage, 1);
+              if (k % 4 === 0) dist += 4;
+              break;
             case "forest":
               prop =
                 k % 3 === 0
@@ -202,6 +209,7 @@ export class World {
           if (
             (level.theme === "castle" && k % 8 === 0) ||
             (level.theme === "palace" && k % 7 === 0) ||
+            (level.theme === "spooky" && k % 4 === 0) ||
             level.theme === "candy"
           )
             prop.rotation.y += Math.PI;
@@ -290,6 +298,7 @@ export class World {
           30,
         );
       }
+      if (level.theme === "spooky") place(spookyHall(landmarks), level, s + 52, 0);
       if (level.theme === "crystal") {
         place(
           cone(landmarks, "#454869", [0, 0, 0], [24, 40, 22]),
@@ -308,13 +317,13 @@ export class World {
         );
         place(arch, level, s + 26, 0, -1);
       }
-      if (level.theme === "night") {
+      if (["night", "spooky"].includes(level.theme)) {
         const p = coursePoint(level, s, -35);
         star(landmarks, "#fff0b4", [p.x, 18 + rnd(i) * 14, p.z], 0.75);
       }
       place(cloud(landmarks, 2.5 + rnd(i) * 3), level, s, 45, 25 + rnd(i) * 15);
     }
-    if (level.theme === "night") {
+    if (["night", "spooky"].includes(level.theme)) {
       place(
         orb(landmarks, "#fff0c1", [0, 0, 0], [6, 6, 6], {
           emissive: "#ffe8a4",
@@ -327,7 +336,7 @@ export class World {
       );
     }
     bake(landmarks);
-    if (level.theme === "night") {
+    if (["night", "spooky"].includes(level.theme)) {
       this.sky = group(this.root);
       const shapes = geometry("sky-star", () => {
         const shape = new THREE.Shape();
@@ -372,6 +381,13 @@ export class World {
         [1, 1, 1],
         { emissive: "#fff2c0", emissiveIntensity: 0.5 },
       );
+    }
+    if (level.theme === "spooky") {
+      for (let i = 0; i < 28; i++) {
+        const ghost = friendlyGhost(this.root, 1.1);
+        ghost.userData = { s: 25 + i * length / 28, lane: (i % 2 ? 1 : -1) * 7, phase: i * 1.7 };
+        this.ghosts.push(ghost);
+      }
     }
     for (const item of courseItems(level)) {
       if (item.kind === "potion") {
@@ -430,6 +446,11 @@ export class World {
         p.userData.baseY + Math.sin(time * 2 + p.userData.s) * 0.15;
       const lap = chase ? Math.floor(chase.s / chase.lap) : 0;
       p.visible = !chase?.collected.has(`${lap}:${p.userData.id}`);
+    }
+    for (const ghost of this.ghosts) {
+      const d = ghost.userData;
+      place(ghost, this.level, d.s, d.lane, 1.5 + Math.sin(time * 1.5 + d.phase) * 0.35);
+      ghost.rotation.y += Math.PI;
     }
     for (const b of this.butterflies) {
       const escort = b.userData.escort;

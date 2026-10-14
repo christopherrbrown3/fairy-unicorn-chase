@@ -11,9 +11,9 @@ import {
   freshSave,
 } from "../src/game/save.js";
 
-test("all ten courses close smoothly and expose distinct unicorns", () => {
-  assert.equal(new Set(LEVELS.map((l) => l.theme)).size, 10);
-  assert.equal(new Set(LEVELS.map((l) => l.mane)).size, 10);
+test("all courses close smoothly and expose distinct unicorns", () => {
+  assert.equal(new Set(LEVELS.map((l) => l.theme)).size, LEVELS.length);
+  assert.equal(new Set(LEVELS.map((l) => l.mane)).size, LEVELS.length);
   for (const l of LEVELS) {
     const a = coursePoint(l, 0),
       b = coursePoint(l, 2 * Math.PI * l.radius);
@@ -68,7 +68,7 @@ test("potions increase real speed, and boost expires", () => {
   c.unicornS = 80;
   c.step(0.05);
   assert.equal(c.stats.potions, 1);
-  for (let i = 0; i < 10; i++) c.step(0.05);
+  for (let i = 0; i < LEVELS.length; i++) c.step(0.05);
   assert.ok(c.speed > 13);
   c.items = [];
   for (let i = 0; i < 100; i++) c.step(0.05);
@@ -99,10 +99,10 @@ test("progress survives storage, corrupt saves and unavailable storage recover",
     },
   };
   let s = freshSave();
-  for (let i = 0; i < 10; i++) s = completeLevel(s, i);
+  for (let i = 0; i < LEVELS.length; i++) s = completeLevel(s, i);
   assert.ok(writeSave(storage, s));
   assert.deepEqual(loadSave(storage).completed, s.completed);
-  assert.equal(unlockCount(s), 10);
+  assert.equal(unlockCount(s), LEVELS.length);
   raw = "{bad";
   assert.deepEqual(loadSave(storage), freshSave());
   assert.deepEqual(
@@ -120,4 +120,19 @@ test("progress survives storage, corrupt saves and unavailable storage recover",
     ),
     false,
   );
+});
+
+// Preserve the original ten-world save key and IDs as new releases add worlds.
+test("original completed adventure unlocks the first added world without losing preferences", () => {
+  const old = sanitizeSave({version: 1, completed: Array.from({length: 10}, (_, i) => i), sound: false, quality: "low", reducedMotion: true});
+  assert.equal(old.completed.length, 10);
+  assert.equal(unlockCount(old), 11);
+  assert.equal(old.sound, false);
+  assert.equal(old.quality, "low");
+  assert.equal(old.reducedMotion, true);
+  for (let i = 10, save = old; i < LEVELS.length; i++) {
+    save = completeLevel(save, i);
+    assert.ok(save.completed.includes(i));
+    assert.equal(unlockCount(save), Math.min(i + 2, LEVELS.length));
+  }
 });

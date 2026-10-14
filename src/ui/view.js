@@ -28,7 +28,7 @@ export class View {
   title(save) {
     const n = save.completed.length;
     this.show(
-      `<section class="title-screen"><div class="title-top">${this.sound(save)}</div><div class="title-copy"><h1>Fairy<br /><span>Unicorn</span><br />Chase</h1><p>Mia & Glender’s magical adventure</p>${this.button("play", n > 0 && n < 10 ? "Keep playing" : "Let’s play", "play", "button primary jumbo")}<nav class="title-links" aria-label="Adventure menus">${this.button("levels", "Worlds", "map", "button quiet")}${this.button("collection", "Unicorns", "book", "button quiet")}</nav></div><div class="title-note">Ten magical worlds.<br />Ten new friends.</div>${n ? `<div class="saved-progress">${icon("star")} ${n} / 10 unicorns found</div>` : ""}</section>`,
+      `<section class="title-screen"><div class="title-top">${this.sound(save)}</div><div class="title-copy"><h1>Fairy<br /><span>Unicorn</span><br />Chase</h1><p>Mia & Glender’s magical adventure</p>${this.button("play", n > 0 && n < LEVELS.length ? "Keep playing" : "Let’s play", "play", "button primary jumbo")}<nav class="title-links" aria-label="Adventure menus">${this.button("levels", "Worlds", "map", "button quiet")}${this.button("collection", "Unicorns", "book", "button quiet")}</nav></div><div class="title-note">${LEVELS.length} magical worlds.<br />${LEVELS.length} new friends.</div>${n ? `<div class="saved-progress">${icon("star")} ${n} / ${LEVELS.length} unicorns found</div>` : ""}</section>`,
       "title",
     );
   }
@@ -50,10 +50,10 @@ export class View {
   }
   collection(save, portraits) {
     this.show(
-      `<section class="book-screen collection-screen">${this.header("Our unicorn friends", save)}<p class="book-subtitle">${save.completed.length} of 10 friends found</p><div class="collection-grid">${LEVELS.map(
+      `<section class="book-screen collection-screen">${this.header("Our unicorn friends", save)}<p class="book-subtitle">${save.completed.length} of ${LEVELS.length} friends found</p><div class="collection-grid">${LEVELS.map(
         (l) => {
           const caught = save.completed.includes(l.id);
-          return `<button class="collection-tile ${caught ? "found" : "unknown"}" data-action="${caught ? "level" : "levels"}" data-value="${l.id}" aria-label="${caught ? `Visit ${l.unicorn} in ${l.name}` : "Find this unicorn"}"><div class="portrait"><img src="${portraits[l.id]}" alt="${caught ? `White unicorn with ${l.id === 9 ? "rainbow" : "colorful"} hair` : ""}"/>${caught ? "" : icon("lock")}</div><span>${caught ? l.unicorn : "Who’s next?"}</span><small>${caught ? l.name : `World ${l.id + 1}`}</small></button>`;
+          return `<button class="collection-tile ${caught ? "found" : "unknown"}" data-action="${caught ? "level" : "levels"}" data-value="${l.id}" aria-label="${caught ? `Visit ${l.unicorn} in ${l.name}` : "Find this unicorn"}"><div class="portrait"><img src="${portraits[l.id]}" alt="${caught ? `White unicorn with ${l.mane === "rainbow" ? "rainbow" : "colorful"} hair` : ""}"/>${caught ? "" : icon("lock")}</div><span>${caught ? l.unicorn : "Who’s next?"}</span><small>${caught ? l.name : `World ${l.id + 1}`}</small></button>`;
         },
       ).join("")}</div></section>`,
       "collection",
@@ -61,7 +61,7 @@ export class View {
   }
   play(level) {
     this.show(
-      `<section class="game-screen"><header class="hud"><div class="world-label">${icon(worldIcon[level.id])}<div><span>${level.name}</span><small>Friend ${level.id + 1} of 10</small></div></div><div class="chase-meter" aria-label="Distance to unicorn"><span id="chase-text">Follow ${level.unicorn}!</span><div class="distance-track"><i id="distance-fill"></i>${icon("star")}</div></div><button class="round pause-button" data-action="pause" aria-label="Pause game">${icon("pause")}</button></header><div id="encouragement" class="encouragement" role="status">${level.id === 0 ? "Hold an arrow to steer" : ""}</div><div class="touch-controls"><button id="left" class="steer left" aria-label="Steer left">${icon("left")}</button><div class="right-controls"><button id="water" class="water-control" aria-label="Spray water">${icon("water")}</button><button id="right" class="steer right" aria-label="Steer right">${icon("right")}</button></div></div><div class="boost-status" id="boost-status" aria-live="polite"></div></section>`,
+      `<section class="game-screen"><header class="hud"><div class="world-label">${icon(worldIcon[level.id])}<div><span>${level.name}</span><small>Friend ${level.id + 1} of ${LEVELS.length}</small></div></div><div class="chase-meter" aria-label="Distance to unicorn"><span id="chase-text">Follow ${level.unicorn}!</span><div class="distance-track"><i id="distance-fill"></i>${icon("star")}</div></div><button class="round pause-button" data-action="pause" aria-label="Pause game">${icon("pause")}</button></header><div id="encouragement" class="encouragement" role="status">${level.id === 0 ? "Hold an arrow to steer" : ""}</div><div class="touch-controls"><button id="left" class="steer left" aria-label="Steer left">${icon("left")}</button><div class="right-controls"><button id="water" class="water-control" aria-label="Spray water">${icon("water")}</button><button id="right" class="steer right" aria-label="Steer right">${icon("right")}</button></div></div><div class="boost-status" id="boost-status" aria-live="polite"></div></section>`,
       "playing",
     );
   }
@@ -98,7 +98,7 @@ export class View {
   }
   complete(level, save, final) {
     this.show(
-      `<section class="celebration-screen"><div class="celebration-title">${icon("star")}<h2>${final ? "All ten friends!" : `You found ${level.unicorn}!`}</h2><p>${final ? "Mia, Glender & the whole unicorn family" : `${level.name} · a new friend for your collection`}</p></div><div class="celebration-actions">${this.button(final ? "levels" : "continue", final ? "Play again" : "Continue", "play", "button primary jumbo")}${this.button("collection", "Our unicorns", "book", "button paper")}</div></section>`,
+      `<section class="celebration-screen"><div class="celebration-title">${icon("star")}<h2>${final ? `All ${LEVELS.length} friends!` : `You found ${level.unicorn}!`}</h2><p>${final ? "Mia, Glender & the whole unicorn family" : `${level.name} · a new friend for your collection`}</p></div><div class="celebration-actions">${this.button(final ? "levels" : "continue", final ? "Play again" : "Continue", "play", "button primary jumbo")}${this.button("collection", "Our unicorns", "book", "button paper")}</div></section>`,
       final ? "final" : "complete",
     );
   }

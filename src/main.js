@@ -85,7 +85,7 @@ function action(name, value) {
       start(game.level.id);
       break;
     case "continue":
-      start(Math.min(9, game.level.id + 1));
+      start(Math.min(LEVELS.length - 1, game.level.id + 1));
       break;
     case "sound":
       save.sound = !save.sound;
@@ -135,7 +135,7 @@ try {
       if (event === "catch") {
         save = completeLevel(save, c.level.id);
         persist();
-        const final = save.completed.length === 10;
+        const final = save.completed.length === LEVELS.length;
         audio.playing = false;
         game.celebrate(final);
         audio.event(final ? "final" : "catch");
