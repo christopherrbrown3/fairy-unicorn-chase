@@ -294,7 +294,7 @@
       "**Do** preserve confirmed character colors, powers and recognizable silhouettes.",
       "**Do** reuse the paper/blue/ink hierarchy while each world contributes its own scenery.",
       "**Do** retain large touch targets, visible keyboard focus and safe-area clearance.",
-      "**Do** keep portraits and celebrations unobstructed, with all eleven friends visible in the finale.",
+      "**Do** keep portraits and celebrations unobstructed, with all twelve friends visible in the finale.",
       "**Do** keep provisional names, coat choices and tuning editable through configuration and documented in `DESIGN_NOTES.md`."
     ],
     "donts": [

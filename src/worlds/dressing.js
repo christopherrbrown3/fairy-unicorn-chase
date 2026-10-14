@@ -49,7 +49,7 @@ export function dressVerge(root, level) {
     new THREE.Color(level.ground),
     0.45,
   );
-  const isCloud = level.theme === "cloud";
+  const isCloud = ["cloud", "minecraft"].includes(level.theme);
   const grassMat = new THREE.MeshStandardMaterial({
     color: grassColor,
     vertexColors: true,
@@ -100,7 +100,9 @@ export function dressVerge(root, level) {
       root.add(grass);
     }
     const stones = new THREE.InstancedMesh(
-      geometry("verge-stone", () => new THREE.IcosahedronGeometry(1, 1)),
+      level.theme === "minecraft"
+        ? geometry("block-stone", () => new THREE.BoxGeometry(1, 1, 1))
+        : geometry("verge-stone", () => new THREE.IcosahedronGeometry(1, 1)),
       stoneMat,
       16,
     );

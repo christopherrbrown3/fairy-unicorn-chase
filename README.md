@@ -1,12 +1,12 @@
 # Fairy Unicorn Chase
 
-**A little fairy. A starry pony. Eleven magical new friends.**
+**A little fairy. A starry pony. Twelve magical new friends.**
 
 [![Mia riding Glender in the actual Fairy Unicorn Chase title scene](docs/screenshots/title.jpg)](https://fuc.christopherbrown.ai)
 
 ### [Play Fairy Unicorn Chase →](https://fuc.christopherbrown.ai)
 
-A gentle 3D adventure for small hands: ride with Mia and Glender, follow a white unicorn through a magical world, collect sparkly potions, and catch a new friend. Find all eleven and bring the whole unicorn family together.
+A gentle 3D adventure for small hands: ride with Mia and Glender, follow a white unicorn through a magical world, collect sparkly potions, and catch a new friend. Find all twelve and bring the whole unicorn family together.
 
 The idea, characters, and rules came from a six-year-old creative director, with her dad helping turn her imagination into a game. Her decisions are the heart of the project; her personal identity stays private.
 
@@ -18,7 +18,7 @@ The idea, characters, and rules came from a six-year-old creative director, with
 - **A splash of magic.** Mia raises her arm and sprays a sparkling blue water stream. It is harmless, joyful, and completely optional.
 - **Wheee!** Glender automatically jumps over puddles and logs. Trees give a little bump and a brief slowdown.
 - **A growing collection.** Catch a unicorn, celebrate together, unlock the next world, and reveal a new friend in the collection book.
-- **A grand finale.** Mia, Glender, and all eleven unicorns gather on a flower-ringed island under a rainbow.
+- **A grand finale.** Mia, Glender, and all twelve unicorns gather on a flower-ringed island under a rainbow.
 
 Progress and sound/picture/motion preferences save in this browser. No account, purchases, advertisements, analytics, or backend are involved.
 
@@ -26,7 +26,7 @@ Progress and sound/picture/motion preferences save in this browser. No account, 
 
 Mia has flowing blonde locks, a blue dress, gently fluttering fairy wings, and water powers. She rides **Glender**, an apricot pony with a golden-yellow mane and tail, star markings, a cheerful gallop, and a knack for hopping over puddles.
 
-The unicorns have white coats, gold horns, friendly faces, and eleven different mane and tail colors. They are playing chase with Mia, and are happy to be found.
+The unicorns have white coats, gold horns, friendly faces, and twelve different mane and tail colors. They are playing chase with Mia, and are happy to be found.
 
 ## A peek into the adventure
 
@@ -44,7 +44,7 @@ These are real screenshots of the running game, captured at an iPad-sized landsc
 
 [See the catch celebration](docs/screenshots/catch.jpg) · [Choose a world](docs/screenshots/worlds.jpg) · [View every screenshot](docs/screenshots)
 
-## Eleven worlds, eleven friends
+## Twelve worlds, twelve friends
 
 | World | A little magic | Unicorn / mane |
 | --- | --- | --- |
@@ -59,6 +59,7 @@ These are real screenshots of the running game, captured at an iPad-sized landsc
 | 9 · Rainbow Mountains | Snow-tipped peaks and rainbow arches | Lilac · lavender |
 | 10 · Unicorn Palace | Golden domes, flowers and rainbow scenery | Prism · rainbow |
 | 11 · Spooky House | Moonlit houses, glowing pumpkin smiles and friendly floating ghosts | Boo · pale green |
+| 12 · Minecraft Meadow | Grass blocks, cube oaks, diamond ore, pigs and friendly creepers | Pixel · emerald green |
 
 Each world has its own complete loop, pickups, obstacles, palette, unicorn, and celebration. The meadow introduces the adventure quickly. Deterministic no-steering play takes about 23 seconds there and 61–70 seconds in later worlds; finding more potions can shorten a chase.
 
@@ -140,7 +141,7 @@ Scenery combines soft shadows, textured paths, petaled flowers, layered hills, f
 
 ## Tested, with room for a real playtest
 
-**Passing:** deterministic tests and browser cases across Chromium and WebKit; all eleven distance-based catches; real potion speed, jumps, water and gentle collisions; keyboard and touch input; projected on-screen steering direction; pause and preferences; persistence and corrupt-save recovery; root/subpath assets; the GitHub Actions deployment; live HTTPS and redirects. The original screenshot gallery covers the first ten worlds and the main game states; new-world captures appear in the release history.
+**Passing:** deterministic tests and browser cases across Chromium and WebKit; all twelve distance-based catches; real potion speed, jumps, water and gentle collisions; keyboard and touch input; projected on-screen steering direction; pause and preferences; persistence and corrupt-save recovery; root/subpath assets; the GitHub Actions deployment; live HTTPS and redirects. The original screenshot gallery covers the first ten worlds and the main game states; new-world captures appear in the release history.
 
 **Still to check on a physical iPad:** sustained frame rate, Safari chrome/safe areas, comfortable sound, multitouch feel, and the creative director’s enjoyment. No physical-device testing is claimed. [The device checklist and full coverage notes](docs/QUALITY.md) make that last family playtest straightforward.
 

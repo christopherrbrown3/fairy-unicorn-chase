@@ -23,3 +23,7 @@ The public repository has not assigned a separate reuse license to original code
 The 33 KB WOFF2 is Fontsource's Latin subset, fetched from `@fontsource-variable/baloo-2@5.3.0/files/baloo-2-latin-wght-normal.woff2`. OFL copyright/license is included beside it. No runtime font CDN request is made.
 
 There are no Nintendo characters, models, music, textures or track designs. Arcade racing inspired the forgiving rhythm and chase camera; all content is original to this game.
+
+### Minecraft Meadow
+
+Minecraft-themed scenery uses custom procedural models created for this game. No Minecraft textures, models, music, or sound files are distributed. Minecraft names and recognizable game concepts belong to their respective owners; this is an unofficial fan-made level.
