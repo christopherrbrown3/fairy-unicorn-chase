@@ -138,21 +138,8 @@ export function makeButterfly(parent, variant = 0) {
     orb(art, cream, [0.53, -0.23, 0], [0.084, 0.099, 0.024]);
     orb(art, color, [0.53, -0.23, 0], [0.05, 0.066, 0.03]);
     bake(art);
-    // Camber the whole painted wing together, so markings follow its surface.
-    art.children.forEach((part) => {
-      if (!part.isMesh) return;
-      const positions = part.geometry.attributes.position;
-      for (let i = 0; i < positions.count; i++) {
-        const x = positions.getX(i),
-          y = positions.getY(i);
-        positions.setZ(
-          i,
-          positions.getZ(i) + Math.sin(x * Math.PI) * 0.09 + y * y * 0.025,
-        );
-      }
-      part.geometry.computeVertexNormals();
-      part.geometry.computeBoundingSphere();
-    });
+    // Keep the thin painted layers parallel. Bending their different
+    // triangulations makes the border cut through the inset and its veins.
     wings.push(hinge);
   }
   root.userData.wings = wings;

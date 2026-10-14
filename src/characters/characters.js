@@ -401,7 +401,7 @@ export function makeMia() {
       geo.setAttribute("color", new THREE.Float32BufferAttribute(colors, 3));
       return geo;
     });
-    const membrane = mesh(w, wingGeo, "#ffffff", [0, 0, -0.08], [side, 1, 1], {
+    const membrane = mesh(w, wingGeo, "#ffffff", [0, 0, -0.08], [1, 1, 1], {
       vertexColors: true,
       side: THREE.DoubleSide,
       transparent: true,
@@ -413,7 +413,7 @@ export function makeMia() {
     membrane.name = "Pearlescent butterfly wing";
     membrane.material = wingMaterial;
     membrane.userData.ownedMaterial = true;
-    const outline = shape.getPoints(32).map((p) => [p.x * side, p.y, -0.085]);
+    const outline = shape.getPoints(32).map((p) => [p.x, p.y, -0.085]);
     tube(w, "#ecf9ec", outline, 0.017);
     for (const points of [
       [
@@ -441,7 +441,7 @@ export function makeMia() {
       tube(
         w,
         "#efffef",
-        points.map(([x, y]) => [x * side, y, -0.1]),
+        points.map(([x, y]) => [x, y, -0.1]),
         0.012,
       );
     for (const [x, y] of [
@@ -450,7 +450,7 @@ export function makeMia() {
       [0.82, 0.44],
       [0.61, -0.39],
     ])
-      orb(w, "#fff4c4", [x * side, y, -0.11], [0.025, 0.025, 0.018]);
+      orb(w, "#fff4c4", [x, y, -0.11], [0.025, 0.025, 0.018]);
     for (const [x, y, rx, ry] of [
       [0.62, 0.5, 0.12, 0.18],
       [0.43, -0.31, 0.115, 0.12],
@@ -459,21 +459,24 @@ export function makeMia() {
       for (let i = 0; i <= 32; i++) {
         const a = (i / 32) * Math.PI * 2;
         ring.push([
-          (x + Math.cos(a) * rx) * side,
+          x + Math.cos(a) * rx,
           y + Math.sin(a) * ry,
           -0.105,
         ]);
       }
       tube(w, "#e6f4cd", ring, 0.01);
-      orb(w, "#b2dbe8", [x * side, y, -0.1], [rx * 0.67, ry * 0.7, 0.009]);
+      orb(w, "#b2dbe8", [x, y, -0.1], [rx * 0.67, ry * 0.7, 0.009]);
       orb(
         w,
         "#f9efc6",
-        [(x - 0.015) * side, y + 0.025, -0.113],
+        [x - 0.015, y + 0.025, -0.113],
         [0.024, 0.034, 0.009],
       );
     }
     bake(w);
+    // Mirror the finished group so the renderer also reverses face winding.
+    // Baking a negative membrane scale leaves its lighting normals inverted.
+    w.scale.x = side;
     w.children.forEach((o) => {
       if (o.material === wingMaterial) o.userData.ownedMaterial = true;
     });

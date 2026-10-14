@@ -161,6 +161,9 @@ test("real potion speed, automatic jump and harmless collision work in rendered 
 test("ten real chases unlock friends, continue, finale and reload persistence", async ({
   page,
 }) => {
+  // This scenario builds all ten worlds and reloads the saved collection.
+  // Software WebGL on CI needs more time than a single-world interaction.
+  test.setTimeout(180000);
   const errors = [];
   page.on("pageerror", (e) => errors.push(e.message));
   page.on("console", (m) => {
