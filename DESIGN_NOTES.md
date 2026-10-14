@@ -48,3 +48,5 @@ The finish review identified intersecting butterfly wing layers and a dark mirro
 The creative director requested Spooky House, Minecraft, and Pokémon, in that order. Each is a separate task and release; publish and verify one before implementing the next. Spooky House is gentle: smiling pumpkins, friendly ghosts, moonlit purple houses, and a wide illuminated hallway. Boo and the pale-green mane are provisional. Existing ten-world saves retain their collected friends and unlock world 11.
 
 Minecraft Meadow is world 12, released only after Spooky House was published and verified. Its blocks, oaks, diamond ore, pigs, creepers, and mine gateways use custom procedural geometry. Pixel and the emerald-green mane are provisional. No mining, combat, or new control is introduced.
+
+Pokémon Park is world 13, implemented after Minecraft Meadow v1.2.0 was published and live-verified. It includes custom procedural Pikachu, Bulbasaur, Squirtle, Poké Balls, garden gateways, and Pokémon Centers. Spark and the cobalt-blue mane are provisional. Pokémon are friendly scenery; the unicorn chase, existing controls, and saved collection continue.

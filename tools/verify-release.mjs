@@ -14,6 +14,7 @@ try {
   page.setDefaultTimeout(60000);
   const errors = [];
   page.on("pageerror", e => errors.push(e.message));
+  page.on("console", message => { if (message.type() === "error") errors.push(message.text()); });
   page.on("response", r => { if (r.status() >= 400) errors.push(`${r.status()} ${r.url()}`); });
   await page.goto(`${url}/?test=1`);
   await page.waitForFunction(() => window.__fairy?.screen === "title");
