@@ -21,6 +21,19 @@ function hairColor(hair, i) {
     ? ["#ef8cac", "#ffd26e", "#8ad0a4", "#79caf0", "#b095df"][i % 5]
     : tint(hair, [0, 0.055, -0.035, 0.025, -0.015][i % 5]);
 }
+function eyelid(parent, color, position, scale) {
+  const lid = orb(parent, color, position, scale);
+  lid.name = "Blinking eyelid";
+  lid.visible = false;
+  lid.userData.dynamic = true;
+  return lid;
+}
+function blink(lids, time, offset = 0) {
+  const phase = (time + offset) % 4.7;
+  lids.forEach((lid) => {
+    lid.visible = phase > 4.48;
+  });
+}
 export function makePony({
   unicorn = false,
   hair = CHARACTER.hair,
@@ -36,6 +49,7 @@ export function makePony({
   neck.rotation.x = 0.15;
   orb(body, tint(coat, 0.065), [0, 1.1, 0.56], [0.4, 0.39, 0.43]);
   const head = group(body, [0, 2.22, 0.94]);
+  const lids = [];
   head.rotation.x = -0.15;
   orb(head, coat, [0, 0.14, 0], [0.42, 0.48, 0.59]);
   orb(head, muzzle, [0, -0.05, 0.5], [0.39, 0.26, 0.31]);
@@ -61,6 +75,9 @@ export function makePony({
     orb(head, "#233148", [side * 0.436, 0.23, 0.285], [0.016, 0.078, 0.053]);
     orb(head, "#ffffff", [side * 0.451, 0.274, 0.304], [0.013, 0.031, 0.022]);
     orb(head, "#ffffff", [side * 0.45, 0.2, 0.267], [0.012, 0.014, 0.012]);
+    lids.push(
+      eyelid(head, coat, [side * 0.428, 0.24, 0.265], [0.044, 0.151, 0.14]),
+    );
     orb(head, "#db9ca5", [side * 0.36, 0.035, 0.42], [0.038, 0.07, 0.1]);
     orb(head, "#976f81", [side * 0.19, -0.017, 0.752], [0.044, 0.029, 0.018]);
   }
@@ -106,13 +123,18 @@ export function makePony({
   if (unicorn) {
     const horn = cone(head, "#ffde8a", [0, 0.78, 0.22], [0.105, 0.68, 0.105]);
     horn.rotation.x = 0.12;
-    for (let i = 0; i < 3; i++)
-      cylinder(
-        head,
-        "#eeb966",
-        [0, 0.56 + i * 0.14, 0.2],
-        [0.105 - i * 0.022, 0.028, 0.105 - i * 0.022],
-      );
+    const spiral = [];
+    for (let i = 0; i <= 64; i++) {
+      const t = i / 64,
+        a = t * Math.PI * 7,
+        r = 0.096 * (1 - t);
+      spiral.push([
+        Math.cos(a) * r,
+        0.46 + t * 0.63,
+        0.185 + t * 0.076 + Math.sin(a) * r,
+      ]);
+    }
+    tube(head, "#e6ad50", spiral, 0.012, { roughness: 0.3, metalness: 0.35 });
   } else
     for (const side of [-1, 1])
       for (const [z, y, size] of [
@@ -123,17 +145,23 @@ export function makePony({
         const s = star(body, "#ffdc7b", [side * 0.56, y, z], size);
         s.rotation.y = (side * Math.PI) / 2;
       }
-  const legs = [];
+  const legs = [],
+    knees = [];
   for (const side of [-1, 1])
     for (const z of [-0.59, 0.61]) {
       const leg = group(root, [side * 0.36, 1.35, z]);
-      cylinder(leg, coat, [0, -0.43, 0], [0.14, 0.86, 0.14]);
-      orb(leg, coat, [0, -0.72, 0.02], [0.145, 0.2, 0.155]);
-      cylinder(leg, coat, [0, -0.89, 0.035], [0.12, 0.34, 0.12]);
-      cylinder(leg, tint(coat, 0.08), [0, -1.035, 0.045], [0.13, 0.14, 0.13]);
-      orb(leg, hoof, [0, -1.13, 0.09], [0.19, 0.15, 0.26], { roughness: 0.42 });
-      bake(leg);
+      orb(leg, coat, [0, -0.27, 0], [0.16, 0.39, 0.17]);
+      const knee = group(leg, [0, -0.67, 0.02]);
+      orb(knee, coat, [0, 0, 0], [0.145, 0.16, 0.155]);
+      cylinder(knee, coat, [0, -0.23, 0.015], [0.12, 0.43, 0.12]);
+      cylinder(knee, tint(coat, 0.08), [0, -0.365, 0.025], [0.13, 0.14, 0.13]);
+      orb(knee, hoof, [0, -0.46, 0.07], [0.19, 0.15, 0.26], {
+        roughness: 0.42,
+      });
+      bake(knee);
+      bake(leg, false);
       legs.push(leg);
+      knees.push(knee);
     }
   const tail = group(root, [0, 1.66, -0.85]);
   for (let i = 0; i < 7; i++)
@@ -174,11 +202,13 @@ export function makePony({
       0.025,
     );
   }
-  bake(body);
+  bake(head);
+  bake(mane);
+  bake(body, false);
   root.traverse((o) => {
     if (o.isMesh) o.castShadow = true;
   });
-  root.userData = { body, legs, tail, head, unicorn };
+  root.userData = { body, legs, knees, tail, head, mane, lids, unicorn };
   return root;
 }
 
@@ -218,6 +248,27 @@ export function makeMia() {
   });
   cylinder(body, "#f4dba1", [0, 0.39, 0], [0.28, 0.055, 0.23]);
   star(body, "#fff1c0", [0, 0.6, 0.213], 0.09);
+  const hem = [];
+  for (let i = 0; i <= 64; i++) {
+    const a = (i / 64) * Math.PI * 2,
+      fold = Math.cos(a * 8);
+    hem.push([
+      Math.sin(a) * (0.6 + fold * 0.027),
+      -0.06 + fold * 0.045,
+      Math.cos(a) * (0.6 + fold * 0.027),
+    ]);
+  }
+  tube(body, "#c1e7f3", hem, 0.016);
+  for (let i = 0; i < 8; i++) {
+    const a = (i * Math.PI) / 4;
+    const decoration = star(
+      body,
+      "#d5edf5",
+      [Math.sin(a) * 0.5, 0.035, Math.cos(a) * 0.5],
+      0.044,
+    );
+    decoration.rotation.y = a;
+  }
   for (const side of [-1, 1]) {
     orb(body, c.skin, [side * 0.49, -0.15, 0.28], [0.12, 0.32, 0.14]);
     orb(body, "#527bbe", [side * 0.49, -0.43, 0.35], [0.14, 0.13, 0.22]);
@@ -229,11 +280,39 @@ export function makeMia() {
     if (side === 1) root.userData.arm = arm;
   }
   const head = group(body, [0, 1.05, 0]);
+  const lids = [];
   orb(head, c.skin, [0, 0.1, 0], [0.38, 0.43, 0.33]);
   orb(head, c.hair, [0, 0.23, -0.1], [0.405, 0.4, 0.32]);
+  for (let i = 0; i < 7; i++) {
+    const x = (i - 3) * 0.095;
+    lock(
+      head,
+      hairColor(c.hair, i),
+      [
+        [x, 0.43, -0.24],
+        [x * 1.2, 0.1, -0.4],
+        [x * 1.25, -0.32, -0.39],
+        [x * 1.4 + 0.045, -0.55, -0.53],
+      ],
+      0.072,
+    );
+  }
   for (const side of [-1, 1]) {
     orb(head, "#325174", [side * 0.135, 0.16, 0.305], [0.043, 0.07, 0.025]);
     orb(head, "#ffffff", [side * 0.14, 0.18, 0.328], [0.014, 0.02, 0.009]);
+    lids.push(
+      eyelid(head, c.skin, [side * 0.135, 0.16, 0.328], [0.053, 0.08, 0.027]),
+    );
+    tube(
+      head,
+      "#b38b4e",
+      [
+        [side * 0.08, 0.26, 0.296],
+        [side * 0.14, 0.28, 0.3],
+        [side * 0.195, 0.26, 0.28],
+      ],
+      0.009,
+    );
     orb(head, "#efa5aa", [side * 0.245, 0.017, 0.269], [0.075, 0.045, 0.025]);
     orb(head, c.hair, [side * 0.285, -0.12, -0.075], [0.16, 0.4, 0.17]);
     const hairLock = lock(
@@ -249,6 +328,7 @@ export function makeMia() {
     );
     hairLock.name = "Flowing blonde lock";
   }
+  orb(head, c.skin, [0, 0.045, 0.333], [0.043, 0.053, 0.043]);
   tube(
     head,
     "#b27b84",
@@ -284,6 +364,21 @@ export function makeMia() {
     );
   }
   const wings = [];
+  const wingMaterial = new THREE.MeshPhysicalMaterial({
+    color: "#ffffff",
+    vertexColors: true,
+    side: THREE.DoubleSide,
+    transparent: true,
+    opacity: 0.82,
+    depthWrite: false,
+    roughness: 0.34,
+    metalness: 0.08,
+    iridescence: 0.75,
+    iridescenceIOR: 1.3,
+    iridescenceThicknessRange: [180, 380],
+    clearcoat: 0.25,
+    clearcoatRoughness: 0.3,
+  });
   for (const side of [-1, 1]) {
     const w = group(body, [side * 0.16, 0.6, -0.22]);
     const shape = new THREE.Shape();
@@ -306,7 +401,7 @@ export function makeMia() {
       geo.setAttribute("color", new THREE.Float32BufferAttribute(colors, 3));
       return geo;
     });
-    const membrane = mesh(w, wingGeo, "#ffffff", [0, 0, -0.08], [side, 1, 1], {
+    const membrane = mesh(w, wingGeo, "#ffffff", [0, 0, -0.08], [1, 1, 1], {
       vertexColors: true,
       side: THREE.DoubleSide,
       transparent: true,
@@ -316,7 +411,9 @@ export function makeMia() {
       depthWrite: false,
     });
     membrane.name = "Pearlescent butterfly wing";
-    const outline = shape.getPoints(32).map((p) => [p.x * side, p.y, -0.085]);
+    membrane.material = wingMaterial;
+    membrane.userData.ownedMaterial = true;
+    const outline = shape.getPoints(32).map((p) => [p.x, p.y, -0.085]);
     tube(w, "#ecf9ec", outline, 0.017);
     for (const points of [
       [
@@ -344,7 +441,7 @@ export function makeMia() {
       tube(
         w,
         "#efffef",
-        points.map(([x, y]) => [x * side, y, -0.1]),
+        points.map(([x, y]) => [x, y, -0.1]),
         0.012,
       );
     for (const [x, y] of [
@@ -353,8 +450,36 @@ export function makeMia() {
       [0.82, 0.44],
       [0.61, -0.39],
     ])
-      orb(w, "#fff4c4", [x * side, y, -0.11], [0.025, 0.025, 0.018]);
+      orb(w, "#fff4c4", [x, y, -0.11], [0.025, 0.025, 0.018]);
+    for (const [x, y, rx, ry] of [
+      [0.62, 0.5, 0.12, 0.18],
+      [0.43, -0.31, 0.115, 0.12],
+    ]) {
+      const ring = [];
+      for (let i = 0; i <= 32; i++) {
+        const a = (i / 32) * Math.PI * 2;
+        ring.push([
+          x + Math.cos(a) * rx,
+          y + Math.sin(a) * ry,
+          -0.105,
+        ]);
+      }
+      tube(w, "#e6f4cd", ring, 0.01);
+      orb(w, "#b2dbe8", [x, y, -0.1], [rx * 0.67, ry * 0.7, 0.009]);
+      orb(
+        w,
+        "#f9efc6",
+        [x - 0.015, y + 0.025, -0.113],
+        [0.024, 0.034, 0.009],
+      );
+    }
     bake(w);
+    // Mirror the finished group so the renderer also reverses face winding.
+    // Baking a negative membrane scale leaves its lighting normals inverted.
+    w.scale.x = side;
+    w.children.forEach((o) => {
+      if (o.material === wingMaterial) o.userData.ownedMaterial = true;
+    });
     w.traverse((o) => {
       if (o.isMesh) o.receiveShadow = false;
     });
@@ -365,7 +490,7 @@ export function makeMia() {
   root.traverse((o) => {
     if (o.isMesh && !o.material.transparent) o.castShadow = true;
   });
-  root.userData = { ...root.userData, body, wings, head };
+  root.userData = { ...root.userData, body, wings, head, lids };
   return root;
 }
 export function makeRider() {
@@ -390,10 +515,18 @@ export function animatePony(
 ) {
   const u = pony.userData,
     phase = time * (boost ? 16 : 11);
-  for (let i = 0; i < u.legs.length; i++)
+  for (let i = 0; i < u.legs.length; i++) {
+    const stride = phase + (i % 3 === 0 ? 0 : Math.PI);
     u.legs[i].rotation.x = running
-      ? Math.sin(phase + (i % 3 === 0 ? 0 : Math.PI)) * 0.65
+      ? Math.sin(stride) * 0.55
       : Math.sin(time * 2 + i) * 0.045;
+    u.knees[i].rotation.x = running ? Math.max(0, Math.cos(stride)) * 0.75 : 0;
+  }
+  u.head.rotation.x =
+    -0.15 + (running ? Math.sin(phase) * 0.035 : Math.sin(time * 1.4) * 0.025);
+  u.head.rotation.y = reduced ? 0 : Math.sin(time * 0.9) * 0.045;
+  u.mane.rotation.x = reduced ? 0 : Math.sin(time * 4) * 0.018;
+  blink(u.lids, time, u.unicorn ? 1.3 : 0);
   u.body.position.y = running
     ? Math.abs(Math.sin(phase)) * 0.085
     : Math.sin(time * 2) * 0.018;
@@ -402,11 +535,13 @@ export function animatePony(
   u.tail.rotation.z = Math.sin(time * 3) * 0.12;
   if (jump > 0) {
     u.legs.forEach((l, i) => (l.rotation.x = i % 2 ? 0.8 : -0.7));
+    u.knees.forEach((k) => (k.rotation.x = 0.8));
     u.body.rotation.x = -0.1;
   } else
     u.body.rotation.x = celebrate && !reduced ? Math.sin(time * 3) * 0.06 : 0;
   if (u.mia) {
     const m = u.mia.userData;
+    blink(m.lids, time, 0.8);
     m.wings.forEach(
       (w, i) =>
         (w.rotation.y =

@@ -3,11 +3,14 @@ import { chromium } from "@playwright/test";
 import { mkdir } from "node:fs/promises";
 await mkdir("docs/screenshots", { recursive: true });
 const browser = await chromium.launch({
-  args: [
-    "--use-gl=angle",
-    "--use-angle=swiftshader",
-    "--enable-unsafe-swiftshader",
-  ],
+  args:
+    process.env.CAPTURE_HARDWARE === "1"
+      ? []
+      : [
+          "--use-gl=angle",
+          "--use-angle=swiftshader",
+          "--enable-unsafe-swiftshader",
+        ],
 });
 const page = await browser.newPage({
   viewport: { width: 1024, height: 768 },
@@ -15,6 +18,9 @@ const page = await browser.newPage({
 });
 const errors = [];
 page.on("pageerror", (e) => errors.push(e.message));
+page.on("console", (m) => {
+  if (m.type() === "error") errors.push(m.text());
+});
 await page.goto(`${process.env.CAPTURE_URL || "http://127.0.0.1:5173"}/?test=1`);
 await page.waitForFunction(() => window.__fairy?.screen === "title");
 await page.evaluate(() => document.fonts.ready);
@@ -88,6 +94,21 @@ await shot("worlds");
 await page.setViewportSize({ width: 390, height: 844 });
 await page.getByRole("button", { name: "Back", exact: true }).click();
 await shot("portrait");
-console.log(JSON.stringify({ screenshots: 19, errors }));
+// An in-game detail view documents the actual butterfly model, not concept art.
+await page.setViewportSize({ width: 1024, height: 768 });
+await page.evaluate(() => new Promise((resolve) => requestAnimationFrame(resolve)));
+await page.evaluate(() => {
+  window.__fairy.start(6);
+  const g = window.__fairy.game;
+  g.world.update(1, g.state, g.camera);
+  const b = g.world.butterflies[0];
+  g.renderer.setAnimationLoop(null);
+  g.camera.position.copy(b.position).add({ x: 2.5, y: 2.8, z: 3.3 });
+  g.camera.lookAt(b.position);
+  g.atmosphere.update(g.camera, 1);
+  g.renderer.render(g.scene, g.camera);
+});
+await shot("butterfly-detail");
+console.log(JSON.stringify({ screenshots: 20, errors }));
 await browser.close();
 if (errors.length) process.exitCode = 1;

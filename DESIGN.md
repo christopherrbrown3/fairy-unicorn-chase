@@ -113,16 +113,16 @@ components:
 
 **Creative North Star: "The Playable Storybook"**
 
-Rounded original 3D figurines inhabit magical pastel landscapes. Flowing tapered hair, layered eyes, butterfly wings and a scalloped dress give the characters their storybook detail. Textured curving paths, planted verges, layered hills and recognizable landmarks supply environmental depth. The interface uses warm paper, sturdy rounded lettering and generous controls to keep that world readable.
+Rounded original 3D figurines inhabit magical pastel landscapes. Blinking eyes, flowing tapered hair, pearlescent fairy wings and a scalloped dress give the characters their storybook detail. Patterned butterflies, wind-bent grass, drifting clouds and rippling lily ponds animate the planted scenery around textured paths and recognizable landmarks. The interface uses warm paper, sturdy rounded lettering and generous controls to keep that world readable.
 
 The world remains animated behind the title and celebrations. Paper menus provide a quieter place to choose worlds and revisit friends. Preserve Mia's blonde hair, blue dress and wings; Glender's yellow mane, yellow tail and body stars; and white unicorn bodies with distinct mane colors. Exact provisional appearance choices remain in `DESIGN_NOTES.md`.
 
 **Key Characteristics:**
 
-- Expressive dimensional characters and richly planted scenery, with original artwork.
+- Expressive dimensional characters, patterned butterflies and living planted scenery, with original artwork.
 - Warm paper, blue actions, navy ink and pink/gold accents.
 - Large icon-led controls and short, friendly labels.
-- Galloping, wing motion, water magic and shared celebrations.
+- Galloping, hinged wing flutter, water magic, fading rainbow boosts and shared celebrations.
 
 Recorded from `src/styles/game.css`, `src/ui/view.js`, `src/game/scene.js` and their art/config dependencies after the finish review. Surface composition and the five-block built contract are in `.impeccable/surfaces/src-main-js.md`; visitor mode belongs there. No design comp was selected.
 
@@ -181,7 +181,9 @@ Spacing entries are observed recurring steps, not an implied mathematical scale.
 
 Automatic and Crisp picture quality enable one 1024 × 1024 PCF directional shadow map centered on the rider. Soft fading contact shadows anchor the rider and chased unicorn in every quality mode; Gentle disables the map. Automatic starts with a pixel-ratio cap of 1.5 and, when the sustained frame sample exceeds 24 ms at frame 300 during play, lowers the ratio to 1 and disables mapped shadows. Crisp caps the ratio at 2. These are implemented performance controls, not a physical iPad performance claim.
 
-Shared mesh materials normally use roughness 0.72. Hair, wings and quartz use smoother materials; terrain uses roughness 0.96 with world-space color variation and feathered path edges. Chunked geometry and instanced grass/pebbles keep the richer scenery bounded without postprocessing or external terrain textures.
+Shared mesh materials normally use roughness 0.72. Hair, wings and quartz use smoother materials; terrain uses roughness 0.96 with world-space color variation and feathered path edges. Mia's translucent blue/lilac wing membranes use a physical iridescent material; pearl contours and eyespot motifs sit above that changing sheen. Mirror each complete wing group so both sides retain the intended lighting.
+
+Billowed clouds and Starlight Valley's soft aurora share the sky shader. Opaque pond surfaces use painted depth, animated ripples, glints and pale shores without reflection render targets. Chunked geometry, instanced grass/pebbles and a bounded boost ribbon keep the richer scenery within the existing rendering approach, without postprocessing or external terrain textures.
 
 UI elevation uses blurred tinted shadows: shared ambient lift, blue-tinted primary lift and a broader pause-sheet shadow. Exact values live in the sidecar alongside touch-control shadows. The title retains a light text-shadow for lettering separation.
 
@@ -189,7 +191,9 @@ UI elevation uses blurred tinted shadows: shared ambient lift, blue-tinted prima
 
 ## Shapes
 
-Sculpted rounded silhouettes define characters and much of the scenery. Hair locks taper into flowing ends; blue/lilac butterfly wings carry pearl-colored contours and veins; the blue dress has a scalloped hem. Branching trees, arched castle openings, faceted quartz and floating cloud islands retain recognizable forms.
+Sculpted rounded silhouettes define characters and much of the scenery. Hair locks taper into flowing ends; Mia's blue/lilac fairy wings carry pearl contours, veins and delicate eyespots. Her blue dress has a scalloped pale hem and small stars; unicorn horns have a gold spiral. Flowers use eight cupped petals around detailed centers. Branching trees, arched castle openings, faceted quartz and floating cloud islands retain recognizable forms.
+
+Butterflies have scalloped upper and lower wing lobes, radial veins, contrasting borders, cream edge spots and paired lower-wing eyespots. Their thin painted panels remain flat and parallel as each wing hinges; body, eyes and curled antennae give the small figures dimension.
 
 Corners are purpose-based: tile, control, sheet and steering radii are recorded in frontmatter. Sound, pause and water use circles. Original inline SVG icons use rounded caps and joins, with 2.5-unit default strokes in a 32-unit viewBox and heavier steering arrows.
 
@@ -215,7 +219,13 @@ A warm-paper sheet groups Resume, Restart and Home with compact sound, picture-q
 
 Course scenery is hidden for a clear flower-ringed island, a physical rainbow, floating hearts and sparkles. A catch frames Mia, Glender and the newly found unicorn; the finale frames Mia, Glender and all ten unicorns. Copy sits above the family and actions below it. Maintain this clear portrait stage so nearby trees or buildings cannot obscure the group.
 
-Gallop, wing motion, hovering potions and camera damping supply motion. Gentle motion removes boost camera widening and reduces celebratory movement; the CSS reduced-motion preference removes transitions and animation. Keep the scene visible throughout state changes.
+### Living Scenery and Magic
+
+Four coordinated butterfly palettes repeat through the planted worlds. Butterfly Garden uses larger figures, including two that accompany the rider; smaller butterflies occupy the meadow, forest, castle and palace verges. Keep their patterns legible through the hinged flutter. Lily ponds sit beyond the playable path, with lily pads, reeds and stones.
+
+Staggered blinks, bending pony knees, subtle head movement, galloping and fairy-wing motion keep the characters expressive. A six-color ribbon follows Glender's travelled path during a potion boost, including turns and jumps; it fades over 0.65 seconds and retains at most 40 samples. Magic particles use soft four-point sparkles with individual lifetime fades.
+
+Gentle motion holds scenery animation at a fixed time, omits new boost ribbons and extra boost particles, removes boost camera widening and reduces celebratory movement. Character motion continues. Pause freezes the scene clock; the CSS reduced-motion preference removes interface transitions and animation. Keep the scene visible throughout state changes.
 
 ## Do's and Don'ts
 

@@ -8,6 +8,7 @@ import {
 import { World } from "../worlds/world.js";
 import { Chase } from "./chase.js";
 import { Particles } from "./particles.js";
+import { RainbowTrail } from "./rainbow-trail.js";
 import {
   disposeTree,
   group,
@@ -119,6 +120,7 @@ export class GameScene {
       return s;
     });
     this.particles = new Particles(this.scene);
+    this.trail = new RainbowTrail(this.scene);
     this.steer = 0;
     this.mode = "title";
     this.state = null;
@@ -188,6 +190,7 @@ export class GameScene {
     this.sun.intensity = dark ? 1.7 : 2.65;
     this.rim.color.set(dark ? "#d6a6f1" : "#c5e7ff");
     this.particles.clear();
+    this.trail.clear();
   }
   position(model, s, lane = 0, y = 0) {
     const p = coursePoint(this.level, s, lane);
@@ -207,6 +210,7 @@ export class GameScene {
     this.mode = "title";
     this.state = null;
     this.waterStream.visible = false;
+    this.trail.clear();
     this.position(this.player, 0, 0);
     this.position(this.unicorn, 7, -3);
     this.player.visible = true;
@@ -244,6 +248,7 @@ export class GameScene {
   }
   celebrate(final = false) {
     this.mode = final ? "final" : "celebrate";
+    this.trail.clear();
     this.steer = 0;
     this.waterStream.visible = false;
     const s = this.state.s;
@@ -383,12 +388,13 @@ export class GameScene {
       raw = (now - this.lastTime) / 1000,
       dt = Math.min(raw, 0.05);
     this.lastTime = now;
-    this.elapsed += dt;
+    if (this.mode !== "paused") this.elapsed += dt;
     const time = this.elapsed;
     if (this.mode === "playing") {
       const c = this.state;
       c.step(dt, this.steer);
       const p = this.position(this.player, c.s, c.lane, c.jumpHeight);
+      this.trail.update(dt, this.player, c.boost > 0 && !this.reducedMotion);
       this.position(this.unicorn, c.unicornS, c.unicornLane);
       animatePony(this.player, time, {
         boost: c.boost > 0,
@@ -495,7 +501,7 @@ export class GameScene {
       this.world.update(this.reducedMotion ? 0 : time, c, this.camera);
       this.particles.step(dt);
     }
-    this.atmosphere.update(this.camera);
+    this.atmosphere.update(this.camera, this.reducedMotion ? 0 : time);
     const focus = this.player.position;
     this.sun.target.position.copy(focus);
     this.sun.position.copy(focus).add(new THREE.Vector3(-18, 32, 14));
@@ -514,6 +520,8 @@ export class GameScene {
     removeEventListener("resize", this.resize);
     this.world?.dispose();
     this.atmosphere.dispose();
+    this.trail.dispose();
+    this.particles.dispose();
     this.shadows.forEach((s) => s.material.dispose());
     this.renderer.dispose();
   }

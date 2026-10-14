@@ -92,17 +92,49 @@ export function flower(parent, color = "#f4a7bd", scale = 1) {
   leaf.rotation.z = 0.35;
   const leaf2 = orb(g, "#5f9b7c", [-0.12, 0.43, 0.01], [0.15, 0.05, 0.075]);
   leaf2.rotation.z = -0.4;
-  for (let i = 0; i < 5; i++) {
-    const a = (i * Math.PI * 2) / 5;
-    const petal = orb(
+  const petalGeo = geometry("cupped-flower-petal", () => {
+    const geo = new THREE.SphereGeometry(1, 10, 8);
+    const p = geo.attributes.position,
+      colors = [];
+    for (let i = 0; i < p.count; i++) {
+      const y = p.getY(i),
+        t = (y + 1) / 2;
+      p.setXYZ(
+        i,
+        p.getX(i) * (0.68 + t * 0.32),
+        y,
+        p.getZ(i) * 0.28 + y * y * 0.3,
+      );
+      const shade = 0.72 + t * 0.28;
+      colors.push(shade, shade, shade);
+    }
+    geo.setAttribute("color", new THREE.Float32BufferAttribute(colors, 3));
+    geo.computeVertexNormals();
+    return geo;
+  });
+  for (let i = 0; i < 8; i++) {
+    const a = (i * Math.PI * 2) / 8;
+    const petal = mesh(
       g,
+      petalGeo,
       color,
-      [Math.cos(a) * 0.19, 0.93 + Math.sin(a) * 0.19, 0],
-      [0.19, 0.13, 0.07],
+      [Math.sin(a) * 0.18, 0.93 + Math.cos(a) * 0.18, 0],
+      [0.115, 0.235, 0.16],
+      { vertexColors: true, roughness: 0.8 },
     );
-    petal.rotation.z = a;
+    petal.rotation.z = -a;
   }
-  orb(g, "#ffdb77", [0, 0.93, 0.07], [0.12, 0.12, 0.085]);
+  orb(g, "#d9973e", [0, 0.93, 0.045], [0.13, 0.13, 0.055]);
+  orb(g, "#ffdb77", [0, 0.93, 0.08], [0.1, 0.1, 0.065]);
+  for (let i = 0; i < 6; i++) {
+    const a = (i * Math.PI) / 3;
+    orb(
+      g,
+      "#ffecc1",
+      [Math.sin(a) * 0.065, 0.93 + Math.cos(a) * 0.065, 0.13],
+      [0.018, 0.018, 0.013],
+    );
+  }
   orb(g, "#ffecc1", [-0.024, 0.968, 0.145], [0.042, 0.034, 0.016]);
   g.scale.setScalar(scale);
   return g;

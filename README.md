@@ -14,6 +14,7 @@ The idea, characters, and rules came from a six-year-old creative director, with
 
 - **Just steer.** Glender runs automatically. Hold a big arrow, release to settle back into the middle, and enjoy the winding path.
 - **A friendly chase.** Potions help you really close the distance. Gentle assistance keeps every unicorn catchable; there are no lives, countdowns, or fail screens.
+- **A living storybook.** Grass sways beside lily ponds, clouds drift overhead, and a rainbow ribbon follows Glender during a potion boost.
 - **A splash of magic.** Mia raises her arm and sprays a sparkling blue water stream. It is harmless, joyful, and completely optional.
 - **Wheee!** Glender automatically jumps over puddles and logs. Trees give a little bump and a brief slowdown.
 - **A growing collection.** Catch a unicorn, celebrate together, unlock the next world, and reveal a new friend in the collection book.
@@ -34,6 +35,8 @@ These are real screenshots of the running game, captured at an iPad-sized landsc
 | Above the clouds | Into the crystals |
 | --- | --- |
 | ![Mia and Glender following Skye through clouds and a rainbow arch](docs/screenshots/cloud.jpg) | ![Mia and Glender chasing Amber toward a crystal cave arch](docs/screenshots/crystal.jpg) |
+| **Butterfly Garden** | **A butterfly, up close** |
+| ![Patterned butterflies accompanying Mia through the garden](docs/screenshots/garden.jpg) | ![In-game model detail showing scalloped patterned wings, eyespots and antennae](docs/screenshots/butterfly-detail.jpg) |
 | **Mia’s water magic** | **Glender’s automatic jump** |
 | ![Visible blue water droplets spraying forward from Mia](docs/screenshots/water.jpg) | ![Glender jumping over a puddle on the magical track](docs/screenshots/jump.jpg) |
 | **Our unicorn friends** | **All ten together** |
@@ -45,14 +48,14 @@ These are real screenshots of the running game, captured at an iPad-sized landsc
 
 | World | A little magic | Unicorn / mane |
 | --- | --- | --- |
-| 1 · Rainbow Meadow | Flowers, rounded trees, hills and rainbow arches | Blossom · pink |
+| 1 · Rainbow Meadow | Petaled flowers, rippling lily ponds and rainbow arches | Blossom · pink |
 | 2 · Enchanted Forest | Tall trees and giant mushrooms | Violet · purple |
 | 3 · Cloud Kingdom | Puffy cloud banks and floating rainbow paths | Skye · sky blue |
 | 4 · Fairy Castle | Turrets, flags and pastel garden trees | Sunny · yellow |
 | 5 · Candy Wonderland | Lollipop trees and candy-colored mushrooms | Clover · mint green |
 | 6 · Crystal Caves | Luminous crystals and broad cave arches | Amber · orange |
 | 7 · Butterfly Garden | Giant flowers and fluttering butterflies | Rosie · red |
-| 8 · Starlight Valley | A starry sky, moon and lavender trees | Ripple · turquoise |
+| 8 · Starlight Valley | A starry sky, soft aurora and lavender trees | Ripple · turquoise |
 | 9 · Rainbow Mountains | Snow-tipped peaks and rainbow arches | Lilac · lavender |
 | 10 · Unicorn Palace | Golden domes, flowers and rainbow scenery | Prism · rainbow |
 
@@ -101,7 +104,7 @@ For a fresh screenshot gallery, start `npm run dev` on port 5173, then run `node
 
 ## Publishing & custom domain
 
-The public repository is [christopherrbrown3/fairy-unicorn-chase](https://github.com/christopherrbrown3/fairy-unicorn-chase). Pushes to `main` and manual dispatch run [the Pages workflow](.github/workflows/deploy.yml): install, unit tests, build, Chromium browser tests, artifact upload, and deployment through GitHub’s official Pages actions.
+The public repository is [christopherrbrown3/fairy-unicorn-chase](https://github.com/christopherrbrown3/fairy-unicorn-chase). Changes go through pull requests, which run the build, unit tests and Chromium gameplay checks. Merges to `main` and manual dispatch run [the Pages workflow](.github/workflows/deploy.yml), repeating validation before artifact upload and deployment through GitHub’s official Pages actions.
 
 **Production is live at [fuc.christopherbrown.ai](https://fuc.christopherbrown.ai).** Repository Pages settings use GitHub Actions, configure this custom domain, report domain verification and an approved certificate, and enforce HTTPS. HTTP redirects to HTTPS. The [GitHub Pages fallback](https://christopherrbrown3.github.io/fairy-unicorn-chase/) redirects to the custom domain.
 
@@ -130,7 +133,9 @@ The static JavaScript modules use **Three.js + WebGL**, **Vite**, **Web Audio**,
 | Menus, icons and touch controls | [src/ui](src/ui), [game.css](src/styles/game.css) |
 | Save schema and graceful recovery | [src/game/save.js](src/game/save.js) |
 
-Characters and environments are original procedural models with reusable geometry and animation pivots. The sparkly potion is an optimized, original Blender GLB, with a procedural fallback. Its [authoring script](tools/blender_potion.py) creates a separate scene and exports only that scene. Scenery is merged into spatial chunks, with instanced grass and pebbles. Flowing hair, butterfly wings, soft shadows, textured paths, layered hills, floating islands and moonlit lighting give the worlds more depth. Particles, shadow maps and render resolution are bounded; level resources are disposed on replacement.
+Characters and environments are original procedural models with reusable geometry and animation pivots. Mia and the ponies blink; articulated knees bend through gallops and jumps. Flowing hair, embroidered dress details, butterfly wings and spiral unicorn horns reward a closer look. The sparkly potion is an optimized, original Blender GLB, with a procedural fallback. Its [authoring script](tools/blender_potion.py) creates a separate scene and exports only that scene.
+
+Scenery combines soft shadows, textured paths, petaled flowers, layered hills, floating islands and moonlit lighting. Instanced grass bends in the wind; lily ponds ripple; drifting clouds and a starlight aurora use a single sky pass. The boost ribbon follows the actual path and fades, as do individual magic sparkles. Gentle motion holds the new environmental animation still and omits the ribbon. Geometry, particles, shadow maps and render resolution are bounded; level resources are disposed on replacement.
 
 ## Tested, with room for a real playtest
 
