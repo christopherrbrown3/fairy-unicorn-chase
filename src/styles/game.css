@@ -892,22 +892,33 @@ h2 {
     padding: 10px 16px;
   }
   .title-copy {
-    transform: translateY(-38%);
+    top: max(20px, env(safe-area-inset-top));
+    left: max(42px, env(safe-area-inset-left));
+    transform: none;
   }
   .title-copy h1 {
     font-size: clamp(43px, 6vw, 68px);
   }
   .title-copy > p {
-    margin: 13px 0 16px;
+    margin: 10px 0 12px;
     font-size: 18px;
+    line-height: 1.25;
   }
   .title-copy .jumbo {
-    min-height: 70px;
+    min-height: 64px;
     font-size: 26px;
     padding: 12px 26px;
   }
   .title-links {
     margin-top: 4px;
+  }
+  .title-links .quiet {
+    min-height: 48px;
+    padding: 8px;
+  }
+  .saved-progress {
+    left: max(42px, env(safe-area-inset-left));
+    bottom: max(12px, env(safe-area-inset-bottom));
   }
   .quiet {
     min-height: 54px;
