@@ -18,6 +18,7 @@ export class View {
     return `<button class="round sound-toggle" data-action="sound" aria-label="${save.sound ? "Mute sound" : "Turn sound on"}" aria-pressed="${save.sound}">${icon(save.sound ? "sound" : "mute")}</button>`;
   }
   show(html, current) {
+    this.closeNewGameConfirmation(false);
     this.current = current;
     this.root.innerHTML = html;
     this.root.dataset.screen = current;
@@ -28,7 +29,7 @@ export class View {
   title(save) {
     const n = save.completed.length;
     this.show(
-      `<section class="title-screen"><div class="title-top">${this.sound(save)}</div><div class="title-copy"><h1>Fairy<br /><span>Unicorn</span><br />Chase</h1><p>Mia & Glender’s magical adventure</p>${this.button("play", n > 0 && n < LEVELS.length ? "Keep playing" : "Let’s play", "play", "button primary jumbo")}<nav class="title-links" aria-label="Adventure menus">${this.button("levels", "Worlds", "map", "button quiet")}${this.button("collection", "Unicorns", "book", "button quiet")}</nav></div><div class="title-note">${LEVELS.length} magical worlds.<br />${LEVELS.length} new friends.</div>${n ? `<div class="saved-progress">${icon("star")} ${n} / ${LEVELS.length} unicorns found</div>` : ""}</section>`,
+      `<section class="title-screen"><div class="title-top">${this.button("new-game", "New game", "restart", "button paper title-new-game")}${this.sound(save)}</div><div class="title-copy"><h1>Fairy<br /><span>Unicorn</span><br />Chase</h1><p>Mia & Glender’s magical adventure</p>${this.button("play", n > 0 && n < LEVELS.length ? "Keep playing" : "Let’s play", "play", "button primary jumbo")}<nav class="title-links" aria-label="Adventure menus">${this.button("levels", "Worlds", "map", "button quiet")}${this.button("collection", "Unicorns", "book", "button quiet")}</nav></div><div class="title-note">${LEVELS.length} magical worlds.<br />${LEVELS.length} new friends.</div>${n ? `<div class="saved-progress">${icon("star")} ${n} / ${LEVELS.length} unicorns found</div>` : ""}</section>`,
       "title",
     );
   }
@@ -92,9 +93,34 @@ export class View {
   }
   pause(save) {
     this.show(
-      `<section class="pause-screen"><div class="pause-sheet"><h2>A little breather</h2><p>Mia & Glender will wait for you</p>${this.button("resume", "Keep chasing", "play", "button primary jumbo")}${this.button("restart", "Start this world again", "restart")}${this.button("home", "Home", "home")}<div class="preferences">${this.button("sound", save.sound ? "Sound on" : "Sound off", save.sound ? "sound" : "mute", "button small")}<label>Picture<select id="quality" aria-label="Picture quality"><option value="auto" ${save.quality === "auto" ? "selected" : ""}>Automatic</option><option value="low" ${save.quality === "low" ? "selected" : ""}>Gentle</option><option value="high" ${save.quality === "high" ? "selected" : ""}>Crisp</option></select></label><label class="motion-option"><input id="motion" type="checkbox" ${save.reducedMotion ? "checked" : ""}/>Gentle motion</label></div></div></section>`,
+      `<section class="pause-screen"><div class="pause-sheet"><h2>A little breather</h2><p>Mia & Glender will wait for you</p>${this.button("resume", "Keep chasing", "play", "button primary jumbo")}${this.button("restart", "Start this world again", "restart")}<div class="pause-menu">${this.button("home", "Home", "home")}${this.button("new-game", "New game", "restart")}</div><div class="preferences">${this.button("sound", save.sound ? "Sound on" : "Sound off", save.sound ? "sound" : "mute", "button small")}<label>Picture<select id="quality" aria-label="Picture quality"><option value="auto" ${save.quality === "auto" ? "selected" : ""}>Automatic</option><option value="low" ${save.quality === "low" ? "selected" : ""}>Gentle</option><option value="high" ${save.quality === "high" ? "selected" : ""}>Crisp</option></select></label><label class="motion-option"><input id="motion" type="checkbox" ${save.reducedMotion ? "checked" : ""}/>Gentle motion</label></div></div></section>`,
       "paused",
     );
+  }
+  confirmNewGame() {
+    if (this.newGameDialog) return;
+    this.newGameOpener = this.root.querySelector('[data-action="new-game"]');
+    this.root.insertAdjacentHTML(
+      "beforeend",
+      `<dialog class="new-game-dialog" aria-labelledby="new-game-title" aria-describedby="new-game-description"><h2 id="new-game-title">Start a new adventure?</h2><p id="new-game-description">Your collected unicorns and world unlocks will reset. You’ll start again in Rainbow Meadow.</p><p class="new-game-preferences">Your sound, picture and gentle motion settings will stay the same.</p><div class="new-game-actions"><button class="button primary" data-action="cancel-new-game" autofocus>${icon("back")}<span>Cancel</span></button>${this.button("confirm-new-game", "Start new game", "restart")}</div></dialog>`,
+    );
+    const dialog = this.root.querySelector(".new-game-dialog");
+    this.newGameDialog = dialog;
+    dialog.addEventListener("cancel", (e) => {
+      e.preventDefault();
+      this.onAction("cancel-new-game");
+    });
+    dialog.showModal();
+    dialog.querySelector('[data-action="cancel-new-game"]').focus();
+  }
+  closeNewGameConfirmation(restoreFocus = true) {
+    if (!this.newGameDialog) return;
+    this.newGameDialog.close();
+    this.newGameDialog.remove();
+    this.newGameDialog = null;
+    if (restoreFocus && this.newGameOpener?.isConnected)
+      this.newGameOpener.focus({ preventScroll: true });
+    this.newGameOpener = null;
   }
   complete(level, save, final) {
     this.show(

@@ -7,11 +7,15 @@ export class Input {
     this.pointers = new Map();
     this.waterHeld = false;
     addEventListener("keydown", (e) => {
+      // Menus and the reset dialog keep native button and Escape behavior.
+      if (e.defaultPrevented || e.target.closest?.("dialog")) return;
       if (
         ["ArrowLeft", "ArrowRight", "a", "A", "d", "D", " ", "Escape"].includes(
           e.key,
         ) &&
-        !["SELECT", "INPUT"].includes(e.target.tagName)
+        !["SELECT", "INPUT"].includes(e.target.tagName) &&
+        (this.game.mode === "playing" || e.key === "Escape") &&
+        !(e.key === " " && e.target.tagName === "BUTTON")
       ) {
         e.preventDefault();
         if (e.key === "Escape") {

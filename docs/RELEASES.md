@@ -1,5 +1,9 @@
 # Release history
 
+## v1.4.0 — New game
+
+Start over from the home or pause menu with **New game**. A confirmation explains that collected unicorns and world unlocks will reset; **Cancel** or Escape keeps the adventure unchanged. Confirming begins a fresh chase in Rainbow Meadow, while sound, picture quality and gentle motion settings stay the same. All thirteen worlds remain available to discover again.
+
 ## v1.3.0 — Pokémon Park
 
 World 13 adds Spark, a cobalt-maned white unicorn, alongside friendly Pikachu, Bulbasaur, Squirtle, Poké Ball garden gates, and Pokémon Centers. Existing saves carry forward into the thirteen-friend collection and finale.

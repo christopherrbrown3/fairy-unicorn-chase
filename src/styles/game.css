@@ -245,6 +245,15 @@ h2 {
 .title-top .sound-toggle {
   margin-left: auto;
 }
+.title-new-game {
+  margin-left: auto;
+  font-size: 20px;
+  padding: 12px 20px;
+  gap: 10px;
+}
+.title-new-game + .sound-toggle {
+  margin-left: 0;
+}
 .title-copy {
   position: absolute;
   top: 50%;
@@ -617,8 +626,9 @@ h2 {
 }
 .pause-screen {
   height: 100%;
-  display: grid;
-  place-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
   background: #dce6edbb;
   pointer-events: auto;
   overflow: auto;
@@ -634,6 +644,9 @@ h2 {
   align-items: stretch;
   gap: 16px;
   max-width: 560px;
+  width: 100%;
+  margin-block: auto;
+  flex-shrink: 0;
   text-align: center;
 }
 .pause-sheet h2 {
@@ -642,6 +655,68 @@ h2 {
 .pause-sheet > p {
   font-size: 20px;
   margin: -4px 0 6px;
+}
+.pause-menu {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+.pause-menu .button {
+  font-size: 20px;
+  padding: 12px;
+  gap: 8px;
+}
+.pause-menu .icon {
+  width: 24px;
+  height: 24px;
+}
+.new-game-dialog {
+  width: min(560px, calc(100% - 48px));
+  max-height: calc(100% - 48px);
+  max-height: calc(100dvh - 48px);
+  margin: auto;
+  border: 0;
+  border-radius: 24px;
+  padding: 32px;
+  background: var(--paper);
+  color: var(--ink);
+  box-shadow: 0 16px 60px #30456b35;
+  text-align: center;
+  overflow: auto;
+  pointer-events: auto;
+}
+.new-game-dialog[open] {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.new-game-dialog::backdrop {
+  background: #dce6eddd;
+}
+.new-game-dialog h2 {
+  font-size: 38px;
+}
+.new-game-dialog p {
+  font-size: 20px;
+  line-height: 1.4;
+}
+.new-game-dialog .new-game-preferences {
+  font-size: 16px;
+}
+.new-game-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 4px;
+}
+.new-game-actions .button {
+  font-size: 20px;
+  padding: 12px;
+  gap: 8px;
+}
+.new-game-actions .icon {
+  width: 24px;
+  height: 24px;
 }
 .preferences {
   display: flex;
@@ -811,23 +886,39 @@ h2 {
     min-height: 56px;
     min-width: 56px;
   }
+  .title-new-game {
+    min-height: 56px;
+    font-size: 18px;
+    padding: 10px 16px;
+  }
   .title-copy {
-    transform: translateY(-38%);
+    top: max(20px, env(safe-area-inset-top));
+    left: max(42px, env(safe-area-inset-left));
+    transform: none;
   }
   .title-copy h1 {
     font-size: clamp(43px, 6vw, 68px);
   }
   .title-copy > p {
-    margin: 13px 0 16px;
+    margin: 10px 0 12px;
     font-size: 18px;
+    line-height: 1.25;
   }
   .title-copy .jumbo {
-    min-height: 70px;
+    min-height: 64px;
     font-size: 26px;
     padding: 12px 26px;
   }
   .title-links {
     margin-top: 4px;
+  }
+  .title-links .quiet {
+    min-height: 48px;
+    padding: 8px;
+  }
+  .saved-progress {
+    left: max(42px, env(safe-area-inset-left));
+    bottom: max(12px, env(safe-area-inset-bottom));
   }
   .quiet {
     min-height: 54px;
@@ -934,19 +1025,55 @@ h2 {
     top: 22%;
   }
   .pause-sheet {
-    gap: 10px;
-    padding: 22px 30px;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    max-width: 680px;
+    gap: 8px;
+    padding: 18px 24px;
+  }
+  .pause-sheet h2,
+  .pause-sheet > p,
+  .pause-menu,
+  .preferences {
+    grid-column: 1 / -1;
   }
   .pause-sheet h2 {
     font-size: 32px;
   }
   .pause-sheet > .button {
-    min-height: 52px;
+    min-height: 48px;
     padding: 8px 25px;
     font-size: 22px;
   }
   .pause-sheet > .jumbo {
-    min-height: 65px;
+    min-height: 56px;
+  }
+  .pause-menu .button {
+    min-height: 48px;
+    padding: 8px 12px;
+  }
+  .pause-sheet > p {
+    font-size: 18px;
+    margin: -4px 0 0;
+  }
+  .preferences {
+    gap: 10px;
+    margin-top: 0;
+  }
+  .new-game-dialog {
+    padding: 20px 28px;
+  }
+  .new-game-dialog[open] {
+    gap: 14px;
+  }
+  .new-game-dialog h2 {
+    font-size: 32px;
+  }
+  .new-game-dialog p {
+    font-size: 18px;
+  }
+  .new-game-actions .button {
+    min-height: 56px;
   }
   .celebration-title {
     top: 14px;
@@ -1005,6 +1132,11 @@ h2 {
   .title-top .sound-toggle {
     min-width: 58px;
     min-height: 58px;
+  }
+  .title-new-game {
+    min-height: 58px;
+    font-size: 18px;
+    padding: 10px 16px;
   }
   .title-copy {
     left: 24px;
@@ -1116,6 +1248,21 @@ h2 {
   .pause-sheet {
     padding: 25px 20px;
     gap: 14px;
+  }
+  .pause-screen {
+    padding-bottom: 100px;
+  }
+  .pause-menu .button {
+    font-size: 18px;
+  }
+  .new-game-dialog {
+    padding: 26px 22px;
+  }
+  .new-game-dialog h2 {
+    font-size: 32px;
+  }
+  .new-game-actions {
+    grid-template-columns: 1fr;
   }
   .pause-sheet h2 {
     font-size: 34px;

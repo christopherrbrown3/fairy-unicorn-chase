@@ -9,6 +9,7 @@ import {
   unlockCount,
   sanitizeSave,
   freshSave,
+  resetProgress,
 } from "../src/game/save.js";
 
 test("all courses close smoothly and expose distinct unicorns", () => {
@@ -120,6 +121,25 @@ test("progress survives storage, corrupt saves and unavailable storage recover",
     ),
     false,
   );
+});
+
+test("new game clears only completed progress and preserves saved preferences", () => {
+  const completed = LEVELS.map((level) => level.id);
+  const original = {
+    version: 1,
+    completed,
+    sound: false,
+    quality: "low",
+    reducedMotion: true,
+  };
+  const reset = resetProgress(original);
+
+  assert.deepEqual(reset.completed, []);
+  assert.equal(unlockCount(reset), 1);
+  assert.equal(reset.sound, false);
+  assert.equal(reset.quality, "low");
+  assert.equal(reset.reducedMotion, true);
+  assert.deepEqual(original.completed, completed);
 });
 
 // Preserve the original ten-world save key and IDs as new releases add worlds.
