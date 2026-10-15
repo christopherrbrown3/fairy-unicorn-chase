@@ -387,31 +387,26 @@ test("new game cancellation and confirmation preserve only the intended state", 
   expect(errors).toEqual([]);
 });
 
-test("new game menus and confirmation fit the requested review viewports", async ({
-  page,
-  browserName,
-}) => {
-  test.skip(browserName !== "chromium", "One visual capture set is sufficient.");
-  const errors = [];
-  page.on("pageerror", (e) => errors.push(e.message));
-  page.on("console", (m) => {
-    if (m.type() === "error") errors.push(m.text());
-  });
-  page.on("response", (r) => {
-    if (r.status() >= 400) errors.push(`${r.status()} ${r.url()}`);
-  });
-  const output = resolve(".impeccable/review/new-game");
-  await mkdir(output, { recursive: true });
-  await page.goto("/?test=1");
-  await ready(page);
-
-  const viewports = [
-    { name: "tablet", width: 1024, height: 768 },
-    { name: "short-landscape", width: 844, height: 390 },
-    { name: "portrait", width: 390, height: 844 },
-  ];
-  for (const viewport of viewports) {
+for (const viewport of [
+  { name: "tablet", width: 1024, height: 768 },
+  { name: "short-landscape", width: 844, height: 390 },
+  { name: "portrait", width: 390, height: 844 },
+]) {
+  test(`new game menus and confirmation fit ${viewport.name}`, async ({ page, browserName }) => {
+    test.skip(browserName !== "chromium", "One visual capture set is sufficient.");
+    const errors = [];
+    page.on("pageerror", (e) => errors.push(e.message));
+    page.on("console", (m) => {
+      if (m.type() === "error") errors.push(m.text());
+    });
+    page.on("response", (r) => {
+      if (r.status() >= 400) errors.push(`${r.status()} ${r.url()}`);
+    });
+    const output = resolve(".impeccable/review/new-game");
+    await mkdir(output, { recursive: true });
     await page.setViewportSize({ width: viewport.width, height: viewport.height });
+    await page.goto("/?test=1");
+    await ready(page);
     await page.evaluate(() => {
       localStorage.setItem(
         "fairy-unicorn-chase:v1",
@@ -471,9 +466,9 @@ test("new game menus and confirmation fit the requested review viewports", async
         animations: "disabled",
       });
     }
-  }
-  expect(errors).toEqual([]);
-});
+    expect(errors).toEqual([]);
+  });
+}
 
 test("new game explains when cleared progress cannot be saved", async ({ page }) => {
   const errors = [];
