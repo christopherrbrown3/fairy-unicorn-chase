@@ -1,4 +1,6 @@
 import { test, expect } from "@playwright/test";
+import { mkdir } from "node:fs/promises";
+import { resolve } from "node:path";
 import { LEVELS } from "../../src/config/levels.js";
 const ready = async (page) => {
   await page.waitForFunction(
@@ -6,6 +8,23 @@ const ready = async (page) => {
   );
 };
 const snap = (page) => page.evaluate(() => window.__fairy.snapshot());
+const seedFullProgress = async (page) => {
+  await page.evaluate(() => {
+    localStorage.setItem(
+      "fairy-unicorn-chase:v1",
+      JSON.stringify({
+        version: 1,
+        completed: Array.from({ length: 13 }, (_, id) => id),
+        sound: false,
+        quality: "low",
+        reducedMotion: true,
+      }),
+    );
+    localStorage.setItem("new-game-unrelated", "keep this value");
+  });
+  await page.reload();
+  await ready(page);
+};
 test("root and repository subpath render authored assets without errors", async ({
   page,
 }) => {
@@ -231,4 +250,254 @@ test("portrait hint, large targets and corrupt storage recover", async ({
     expect(bounds.width).toBeGreaterThanOrEqual(80);
     expect(bounds.height).toBeGreaterThanOrEqual(80);
   }
+});
+
+test("new game cancellation and confirmation preserve only the intended state", async ({
+  page,
+  browserName,
+}) => {
+  const errors = [];
+  page.on("pageerror", (e) => errors.push(e.message));
+  page.on("console", (m) => {
+    if (m.type() === "error") errors.push(m.text());
+  });
+  page.on("response", (r) => {
+    if (r.status() >= 400) errors.push(`${r.status()} ${r.url()}`);
+  });
+
+  await page.goto("/?test=1");
+  await ready(page);
+  await seedFullProgress(page);
+  const readStorage = () =>
+    page.evaluate(() => ({
+      save: JSON.parse(localStorage.getItem("fairy-unicorn-chase:v1")),
+      unrelated: localStorage.getItem("new-game-unrelated"),
+    }));
+  const original = await readStorage();
+  const opener = page.getByRole("button", { name: "New game", exact: true });
+
+  // Space remains the native button activation key on the title menu and dialog.
+  await opener.focus();
+  await page.keyboard.press("Space");
+  const dialog = page.getByRole("dialog", { name: "Start a new adventure?" });
+  await expect(dialog).toBeVisible();
+  const cancel = page.getByRole("button", { name: "Cancel" });
+  const confirm = page.getByRole("button", { name: "Start new game" });
+  await expect(cancel).toBeFocused();
+  await page.keyboard.press("Space");
+  await expect(dialog).toBeHidden();
+  await expect(opener).toBeFocused();
+  expect(await readStorage()).toEqual(original);
+  expect(await page.evaluate(() => window.__fairy.screen)).toBe("title");
+
+  // A real touch cancellation works for the primary young-player input mode.
+  await opener.tap();
+  await cancel.tap();
+  await expect(dialog).toBeHidden();
+  await expect(opener).toBeFocused();
+  expect(await readStorage()).toEqual(original);
+  expect(await page.evaluate(() => window.__fairy.screen)).toBe("title");
+
+  // Escape cancels too, restores focus to the same opener, and leaves the save intact.
+  await opener.click();
+  await expect(cancel).toBeFocused();
+  await page.keyboard.press("Escape");
+  await expect(dialog).toBeHidden();
+  await expect(opener).toBeFocused();
+  expect(await readStorage()).toEqual(original);
+  expect(await page.evaluate(() => window.__fairy.screen)).toBe("title");
+
+  // Enter also opens the native menu button and its modal keeps the background inert.
+  await opener.focus();
+  await page.keyboard.press("Enter");
+  await expect(cancel).toBeFocused();
+  await opener.focus();
+  await expect(opener).not.toBeFocused();
+  await expect(cancel).toBeFocused();
+  if (browserName === "chromium") {
+    // Chromium cycles the two dialog buttons once, then Tab crosses to browser chrome.
+    await page.keyboard.press("Tab");
+    await expect(confirm).toBeFocused();
+    await page.keyboard.press("Tab");
+    await expect(dialog).toBeVisible();
+    expect(await page.evaluate(() => document.activeElement?.tagName)).toBe("BODY");
+    await opener.focus();
+    await expect(opener).not.toBeFocused();
+    await expect(dialog).toBeVisible();
+  }
+  await confirm.focus();
+  await expect(confirm).toBeFocused();
+  await page.keyboard.press("Enter");
+  await expect(dialog).toBeHidden();
+  await expect(page.getByRole("button", { name: "Pause game" })).toBeFocused();
+  await expect(page.getByText("Rainbow Meadow", { exact: true })).toBeVisible();
+  expect(await page.evaluate(() => window.__fairy.screen)).toBe("playing");
+  expect(await page.evaluate(() => window.__fairy.game.level.id)).toBe(0);
+  expect(await page.evaluate(() => window.__fairy.save)).toMatchObject({
+    completed: [],
+    sound: false,
+    quality: "low",
+    reducedMotion: true,
+  });
+  expect((await readStorage()).save.completed).toEqual([]);
+  expect((await readStorage()).unrelated).toBe("keep this value");
+
+  // A pause-origin cancellation leaves the same chase paused and restores its opener.
+  await page.keyboard.press("Escape");
+  await expect(page.getByRole("heading", { name: "A little breather" })).toBeVisible();
+  const pausedAt = await page.evaluate(() => window.__fairy.game.state.s);
+  const pauseOpener = page.getByRole("button", { name: "New game" });
+  await pauseOpener.focus();
+  await page.keyboard.press("Space");
+  await expect(dialog).toBeVisible();
+  await expect(cancel).toBeFocused();
+  await page.keyboard.press("Escape");
+  await expect(dialog).toBeHidden();
+  await expect(pauseOpener).toBeFocused();
+  expect(await page.evaluate(() => window.__fairy.screen)).toBe("paused");
+  expect(await page.evaluate(() => window.__fairy.game.mode)).toBe("paused");
+  expect(await page.evaluate(() => window.__fairy.game.state.s)).toBe(pausedAt);
+
+  // Confirming from pause resets only progress, persists the clear save and starts world 0.
+  await page.keyboard.press("Enter");
+  await expect(dialog).toBeVisible();
+  await expect(cancel).toBeFocused();
+  await confirm.tap();
+  await expect(page.getByRole("button", { name: "Pause game" })).toBeFocused();
+  expect(await page.evaluate(() => window.__fairy.screen)).toBe("playing");
+  expect(await page.evaluate(() => window.__fairy.game.level.id)).toBe(0);
+  expect(await page.evaluate(() => window.__fairy.save.completed)).toEqual([]);
+
+  await page.reload();
+  await ready(page);
+  expect(await page.evaluate(() => window.__fairy.save)).toMatchObject({
+    completed: [],
+    sound: false,
+    quality: "low",
+    reducedMotion: true,
+  });
+  expect((await readStorage()).unrelated).toBe("keep this value");
+  await page.getByRole("button", { name: "Worlds", exact: true }).click();
+  await expect(
+    page.getByRole("button", { name: "Rainbow Meadow", exact: true }),
+  ).toBeEnabled();
+  expect(await page.locator(".world-tile:disabled").count()).toBe(
+    LEVELS.length - 1,
+  );
+  expect(errors).toEqual([]);
+});
+
+test("new game menus and confirmation fit the requested review viewports", async ({
+  page,
+  browserName,
+}) => {
+  test.skip(browserName !== "chromium", "One visual capture set is sufficient.");
+  const errors = [];
+  page.on("pageerror", (e) => errors.push(e.message));
+  page.on("console", (m) => {
+    if (m.type() === "error") errors.push(m.text());
+  });
+  page.on("response", (r) => {
+    if (r.status() >= 400) errors.push(`${r.status()} ${r.url()}`);
+  });
+  const output = resolve(".impeccable/review/new-game");
+  await mkdir(output, { recursive: true });
+  await page.goto("/?test=1");
+  await ready(page);
+
+  const viewports = [
+    { name: "tablet", width: 1024, height: 768 },
+    { name: "short-landscape", width: 844, height: 390 },
+    { name: "portrait", width: 390, height: 844 },
+  ];
+  for (const viewport of viewports) {
+    await page.setViewportSize({ width: viewport.width, height: viewport.height });
+    await page.evaluate(() => {
+      localStorage.setItem(
+        "fairy-unicorn-chase:v1",
+        JSON.stringify({
+          version: 1,
+          completed: [0, 1, 2],
+          sound: false,
+          quality: "low",
+          reducedMotion: true,
+        }),
+      );
+      localStorage.setItem("new-game-unrelated", "keep this value");
+    });
+    await page.reload();
+    await ready(page);
+    await expect(page.getByRole("button", { name: "New game" })).toBeVisible();
+    await expect(page.getByRole("button", { name: "Turn sound on" })).toBeVisible();
+    expect(
+      await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth),
+    ).toBe(true);
+    for (const name of ["Worlds", "Unicorns"]) {
+      const bounds = await page.getByRole("button", { name, exact: true }).boundingBox();
+      expect(bounds.y).toBeGreaterThanOrEqual(0);
+      expect(bounds.y + bounds.height).toBeLessThanOrEqual(viewport.height);
+    }
+    await page.screenshot({
+      path: resolve(output, `menu-${viewport.name}.png`),
+      animations: "disabled",
+    });
+
+    await page.getByRole("button", { name: "New game" }).click();
+    const dialog = page.getByRole("dialog", { name: "Start a new adventure?" });
+    await expect(dialog).toBeVisible();
+    await expect(page.getByRole("button", { name: "Cancel" })).toBeFocused();
+    const dialogBounds = await dialog.boundingBox();
+    expect(dialogBounds.x).toBeGreaterThanOrEqual(0);
+    expect(dialogBounds.y).toBeGreaterThanOrEqual(0);
+    expect(dialogBounds.x + dialogBounds.width).toBeLessThanOrEqual(viewport.width);
+    expect(dialogBounds.y + dialogBounds.height).toBeLessThanOrEqual(viewport.height);
+    await page.screenshot({
+      path: resolve(output, `confirmation-${viewport.name}.png`),
+      animations: "disabled",
+    });
+    await page.keyboard.press("Escape");
+    await expect(page.getByRole("button", { name: "New game" })).toBeFocused();
+
+    if (viewport.name !== "portrait") {
+      await page.getByRole("button", { name: "Keep playing" }).click();
+      await page.keyboard.press("Escape");
+      await expect(page.getByRole("heading", { name: "A little breather" })).toBeVisible();
+      await expect(page.getByRole("button", { name: "New game" })).toBeVisible();
+      expect(
+        await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth),
+      ).toBe(true);
+      await page.screenshot({
+        path: resolve(output, `pause-${viewport.name}.png`),
+        animations: "disabled",
+      });
+    }
+  }
+  expect(errors).toEqual([]);
+});
+
+test("new game explains when cleared progress cannot be saved", async ({ page }) => {
+  const errors = [];
+  page.on("pageerror", (e) => errors.push(e.message));
+  page.on("console", (m) => {
+    if (m.type() === "error") errors.push(m.text());
+  });
+  await page.goto("/?test=1");
+  await ready(page);
+  await seedFullProgress(page);
+  await page.evaluate(() => {
+    const nativeSetItem = Storage.prototype.setItem;
+    Storage.prototype.setItem = function (key, value) {
+      if (key === "fairy-unicorn-chase:v1") throw new DOMException("blocked", "SecurityError");
+      return nativeSetItem.call(this, key, value);
+    };
+  });
+  await page.getByRole("button", { name: "New game", exact: true }).click();
+  await page.getByRole("button", { name: "Start new game" }).tap();
+  await expect(page.locator("#notice")).toHaveText(
+    "Progress can’t be saved in this browser. You can still play!",
+  );
+  expect(await page.evaluate(() => window.__fairy.screen)).toBe("playing");
+  expect(await page.evaluate(() => window.__fairy.game.level.id)).toBe(0);
+  expect(await page.evaluate(() => window.__fairy.save.completed)).toEqual([]);
+  expect(errors).toEqual([]);
 });
