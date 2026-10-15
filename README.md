@@ -79,6 +79,8 @@ Turn an iPad sideways, tap **Let’s play**, and follow the unicorn. There is no
 
 Pause also offers Restart, Home, sound, picture quality, and Gentle motion. **Automatic** picture quality caps resolution and can lower it and turn off detailed shadows if rendering stays slow; choose **Gentle** on a less powerful device. The game remains playable muted, and sound starts only after a browser-permitted user gesture.
 
+Choose **New game** on the home or pause menu to start over. The confirmation warns that collected unicorns and world unlocks will reset. **Cancel** or Escape keeps your adventure; **Start new game** clears the saved collection and begins Rainbow Meadow. Sound, picture quality and gentle motion settings stay the same.
+
 ## Run locally
 
 Use Node.js 22.12 or newer. GitHub Actions uses Node 22; local build and tests were verified with Node 25.5 on macOS.

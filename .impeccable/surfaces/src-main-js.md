@@ -19,7 +19,7 @@ Scope: the title, playable chase, world book, collection book, pause sheet and c
 
 **STORY:** Title → chase → friendly catch → Continue, an unlocked world and a revealed collection friend → a thirteen-friend family finale.
 
-**FIRST VIEWPORT:** The actual meadow scene shows Mia riding yellow-haired, starred Glender. The oversized three-line Baloo title and one giant blue Play action occupy the left; Mia and Glender remain visible on the right. Worlds and Unicorns are quiet secondary destinations; sound is at the top right. No eyebrow is present.
+**FIRST VIEWPORT:** The actual meadow scene shows Mia riding yellow-haired, starred Glender. The oversized three-line Baloo title and one giant blue Play action occupy the left; Mia and Glender remain visible on the right. Worlds and Unicorns are quiet secondary destinations; New game and sound share the top right. No eyebrow is present.
 
 **FORM:** A full-viewport real Three.js world; a character-led title; paper adventure-book menus with thirteen illustrated world/friend tiles; a sparse top HUD and widely separated steering/water controls; friendly portrait celebrations on a clear flower-ringed island under a physical 3D rainbow, with all thirteen unicorns in the finale. The concept seed was 2b92a0b2; the pinned rounded pastel storybook direction overrode the roll. No comp or quality card was selected, and no ordered-form selection is claimed.
 
@@ -29,6 +29,7 @@ Scope: the title, playable chase, world book, collection book, pause sheet and c
 - Books: thirteen tiles in five columns on landscape, with a 1120px maximum grid width; portrait uses two columns and scrolls above 100px of bottom clearance. World tiles combine a themed landmark and the actual rendered unicorn portrait. Collection silhouettes reveal in full color after a catch.
 - Chase: world label left, distance meter center and pause right. Steering anchors to opposite lower corners. Water sits beside right steering. Base steering pads are 124×110px and water is 100×100px; short landscape uses 110×95px and 88×88px, while portrait uses 95×95px and 80×80px. Portrait hides the distance meter and moves controls above the rotation hint. Preserve meaningful icon labels and room for small hands.
 - Celebration: copy above and actions below the visible 3D family. The course is hidden so scenery cannot obstruct the island portrait camera. The finale dynamically splits the unicorns into two independently centered rows, currently seven and six, with Mia and Glender visible behind the friends. Hearts and sparkles accompany the physical rainbow.
+- Pause and reset: Home / New game share a row. Short landscape also pairs Resume / Restart in a wider 680px-maximum sheet; overflow remains scrollable from the top. Portrait leaves clearance for the orientation hint. The native New game dialog uses the existing warm-paper/blue palette, a 560px maximum width and bounded scrolling. Cancel receives initial focus, Escape cancels, and cancellation returns focus to the opener in the unchanged menu. Landscape confirmation buttons share a row; portrait stacks them.
 
 ## Evidence and remaining decisions
 
@@ -57,3 +58,7 @@ World 12 adds Pixel, an emerald-maned white unicorn. Custom procedural cube oaks
 ## Pokémon Park v1.3.0
 
 World 13 adds Spark, a cobalt-maned white unicorn, in a pastel park with custom procedural Pikachu, Bulbasaur, Squirtle, Poké Balls, broad garden gateways, and Pokémon Centers. The fairy and pony, controls, and gentle chase stay consistent. The current finale contains thirteen friends in centered rows of seven and six. Source: `src/worlds/pokemon.js` and `src/worlds/world.js`; review captures: `.impeccable/review/pokemon/{tablet,phone,finale,collection-phone}.png`. Earlier release records describe their own shipped counts.
+
+## New game v1.4.0
+
+The title and pause menus now offer New game with an explicit reset confirmation. Confirming clears only collection progress, relocks later worlds and begins Rainbow Meadow; saved preferences remain. Native dialog focus management and menu-aware keyboard handling protect cancellation and keyboard activation. Source: `src/ui/view.js`, `src/main.js`, `src/game/save.js`, `src/game/input.js` and `src/styles/game.css`. Release validation is recorded separately after testing; this entry describes the implementation.

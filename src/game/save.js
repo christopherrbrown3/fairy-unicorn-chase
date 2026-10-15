@@ -48,3 +48,6 @@ export function unlockCount(save) {
 export function completeLevel(save, id) {
   return sanitizeSave({ ...save, completed: [...save.completed, id] });
 }
+export function resetProgress(save) {
+  return sanitizeSave({ ...save, completed: [] });
+}

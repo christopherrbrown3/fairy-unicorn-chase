@@ -1,6 +1,6 @@
 import "./styles/game.css";
 import { GameScene, renderPortraits } from "./game/scene.js";
-import { loadSave, writeSave, completeLevel } from "./game/save.js";
+import { loadSave, writeSave, completeLevel, resetProgress } from "./game/save.js";
 import { LEVELS } from "./config/levels.js";
 import { loadWorldAssets } from "./worlds/world.js";
 import { View } from "./ui/view.js";
@@ -83,6 +83,21 @@ function action(name, value) {
       break;
     case "restart":
       start(game.level.id);
+      break;
+    case "new-game":
+      if (view.current === "title" || view.current === "paused")
+        view.confirmNewGame();
+      break;
+    case "cancel-new-game":
+      view.closeNewGameConfirmation();
+      break;
+    case "confirm-new-game":
+      if (!view.newGameDialog?.open) break;
+      save = resetProgress(save);
+      persist();
+      view.closeNewGameConfirmation(false);
+      start(0);
+      root.querySelector('[data-action="pause"]').focus({ preventScroll: true });
       break;
     case "continue":
       start(Math.min(LEVELS.length - 1, game.level.id + 1));

@@ -213,7 +213,11 @@ Translucent paper surfaces show the world and chase progress while scenery stays
 
 ### Pause Sheet and Preferences
 
-A warm-paper sheet groups Resume, Restart and Home with compact sound, picture-quality and gentle-motion settings. The native select has a rounded cool ground and a 44px minimum height; the checkbox uses primary blue. Preserve the shared focus treatment.
+A warm-paper sheet groups Resume and Restart above a paired Home / New game row, with compact sound, picture-quality and gentle-motion settings. Short landscape places Resume and Restart side by side to keep the menu in view. The native select has a rounded cool ground and a 44px minimum height; the checkbox uses primary blue. Preserve the shared focus treatment.
+
+### New Game Confirmation
+
+The home menu places a labeled New game button beside Sound, clear of the main Play action and book navigation. Home and pause use the same native modal dialog: warm paper, navy text, a soft tinted backdrop and the shared pink focus outline. The dialog explains that collected unicorns and world unlocks reset while preferences stay the same. Cancel is the first, initially focused blue action; Start new game is secondary. Actions sit side by side in landscape and stack in portrait. Escape cancels and returns focus to the originating New game button without resuming a paused chase.
 
 ### Celebration Stage
 
