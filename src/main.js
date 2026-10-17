@@ -25,8 +25,12 @@ if (matchMedia("(prefers-reduced-motion: reduce)").matches)
 const view = new View(root, action);
 const pwa = setupPwa(() => {
   if (view.current === "install") view.install(save, pwa);
-  else if (view.current === "title") view.title(save);
-  else view.renderUpdate();
+  else {
+    // Background downloads must not rebuild a menu, steal focus, or dismiss
+    // an open New game confirmation.
+    if (pwa.installed) root.querySelector(".title-install")?.remove();
+    view.renderUpdate();
+  }
 });
 view.pwa = pwa;
 view.show(

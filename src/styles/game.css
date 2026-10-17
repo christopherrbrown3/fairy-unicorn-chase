@@ -412,6 +412,9 @@ h2 {
 #ui[data-update] .saved-progress {
   bottom: 120px;
 }
+#ui[data-update] .title-note {
+  display: none;
+}
 @media (max-width: 600px) {
   .update-banner {
     gap: 12px;

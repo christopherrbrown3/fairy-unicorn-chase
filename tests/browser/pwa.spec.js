@@ -77,6 +77,10 @@ for (const base of ["/", "/fairy-unicorn-chase/"]) {
 test("installation instructions and the browser install prompt are reachable", async ({ page, browserName }) => {
   await page.goto("/?test=1");
   await ready(page);
+  await page.getByRole("button", { name: "New game", exact: true }).click();
+  await page.evaluate(() => window.dispatchEvent(new Event("beforeinstallprompt", { cancelable: true })));
+  await expect(page.getByRole("dialog")).toBeVisible();
+  await page.getByRole("button", { name: "Cancel", exact: true }).click();
   await page.getByRole("button", { name: "Add to Home Screen" }).click();
   await expect(page.getByRole("heading", { name: "Keep the magic close" })).toBeVisible();
   await expect(page.getByRole("heading", { name: "iPhone & iPad" })).toBeVisible();
@@ -189,6 +193,12 @@ test("new releases wait for a menu action, preserve saves across tabs, and survi
     expect(await other.locator('meta[name="test-release"]').getAttribute("content")).toBe("old");
     expect(await other.evaluate(() => window.__fairy.screen)).toBe("playing");
     await other.getByRole("button", { name: "Pause game" }).click();
+    await other.getByRole("button", { name: "Home", exact: true }).click();
+    if (browserName === "chromium") {
+      await other.setViewportSize({ width: 1024, height: 768 });
+      await other.evaluate(() => window.__fairy.game.frame());
+      await other.screenshot({ path: "output/playwright/pwa/update-title-tablet.png", animations: "disabled" });
+    }
     await other.getByRole("button", { name: "Update game", exact: true }).click();
     await expect(other.locator('meta[name="test-release"]')).toHaveAttribute("content", "new");
     await ready(other);

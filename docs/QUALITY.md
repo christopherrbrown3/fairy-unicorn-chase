@@ -2,7 +2,7 @@
 
 ## Automated coverage
 
-Eighteen Node tests cover real pursuit in every world, proximity-only captures after an unaligned overtake, curve closure, steering and recentering, screen-relative lane direction on multiple bends in all sixteen courses, potion speed and expiry, automatic jumps, gentle collisions, cosmetic water, save validation, release-to-release save migration, batched art geometry preservation, bounded reduced-time reef life and snowfall, underwater-atmosphere reset, and unavailable storage.
+Nineteen Node tests cover real pursuit in every world, proximity-only captures after an unaligned overtake, curve closure, steering and recentering, screen-relative lane direction on multiple bends in all sixteen courses, potion speed and expiry, automatic jumps, gentle collisions, cosmetic water, save validation, release-to-release save migration, batched art geometry preservation, bounded reduced-time reef life and snowfall, underwater-atmosphere reset, unavailable storage, and offline build version changes when game code, HTML or public assets change.
 
 Browser scenarios run in Chromium and WebKit at 1024 × 768 with touch support. They cover:
 
@@ -12,6 +12,9 @@ Browser scenarios run in Chromium and WebKit at 1024 × 768 with touch support. 
 - Locked worlds, all sixteen genuine distance-based catches, Continue, collection unlocks, sixteen-unicorn finale, reload persistence and unlocked replay.
 - Migration from the previous fifteen-world save into Christmas Village, completing Holly, the full collection/finale, preserved preferences and progress, plus New Game reset behavior.
 - Corrupt storage recovery, portrait hint and touch targets at least 80 CSS px.
+- Static link-preview metadata, manifest scope and icon dimensions at both hosting paths; a cold offline launch loads the font, authored potion model, saved progress and a playable unlocked world.
+- Installation help and a simulated browser install prompt; actual Home Screen installation remains a device check.
+- A served old/new release transition downloads a complete update, waits through active play, updates only from a menu, preserves progress/preferences and unrelated caches, and leaves a second open chase running. Updating that older copy must retain progress collected in the newer copy. An incomplete release is rejected and the last working version still launches offline. These lifecycle fixtures pause continuous rendering between checks to keep two software WebGL scenes from competing; gameplay behavior has separate rendered regression tests.
 
 The opt-in `?test=1` API advances the same physical simulation faster. It does not set a catch flag, invent wins or appear as a player-facing menu. These checks verify systems; they do not substitute for a child's playtest.
 
@@ -52,11 +55,18 @@ No physical iPad was used. WebKit automation on macOS is useful Safari-engine co
 5. Reload after a catch and confirm the friend is saved. Private browsing or cleared storage can remove progress.
 6. Try Gentle picture quality if play is choppy; check sound is comfortable.
 7. Let the creative director choose the names, coat color, favorite world, and any future water effect. Water is currently harmless decoration.
+8. Use Share → Add to Home Screen. Confirm the unicorn icon, standalone launch and safe areas, wait for the install screen's offline-ready message, then close the game and reopen the icon in airplane mode.
+9. After the next published release, reconnect and reopen or return to the app. Confirm Update game appears in a menu, the active chase is uninterrupted, and the new world is present after updating with the collection/preferences retained.
+10. Share the HTTPS game URL in Messages and check its illustrated card and description. Preview layout and caching are controlled by the messaging app; a previously shared link may retain an older preview.
 
 ## Known limits
 
 - Save data stays in this browser, with no cross-device sync; clearing site data removes it. The custom-domain origin and the GitHub hostname have separate browser storage.
 - Landscape is the primary composition. Portrait shows a turn-device hint and usable menus, but character framing is less generous.
-- There is no offline service worker; the initial load needs network access.
+- The initial download and fetching new releases need network access. Offline play requires a complete cached copy; storage eviction or clearing site data can remove it. Saved progress is local to each browser/app and does not sync across devices.
 - The original characters use procedural animation, not skeletal GLB animations. All world/name/appearance choices beyond the child's confirmations remain provisional.
 - Course lengths and assistance favor finishing over challenge. Idle simulation catches take roughly a minute; potion use can shorten them.
+
+## PWA and sharing references
+
+Implementation follows the [MDN installation and manifest requirements](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps/Guides/Making_PWAs_installable), [app icon guidance](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps/How_to/Define_app_icons), [service-worker lifecycle](https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API/Using_Service_Workers), and [Open Graph metadata](https://ogp.me/). These define browser contracts; the tests above establish this game's implementation, and the physical checklist covers device-owned behavior.
