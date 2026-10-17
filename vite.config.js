@@ -1,2 +1,3 @@
 import { defineConfig } from "vite";
-export default defineConfig({ base: "./", build: { target: "es2022" } });
+import { offlineGame } from "./tools/pwa.mjs";
+export default defineConfig({ base: "./", plugins: [offlineGame()], build: { target: "es2022" } });

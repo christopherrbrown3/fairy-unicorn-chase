@@ -12,6 +12,8 @@ const root = resolve("dist"),
     ".ttf": "font/ttf",
     ".woff2": "font/woff2",
     ".png": "image/png",
+    ".jpg": "image/jpeg",
+    ".webmanifest": "application/manifest+json",
   };
 createServer(async (req, res) => {
   try {
