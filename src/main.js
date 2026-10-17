@@ -83,10 +83,8 @@ function action(name, value) {
       break;
     case "update-app":
       if (!["title", "paused", "levels", "collection", "install"].includes(view.current)) break;
-      if (!writeSave(storage, save)) {
-        notice("The update can wait. Your adventure can’t be saved in this browser.");
-        break;
-      }
+      // Progress/preferences are saved when they change. Do not rewrite an
+      // older in-memory save over progress collected in another open copy.
       pwa.applyUpdate();
       break;
     case "home":

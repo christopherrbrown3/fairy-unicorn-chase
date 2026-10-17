@@ -2,6 +2,17 @@
 
 The owner's complete brief is the scope. Checked items mean implemented and verified; external completion needs live evidence.
 
+## Home Screen and sharing — v1.8.0
+
+- [x] Generate and save unicorn icons and an illustrated share card; wire static share metadata.
+- [x] Add a scoped web app manifest, Apple touch icon and device installation help.
+- [x] Build a versioned offline cache from emitted production assets.
+- [x] Check for new releases on launch, foreground return and reconnection; offer updates in menus while preserving saves and active chases.
+- [ ] Verify cold offline root/subpath launches, browser installation UI and complete/failed update transitions in Chromium and WebKit.
+- [ ] Inspect phone/tablet installation and update screens, publish the release and verify the live metadata/assets/worker.
+
+Physical Home Screen installation and an actual Messages preview remain device checks; browser automation does not claim those outcomes.
+
 - [x] Inspect empty directory, GitHub account and authoritative DNS.
 - [x] Initialize Vite/static foundation and product record.
 - [x] Build reusable characters, course, scene and chase camera.
