@@ -1,5 +1,11 @@
 # Creative decisions
 
+## Coral Lagoon extension
+
+World 15 appends Coral Lagoon and Pearl, a white unicorn with sea-blue hair; these names and colors are provisional. The underwater storybook keeps Mia and Glender's familiar chase on a pale sand trail. Rose branching coral, kelp fronds, lavender tube sponges, gold sea stars and open pearl shells surround the route. Broad coral gateways and giant shells set the scale; striped fish and rising bubble rings make the submerged setting legible from the chase camera.
+
+The visual contract keeps the trail, characters and potion pickups clear against a turquoise water volume. Only this theme replaces the cloud canopy and warm sun with a gently rippled aquatic canopy, shorter turquoise fog and cool fill. A fixed school of 24 small fish and 64 instanced bubble rings use the existing scene clock; Gentle motion holds their animation still and pause freezes it. Coral supports and large shells stay outside the playable road. Shared low-resolution geometry, static material batching and existing world disposal bound resource use. All 14 earlier worlds, saves, controls and preferences retain their existing behavior.
+
 ## Candy Carnival extension
 
 World 14 appends Candy Carnival and Taffy, a white unicorn with coral-pink hair. These names and palette are provisional. Candy Wonderland and Clover remain world 5 with their original scenery and saved IDs. The new setting is a confectionery fairground: peppermint pinwheels, wrapped sweets, mint gummy bears, cupcake stalls, macaron stacks and gumdrops line a biscuit-colored road. Strawberry-frosted donut gateways and tiered cake pavilions create large recognizable landmarks against a mint ground and strawberry sky. A cupcake icon identifies the world in the existing menus.

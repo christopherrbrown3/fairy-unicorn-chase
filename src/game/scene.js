@@ -189,6 +189,16 @@ export class GameScene {
     this.sun.color.set(dark ? "#c5d6ff" : "#fff0d5");
     this.sun.intensity = dark ? 1.7 : 2.65;
     this.rim.color.set(dark ? "#d6a6f1" : "#c5e7ff");
+    if (this.level.theme === "underwater") {
+      this.scene.fog.near = 50;
+      this.scene.fog.far = 155;
+      this.fill.color.set("#c7f4ee");
+      this.fill.groundColor.set("#619ea9");
+      this.fill.intensity = 1.75;
+      this.sun.color.set("#ddfff3");
+      this.sun.intensity = 2.1;
+      this.rim.color.set("#8edbff");
+    }
     this.particles.clear();
     this.trail.clear();
   }

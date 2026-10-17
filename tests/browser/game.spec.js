@@ -9,19 +9,19 @@ const ready = async (page) => {
 };
 const snap = (page) => page.evaluate(() => window.__fairy.snapshot());
 const seedFullProgress = async (page) => {
-  await page.evaluate(() => {
+  await page.evaluate((completedCount) => {
     localStorage.setItem(
       "fairy-unicorn-chase:v1",
       JSON.stringify({
         version: 1,
-        completed: Array.from({ length: 13 }, (_, id) => id),
+        completed: Array.from({ length: completedCount }, (_, id) => id),
         sound: false,
         quality: "low",
         reducedMotion: true,
       }),
     );
     localStorage.setItem("new-game-unrelated", "keep this value");
-  });
+  }, LEVELS.length - 1);
   await page.reload();
   await ready(page);
 };
@@ -157,7 +157,7 @@ test("real potion speed, automatic jump and harmless collision work in rendered 
   let c = await snap(page);
   expect(c.stats.potions).toBeGreaterThan(0);
   expect(c.speed).toBeGreaterThan(12);
-  await page.evaluate(() => {
+  await page.evaluate((completedCount) => {
     const g = window.__fairy.game;
     const item = g.state.items.find(
       (o) => o.kind === "puddle" || o.kind === "log",
@@ -230,26 +230,26 @@ test("all real chases unlock friends, continue, finale and reload persistence", 
   expect(errors).toEqual([]);
 });
 
-test("previous thirteen-world save unlocks Candy Carnival without losing progress or preferences", async ({ page }) => {
+test("previous release save unlocks the newest world without losing progress or preferences", async ({ page }) => {
   await page.goto("/?test=1");
   await ready(page);
-  await page.evaluate(() => {
+  await page.evaluate((completedCount) => {
     localStorage.setItem(
       "fairy-unicorn-chase:v1",
       JSON.stringify({
         version: 1,
-        completed: Array.from({ length: 13 }, (_, id) => id),
+        completed: Array.from({ length: completedCount }, (_, id) => id),
         sound: false,
         quality: "low",
         reducedMotion: true,
       }),
     );
     localStorage.setItem("migration-unrelated", "keep this value");
-  });
+  }, LEVELS.length - 1);
   await page.reload();
   await ready(page);
   expect(await page.evaluate(() => window.__fairy.save.completed)).toEqual(
-    Array.from({ length: 13 }, (_, id) => id),
+    Array.from({ length: LEVELS.length - 1 }, (_, id) => id),
   );
   expect(await page.evaluate(() => window.__fairy.save)).toMatchObject({
     sound: false,
@@ -257,11 +257,29 @@ test("previous thirteen-world save unlocks Candy Carnival without losing progres
     reducedMotion: true,
   });
   await page.getByRole("button", { name: "Worlds", exact: true }).click();
-  await expect(page.getByRole("button", { name: "Candy Carnival", exact: true })).toBeEnabled();
+  await expect(page.getByRole("button", { name: LEVELS.at(-1).name, exact: true })).toBeEnabled();
   expect(await page.locator(".world-tile:disabled").count()).toBe(0);
-  await page.getByRole("button", { name: "Candy Carnival", exact: true }).click();
-  expect(await page.evaluate(() => window.__fairy.game.level.id)).toBe(13);
-  expect(await page.evaluate(() => window.__fairy.save.completed.length)).toBe(13);
+  await page.getByRole("button", { name: LEVELS.at(-1).name, exact: true }).click();
+  expect(await page.evaluate(() => window.__fairy.game.level.id)).toBe(LEVELS.length - 1);
+  expect(await page.evaluate(() => window.__fairy.save.completed.length)).toBe(LEVELS.length - 1);
+  await page.evaluate(() => window.__fairy.advance(180));
+  await expect(
+    page.getByRole("heading", { name: `All ${LEVELS.length} friends!` }),
+  ).toBeVisible();
+  expect(await page.evaluate(() => window.__fairy.game.friends.length)).toBe(LEVELS.length);
+  expect(await page.evaluate(() => window.__fairy.save.completed.length)).toBe(LEVELS.length);
+  expect(await page.evaluate(() => window.__fairy.save)).toMatchObject({
+    sound: false,
+    quality: "low",
+    reducedMotion: true,
+  });
+  await page.getByRole("button", { name: "Our unicorns" }).click();
+  await expect(page.locator(".collection-tile.found")).toHaveCount(LEVELS.length);
+  await page.reload();
+  await ready(page);
+  expect(await page.evaluate(() => window.__fairy.save.completed.length)).toBe(LEVELS.length);
+  await page.getByRole("button", { name: "Worlds", exact: true }).click();
+  await expect(page.locator(".world-tile:disabled")).toHaveCount(0);
   expect(await page.evaluate(() => localStorage.getItem("migration-unrelated"))).toBe("keep this value");
 });
 test("portrait hint, large targets and corrupt storage recover", async ({
