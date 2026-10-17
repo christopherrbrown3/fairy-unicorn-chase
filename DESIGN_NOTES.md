@@ -1,5 +1,11 @@
 # Creative decisions
 
+## Pancake Picnic extension
+
+World 17 appends Pancake Picnic and Maple, a white unicorn with maple-brown hair; these names and colors are provisional. A cool blue table-runner trail crosses a warm cream breakfast landscape, contrasting with the rider, white unicorn and golden food scenery. Butter-and-syrup pancake stacks, waffles with raised grids, giant strawberries, sunny-side-up eggs, orange halves and jam-toast cottages line the route. Giant pancake towers and fork-and-spoon gateways establish the playful breakfast-table scale.
+
+The visual contract extends the existing storybook with recognizable breakfast silhouettes and a clear chase corridor. Gateway utensils sit beyond the road and the overhead pancake sign clears the characters; giant stacks and cottages sit farther back. Shared low-resolution geometry and static material batching bound the scene, with no new animation or control system. All previous 16 worlds and saved IDs remain intact, along with the current install, offline, update and share-preview features.
+
 ## Christmas Village extension
 
 World 16 appends Christmas Village and Holly, a white unicorn with cranberry-red hair. These names and colors are provisional. A biscuit-colored trail stays distinct from snow-blue ground, with decorated snowy evergreens, striped candy canes, wrapped presents, scarf-wearing snowpeople and cozy cottages with warm windows. Large garland gateways and village Christmas trees create festive landmarks without closing the playable road.

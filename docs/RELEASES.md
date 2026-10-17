@@ -1,5 +1,15 @@
 # Release history
 
+## v1.9.0 — Pancake Picnic
+
+World 17 adds Maple, a white unicorn with a maple-brown mane, to a sunny breakfast picnic. A blue runner winds past pancake stacks with butter and syrup, golden waffles, strawberries, sunny-side-up eggs, orange halves, toast cottages, and giant fork-and-spoon gates. Existing saves with all sixteen prior friends unlock Pancake Picnic while preserving progress and preferences. The Home Screen version downloads the complete new world before offering its safe menu update; cached releases continue to launch offline.
+
+![Pancake Picnic with Maple naturally close ahead on the path at desktop size](screenshots/breakfast-picnic-desktop-maple-near-v2.jpg)
+
+![Pancake Picnic with Maple naturally close ahead on the path at iPad landscape size](screenshots/breakfast-picnic-ipad-maple-near-v2.jpg)
+
+The seventeen-friend finale, captured at both sizes: [desktop](screenshots/breakfast-finale-desktop-v2.jpg) · [iPad landscape](screenshots/breakfast-finale-ipad-landscape-v2.jpg). [Rainbow Meadow preservation capture](screenshots/breakfast-meadow-preservation-v2.jpg) checks the established daylight course after Pancake Picnic.
+
 ## v1.8.0 — Home Screen & sharing
 
 Install Fairy Unicorn Chase on a mobile Home Screen with a custom unicorn icon, standalone launch and offline play after the initial download. The title screen offers installation help and a native installer where available. Shared links include an illustrated image, game title and description.

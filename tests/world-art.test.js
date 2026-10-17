@@ -6,6 +6,7 @@ import * as pokemon from "../src/worlds/pokemon.js";
 import * as carnival from "../src/worlds/carnival.js";
 import * as underwater from "../src/worlds/underwater.js";
 import * as christmas from "../src/worlds/christmas.js";
+import * as breakfast from "../src/worlds/breakfast.js";
 import { group } from "../src/art/primitives.js";
 import { Atmosphere } from "../src/art/atmosphere.js";
 import { LEVELS } from "../src/config/levels.js";
@@ -77,6 +78,18 @@ test("Christmas Village scenery keeps every triangle when combined into static b
   for (const [name, make] of Object.entries(christmas).filter(([name]) => name !== "Snowfall")) {
     const parent = group();
     const model = make(parent, 1);
+    const before = triangles(model);
+    assert.ok(before > 0, name);
+    bake(model);
+    assert.equal(triangles(model), before, `${name} lost geometry during batching`);
+    disposeTree(parent);
+  }
+});
+
+test("Pancake Picnic scenery keeps every triangle when combined into static batches", () => {
+  for (const [name, make] of Object.entries(breakfast)) {
+    const parent = group();
+    const model = name === "breakfastGate" ? make(parent) : make(parent, 1);
     const before = triangles(model);
     assert.ok(before > 0, name);
     bake(model);
