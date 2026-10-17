@@ -229,6 +229,41 @@ test("all real chases unlock friends, continue, finale and reload persistence", 
   expect(await page.locator(".world-tile:disabled").count()).toBe(0);
   expect(errors).toEqual([]);
 });
+
+test("previous thirteen-world save unlocks Candy Carnival without losing progress or preferences", async ({ page }) => {
+  await page.goto("/?test=1");
+  await ready(page);
+  await page.evaluate(() => {
+    localStorage.setItem(
+      "fairy-unicorn-chase:v1",
+      JSON.stringify({
+        version: 1,
+        completed: Array.from({ length: 13 }, (_, id) => id),
+        sound: false,
+        quality: "low",
+        reducedMotion: true,
+      }),
+    );
+    localStorage.setItem("migration-unrelated", "keep this value");
+  });
+  await page.reload();
+  await ready(page);
+  expect(await page.evaluate(() => window.__fairy.save.completed)).toEqual(
+    Array.from({ length: 13 }, (_, id) => id),
+  );
+  expect(await page.evaluate(() => window.__fairy.save)).toMatchObject({
+    sound: false,
+    quality: "low",
+    reducedMotion: true,
+  });
+  await page.getByRole("button", { name: "Worlds", exact: true }).click();
+  await expect(page.getByRole("button", { name: "Candy Carnival", exact: true })).toBeEnabled();
+  expect(await page.locator(".world-tile:disabled").count()).toBe(0);
+  await page.getByRole("button", { name: "Candy Carnival", exact: true }).click();
+  expect(await page.evaluate(() => window.__fairy.game.level.id)).toBe(13);
+  expect(await page.evaluate(() => window.__fairy.save.completed.length)).toBe(13);
+  expect(await page.evaluate(() => localStorage.getItem("migration-unrelated"))).toBe("keep this value");
+});
 test("portrait hint, large targets and corrupt storage recover", async ({
   page,
 }) => {

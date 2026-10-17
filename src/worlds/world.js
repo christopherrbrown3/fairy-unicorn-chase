@@ -31,6 +31,7 @@ import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { pokeBall, pikachu, bulbasaur, squirtle, pokemonCenter, pokeGate } from "./pokemon.js";
 import { grassBlock, blockTree, diamondOre, blockPig, friendlyCreeper, torch, blockHill, mineGate, blockCloud } from "./minecraft.js";
 import { spookyHouse, spookyHall, pumpkin, friendlyGhost } from "./spooky.js";
+import { peppermint, wrappedSweet, gummyBear, cupcake, macaron, gumdrops, donutGate, cakePavilion } from "./carnival.js";
 
 let authoredPotion = null;
 export async function loadWorldAssets() {
@@ -123,6 +124,10 @@ export class World {
           let dist = level.width / 2 + 3 + rnd(seed) * 9;
           let prop;
           switch (level.theme) {
+            case "carnival":
+              prop = [peppermint, wrappedSweet, gummyBear, cupcake, macaron, gumdrops][k % 6](chunk, 1.1);
+              if (k % 6 === 3) dist += 2;
+              break;
             case "pokemon":
               prop = k % 6 === 0 ? pikachu(chunk, 1.3)
                 : k % 6 === 1 ? flower(chunk, level.accent, 1.8)
@@ -223,6 +228,7 @@ export class World {
             (level.theme === "castle" && k % 8 === 0) ||
             (level.theme === "palace" && k % 7 === 0) ||
             level.theme === "pokemon" ||
+            level.theme === "carnival" ||
             level.theme === "minecraft" ||
             (level.theme === "spooky" && k % 4 === 0) ||
             level.theme === "candy"
@@ -324,6 +330,14 @@ export class World {
         if (i % 2 === 0) {
           const center = place(pokemonCenter(landmarks), level, s + 48, 21);
           center.rotation.y += Math.PI;
+        }
+      }
+      if (level.theme === "carnival") {
+        const gate = place(donutGate(landmarks), level, s + 60, 0);
+        gate.rotation.y += Math.PI;
+        if (i % 2 === 0) {
+          const pavilion = place(cakePavilion(landmarks), level, s + 43, (i % 4 ? -1 : 1) * 24);
+          pavilion.rotation.y += Math.PI;
         }
       }
       if (level.theme === "minecraft") {
@@ -436,7 +450,9 @@ export class World {
       } else {
         const g = level.theme === "minecraft" && item.kind === "tree"
           ? blockTree(this.root, 0.65)
-          : obstacle(this.root, item.kind);
+          : level.theme === "carnival" && item.kind === "tree"
+            ? peppermint(this.root, 0.6)
+            : obstacle(this.root, item.kind);
         place(g, level, item.s, item.lane);
         bake(g);
       }

@@ -2,14 +2,14 @@
 
 ## Automated coverage
 
-Eight Node tests cover real pursuit in every world, proximity-only captures after an unaligned overtake, curve closure, steering and recentering, screen-relative lane direction on multiple bends in all ten courses, potion speed and expiry, automatic jumps, gentle collisions, cosmetic water, save validation and unavailable storage.
+Thirteen Node tests cover real pursuit in every world, proximity-only captures after an unaligned overtake, curve closure, steering and recentering, screen-relative lane direction on multiple bends in all fourteen courses, potion speed and expiry, automatic jumps, gentle collisions, cosmetic water, save validation, release-to-release save migration, batched art geometry preservation, and unavailable storage.
 
 Five browser scenarios run in Chromium and WebKit at 1024 × 768 with touch support (ten passing browser cases). They cover:
 
 - Custom-domain root and repository subpath, entry point, no failed asset requests, runtime errors or shader console errors, and actual Mia/Glender/unicorn meshes and Blender potion.
 - Arrow/A/D input with projected on-screen movement matching the arrow direction, held pointer steering, touch water, Chromium two-finger steering plus water, pause/resume and saved sound/picture/motion preferences.
 - Potion pickup with actual increased movement speed, automatic jump triggers and gentle obstacle contact.
-- Locked worlds, all ten genuine distance-based catches, Continue, collection unlocks, ten-unicorn finale, reload persistence and unlocked replay.
+- Locked worlds, all fourteen genuine distance-based catches, Continue, collection unlocks, fourteen-unicorn finale, reload persistence and unlocked replay.
 - Corrupt storage recovery, portrait hint and touch targets at least 80 CSS px.
 
 The opt-in `?test=1` API advances the same physical simulation faster. It does not set a catch flag, invent wins or appear as a player-facing menu. These checks verify systems; they do not substitute for a child's playtest.

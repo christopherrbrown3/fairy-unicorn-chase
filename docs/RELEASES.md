@@ -1,8 +1,18 @@
 # Release history
 
+## v1.5.0 — Candy Carnival
+
+World 14 adds Taffy, a white unicorn with a coral mane, to a confectionery fairground of peppermint pinwheels, friendly gummy bears, cupcake stalls, sprinkle donut gateways, and tiered cake pavilions. The new course and collection entry unlock for existing saves with all thirteen prior friends preserved.
+
+![Candy Carnival at desktop size](screenshots/candy-carnival-desktop.jpg)
+
+![Candy Carnival at iPad landscape size](screenshots/candy-carnival-ipad.jpg)
+
+The fourteen-friend finale, captured at both sizes: [desktop](screenshots/candy-finale-desktop.jpg) · [iPad landscape](screenshots/candy-finale-ipad-settled.jpg).
+
 ## v1.4.0 — New game
 
-Start over from the home or pause menu with **New game**. A confirmation explains that collected unicorns and world unlocks will reset; **Cancel** or Escape keeps the adventure unchanged. Confirming begins a fresh chase in Rainbow Meadow, while sound, picture quality and gentle motion settings stay the same. All thirteen worlds remain available to discover again.
+Start over from the home or pause menu with **New game**. A confirmation explains that collected unicorns and world unlocks will reset; **Cancel** or Escape keeps the adventure unchanged. Confirming begins a fresh chase in Rainbow Meadow, while sound, picture quality and gentle motion settings stay the same. All fourteen worlds remain available to discover again.
 
 ## v1.3.0 — Pokémon Park
 
