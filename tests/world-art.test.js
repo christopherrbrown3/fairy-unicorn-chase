@@ -5,6 +5,7 @@ import { bake, disposeTree } from "../src/art/primitives.js";
 import * as pokemon from "../src/worlds/pokemon.js";
 import * as carnival from "../src/worlds/carnival.js";
 import * as underwater from "../src/worlds/underwater.js";
+import * as christmas from "../src/worlds/christmas.js";
 import { group } from "../src/art/primitives.js";
 import { Atmosphere } from "../src/art/atmosphere.js";
 import { LEVELS } from "../src/config/levels.js";
@@ -72,9 +73,34 @@ test("Coral Lagoon reef life freezes at reduced time and stays bounded", () => {
   disposeTree(parent);
 });
 
+test("Christmas Village scenery keeps every triangle when combined into static batches", () => {
+  for (const [name, make] of Object.entries(christmas).filter(([name]) => name !== "Snowfall")) {
+    const parent = group();
+    const model = make(parent, 1);
+    const before = triangles(model);
+    assert.ok(before > 0, name);
+    bake(model);
+    assert.equal(triangles(model), before, `${name} lost geometry during batching`);
+    disposeTree(parent);
+  }
+});
+
+test("Christmas snowfall is bounded and freezes with reduced motion", () => {
+  const parent = group();
+  const snowfall = new christmas.Snowfall(parent, LEVELS.at(-1));
+  snowfall.update(0, 0);
+  const atZero = [...snowfall.flakes.instanceMatrix.array];
+  assert.equal(snowfall.flakes.count, 96);
+  snowfall.update(0, 0);
+  assert.deepEqual([...snowfall.flakes.instanceMatrix.array], atZero);
+  snowfall.update(2, 0);
+  assert.notDeepEqual([...snowfall.flakes.instanceMatrix.array], atZero);
+  disposeTree(parent);
+});
+
 test("underwater atmosphere settings reset when returning to a meadow", () => {
   const atmosphere = new Atmosphere(new THREE.Scene());
-  atmosphere.setLevel(LEVELS.at(-1));
+  atmosphere.setLevel(LEVELS.find(level => level.theme === "underwater"));
   assert.equal(atmosphere.material.uniforms.underwater.value, 1);
   assert.equal(atmosphere.material.uniforms.sunStrength.value, 0);
   atmosphere.setLevel(LEVELS[0]);

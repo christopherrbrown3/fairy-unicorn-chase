@@ -33,6 +33,7 @@ import { grassBlock, blockTree, diamondOre, blockPig, friendlyCreeper, torch, bl
 import { spookyHouse, spookyHall, pumpkin, friendlyGhost } from "./spooky.js";
 import { peppermint, wrappedSweet, gummyBear, cupcake, macaron, gumdrops, donutGate, cakePavilion } from "./carnival.js";
 import { coralFan, kelp, tubeSponge, seaStar, pearlShell, coralGate, ReefLife } from "./underwater.js";
+import { christmasTree, presents, candyCane, snowFriend, holidayCottage, festiveGate, Snowfall } from "./christmas.js";
 
 let authoredPotion = null;
 export async function loadWorldAssets() {
@@ -125,6 +126,10 @@ export class World {
           let dist = level.width / 2 + 3 + rnd(seed) * 9;
           let prop;
           switch (level.theme) {
+            case "christmas":
+              prop = [christmasTree, presents, candyCane, snowFriend, christmasTree, holidayCottage][k % 6](chunk, 1.05);
+              if (k % 6 === 5) dist += 3;
+              break;
             case "underwater":
               prop = [coralFan, kelp, tubeSponge, pearlShell, kelp, seaStar][k % 6](chunk, 1.1 + rnd(seed) * 0.35);
               break;
@@ -234,6 +239,7 @@ export class World {
             level.theme === "pokemon" ||
             level.theme === "carnival" ||
             level.theme === "underwater" ||
+            level.theme === "christmas" ||
             level.theme === "minecraft" ||
             (level.theme === "spooky" && k % 4 === 0) ||
             level.theme === "candy"
@@ -350,6 +356,13 @@ export class World {
         const shell = place(pearlShell(landmarks, 3.4), level, s + 38, (i % 2 ? 1 : -1) * 19);
         shell.rotation.y += Math.PI;
       }
+      if (level.theme === "christmas") {
+        const gate = place(festiveGate(landmarks), level, s + 60, 0);
+        gate.rotation.y += Math.PI;
+        const villageTree = place(christmasTree(landmarks, 2.7), level, s + 38, (i % 2 ? 1 : -1) * 22);
+        villageTree.rotation.y += Math.PI;
+        place(presents(landmarks, 1.8), level, s + 35, (i % 2 ? 1 : -1) * 18);
+      }
       if (level.theme === "minecraft") {
         place(mineGate(landmarks), level, s + 60, 0);
         for (const side of [-1, 1]) {
@@ -465,6 +478,8 @@ export class World {
             ? peppermint(this.root, 0.6)
             : level.theme === "underwater" && item.kind === "tree"
               ? coralFan(this.root, 0.6)
+              : level.theme === "christmas" && item.kind === "tree"
+                ? christmasTree(this.root, 0.65)
             : obstacle(this.root, item.kind);
         place(g, level, item.s, item.lane);
         bake(g);
@@ -490,6 +505,7 @@ export class World {
         this.butterflies.push(b);
       }
     if (level.theme === "underwater") this.reefLife = new ReefLife(this.root, level);
+    if (level.theme === "christmas") this.snowfall = new Snowfall(this.root, level);
   }
   update(time, chase, camera) {
     if (this.sky && camera) {
@@ -508,6 +524,7 @@ export class World {
     this.verge.update(time);
     this.water.update(time);
     this.reefLife?.update(time, chase?.s ?? 0);
+    this.snowfall?.update(time, chase?.s ?? 0);
     for (const p of this.potions) {
       p.rotation.y = time * 0.8;
       p.position.y =
