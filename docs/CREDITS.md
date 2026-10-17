@@ -8,6 +8,7 @@ The story, characters and core rules came from a six-year-old creative director,
 - Sparkly potion: original Blender mesh made through Blender MCP in a separate scene. Seven objects, 476 source vertices, approximately 28 KB GLB. Regeneration source: `tools/blender_potion.py`. The user's previously open Blender project was restored; no unrelated objects are in the exported asset.
 - Music, hoofbeats, water, potion, jump, button and celebration sounds: original Web Audio synthesis in `src/audio/audio.js`, with no external recordings.
 - Screenshots: actual browser renders of this game, captured by `tools/capture.mjs`; no stock or generated promotional substitute.
+- Home Screen icons and the link preview illustration: original promotional artwork generated with OpenAI's built-in image generation tool, then resized/exported with macOS `sips`. These illustrations are separate from the actual gameplay screenshots. [Saved asset paths and complete prompts](ARTWORK.md).
 
 The public repository has not assigned a separate reuse license to original code/art/audio. Third-party components retain their own licenses. Public visibility alone is not a blanket asset reuse license.
 

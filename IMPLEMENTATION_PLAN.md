@@ -2,6 +2,19 @@
 
 The owner's complete brief is the scope. Checked items mean implemented and verified; external completion needs live evidence.
 
+## Home Screen and sharing — v1.8.0
+
+- [x] Generate and save unicorn icons and an illustrated share card; wire static share metadata.
+- [x] Add a scoped web app manifest, Apple touch icon and device installation help.
+- [x] Build a versioned offline cache from emitted production assets.
+- [x] Check for new releases on launch, foreground return and reconnection; offer updates in menus while preserving saves and active chases.
+- [x] Verify cold offline root/subpath launches, browser installation UI and complete/failed update transitions in Chromium and WebKit.
+- [x] Inspect phone/tablet installation and update screens.
+
+The release's publication and live metadata/assets/worker verification are recorded in [PR #11](https://github.com/christopherrbrown3/fairy-unicorn-chase/pull/11). The complete local suite passed 19 Node tests and 29 Chromium/WebKit browser cases; three duplicate WebKit screenshot cases were intentionally skipped. Four focused installation/update cases passed again after the final menu-focus guard and update-notice spacing fix.
+
+Physical Home Screen installation and an actual Messages preview remain device checks; browser automation does not claim those outcomes.
+
 - [x] Inspect empty directory, GitHub account and authoritative DNS.
 - [x] Initialize Vite/static foundation and product record.
 - [x] Build reusable characters, course, scene and chase camera.

@@ -1,5 +1,11 @@
 # Release history
 
+## v1.8.0 — Home Screen & sharing
+
+Install Fairy Unicorn Chase on a mobile Home Screen with a custom unicorn icon, standalone launch and offline play after the initial download. The title screen offers installation help and a native installer where available. Shared links include an illustrated image, game title and description.
+
+Installed games check for updates at launch, on returning to the foreground and on reconnecting. New releases download completely before an **Update game** action appears in menus, preserving saved unicorns and preferences. Updates wait through active chases, including in another open tab; a failed download retains the previous working version. No reinstall is needed to receive new worlds.
+
 ## v1.7.0 — Christmas Village
 
 World 16 adds Holly, a white unicorn with a cranberry mane, to a snowy village with decorated firs, presents, candy canes, snow friends, cozy cottages and garland gates. Gentle-motion snowfall is bounded and pauses with the scene clock. Existing saves with all fifteen friends unlock Christmas Village while preserving collection progress and preferences.

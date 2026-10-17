@@ -6,6 +6,7 @@ import { loadWorldAssets } from "./worlds/world.js";
 import { View } from "./ui/view.js";
 import { Input } from "./game/input.js";
 import { Audio } from "./audio/audio.js";
+import { setupPwa } from "./pwa/install.js";
 
 const root = document.querySelector("#ui"),
   audio = new Audio();
@@ -22,6 +23,16 @@ let save = loadSave(storage),
 if (matchMedia("(prefers-reduced-motion: reduce)").matches)
   save.reducedMotion = true;
 const view = new View(root, action);
+const pwa = setupPwa(() => {
+  if (view.current === "install") view.install(save, pwa);
+  else {
+    // Background downloads must not rebuild a menu, steal focus, or dismiss
+    // an open New game confirmation.
+    if (pwa.installed) root.querySelector(".title-install")?.remove();
+    view.renderUpdate();
+  }
+});
+view.pwa = pwa;
 view.show(
   '<div class="loading"><h1>Fairy Unicorn Chase</h1><p>Gathering a little magic…</p><div class="loading-star">✦</div></div>',
   "loading",
@@ -68,6 +79,18 @@ function action(name, value) {
       audio.playing = false;
       view.collection(save, portraits);
       break;
+    case "install":
+      view.install(save, pwa);
+      break;
+    case "install-app":
+      pwa.install();
+      break;
+    case "update-app":
+      if (!["title", "paused", "levels", "collection", "install"].includes(view.current)) break;
+      // Progress/preferences are saved when they change. Do not rewrite an
+      // older in-memory save over progress collected in another open copy.
+      pwa.applyUpdate();
+      break;
     case "home":
       game.showTitle();
       audio.playing = false;
@@ -110,6 +133,7 @@ function action(name, value) {
       else if (view.current === "title") view.title(save);
       else if (view.current === "levels") view.levels(save, portraits);
       else if (view.current === "collection") view.collection(save, portraits);
+      else if (view.current === "install") view.install(save, pwa);
       break;
     case "reload":
       location.reload();

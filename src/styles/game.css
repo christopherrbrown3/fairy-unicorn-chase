@@ -232,6 +232,7 @@ h2 {
 }
 .title-top {
   display: flex;
+  justify-content: flex-end;
   align-items: center;
   gap: 12px;
   font-weight: 600;
@@ -243,10 +244,10 @@ h2 {
   height: 25px;
 }
 .title-top .sound-toggle {
-  margin-left: auto;
+  margin-left: 0;
 }
-.title-new-game {
-  margin-left: auto;
+.title-new-game,
+.title-install {
   font-size: 20px;
   padding: 12px 20px;
   gap: 10px;
@@ -328,6 +329,122 @@ h2 {
   font-size: 20px;
   margin: 12px 0 28px;
   color: #536885;
+}
+.install-content {
+  max-width: 620px;
+  margin: 32px auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  text-align: center;
+  font-size: 20px;
+  line-height: 1.5;
+}
+.install-art {
+  border-radius: 22px;
+}
+.install-content > h2 {
+  font-size: clamp(28px, 4vw, 40px);
+}
+.install-steps {
+  width: 100%;
+  text-align: left;
+}
+.install-steps section + section {
+  margin-top: 24px;
+}
+.install-steps h3 {
+  font-size: 24px;
+  margin: 0 0 8px;
+}
+.install-steps ol {
+  margin: 0 0 18px;
+  padding-left: 28px;
+}
+.install-steps li + li {
+  margin-top: 8px;
+}
+.install-status {
+  color: #345574;
+}
+.update-banner {
+  position: absolute;
+  z-index: 10;
+  inset-inline: max(18px, env(safe-area-inset-left)) max(18px, env(safe-area-inset-right));
+  bottom: max(14px, env(safe-area-inset-bottom));
+  width: fit-content;
+  max-width: calc(100% - 36px);
+  margin-inline: auto;
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  border-radius: 18px;
+  background: var(--paper);
+  box-shadow: var(--shadow);
+  pointer-events: auto;
+}
+.update-banner strong,
+.update-banner span {
+  display: block;
+}
+.update-banner strong {
+  font-size: 22px;
+  line-height: 1.2;
+}
+.update-banner div > span {
+  font-size: 16px;
+  line-height: 1.3;
+  max-width: 34ch;
+}
+.update-banner .button {
+  min-height: 48px;
+  flex-shrink: 0;
+  font-size: 18px;
+  gap: 8px;
+  padding: 10px 16px;
+}
+#ui[data-update] .book-screen,
+#ui[data-update] .pause-screen {
+  padding-bottom: 150px;
+}
+#ui[data-update] .saved-progress {
+  bottom: 120px;
+}
+#ui[data-update] .title-note {
+  display: none;
+}
+@media (max-width: 600px) {
+  .update-banner {
+    gap: 12px;
+    padding: 12px;
+  }
+  .update-banner strong {
+    font-size: 18px;
+  }
+  .update-banner div > span {
+    font-size: 14px;
+  }
+  .update-banner .button {
+    font-size: 16px;
+    padding: 10px;
+  }
+  .update-banner .button .icon {
+    display: none;
+  }
+}
+@media (orientation: portrait) {
+  .update-banner {
+    bottom: max(96px, env(safe-area-inset-bottom));
+  }
+  #ui[data-update] .book-screen,
+  #ui[data-update] .pause-screen {
+    padding-bottom: 230px;
+  }
+  #ui[data-update] .saved-progress {
+    bottom: 220px;
+  }
 }
 .world-grid,
 .collection-grid {
@@ -886,7 +1003,8 @@ h2 {
     min-height: 56px;
     min-width: 56px;
   }
-  .title-new-game {
+  .title-new-game,
+  .title-install {
     min-height: 56px;
     font-size: 18px;
     padding: 10px 16px;
@@ -1137,6 +1255,18 @@ h2 {
     min-height: 58px;
     font-size: 18px;
     padding: 10px 16px;
+  }
+  .title-install {
+    min-width: 52px;
+    min-height: 58px;
+    padding: 10px;
+  }
+  .title-install span {
+    display: none;
+  }
+  .title-new-game .icon {
+    width: 24px;
+    height: 24px;
   }
   .title-copy {
     left: 24px;

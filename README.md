@@ -22,6 +22,19 @@ The idea, characters, and rules came from a six-year-old creative director, with
 
 Progress and sound/picture/motion preferences save in this browser. No account, purchases, advertisements, analytics, or backend are involved.
 
+## Play from your Home Screen
+
+The game is an installable PWA with its own pastel unicorn icon. Tap **Install** on the title screen for the browser installer or device instructions.
+
+- **iPhone / iPad:** open the game in Safari, tap **Share → Add to Home Screen → Add**.
+- **Android:** open the game in Chrome and choose **Install app** or **Add to Home screen** from the browser menu.
+
+Open the unicorn icon to play in its own window. Landscape remains the intended play view. After the first successful online load, the game saves its code, worlds, font, models and icons for offline adventures. The install screen confirms **Ready for offline adventures** when that download finishes. Browser storage limits or clearing site data can remove the offline copy and saved progress.
+
+**New levels reach installed games too.** The game checks for a new release on launch, when it returns to the foreground, and when a connection returns. A complete new version downloads before **New magic is ready / Update game** appears in the menus. Tap it to reload into the new version; saved unicorns and preferences stay on the device. Updates never force a reload during a chase, including when another open copy accepts an update. Closing every open copy also allows a downloaded update to activate for the next launch. A failed download leaves the existing version playable. There is no reinstall step.
+
+Sharing [the game link](https://fuc.christopherbrown.ai/) supplies a custom 1200 × 630 illustrated preview, title and description through static Open Graph and large-image card metadata. Messaging apps choose their own layout and may cache an older preview. The share illustration is promotional artwork; the gallery below shows actual gameplay. [Artwork, saved assets and generation prompts](docs/ARTWORK.md).
+
 ## Meet Mia & Glender
 
 Mia has flowing blonde locks, a blue dress, gently fluttering fairy wings, and water powers. She rides **Glender**, an apricot pony with a golden-yellow mane and tail, star markings, a cheerful gallop, and a knack for hopping over puddles.
@@ -151,7 +164,7 @@ Scenery combines soft shadows, textured paths, petaled flowers, layered hills, f
 
 **Still to check on a physical iPad:** sustained frame rate, Safari chrome/safe areas, comfortable sound, multitouch feel, and the creative director’s enjoyment. No physical-device testing is claimed. [The device checklist and full coverage notes](docs/QUALITY.md) make that last family playtest straightforward.
 
-Saves belong to this browser and origin; clearing site data removes them, and there is no cross-device sync. The initial load needs a network connection. Landscape is the intended play view; portrait offers a rotation hint and usable menus. Procedural character animation and the provisional artistic choices can continue to grow with her ideas.
+Saves belong to this browser/app and origin; clearing site data removes them, and there is no cross-device sync. The initial load and downloading new releases need a network connection; a fully cached game can launch and play offline. Landscape is the intended play view; portrait offers a rotation hint and usable menus. Procedural character animation and the provisional artistic choices can continue to grow with her ideas.
 
 ## Credits
 

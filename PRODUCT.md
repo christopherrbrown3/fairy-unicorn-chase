@@ -26,5 +26,11 @@ Large icon-led touch targets, multitouch, keyboard equivalents, muted play, paus
 
 The New game confirmation explains the reset before it happens, initially focuses Cancel, keeps keyboard focus within the dialog and restores focus to its menu button on cancellation.
 
+## Installation, Offline Play & Releases
+
+The game can be installed to a mobile Home Screen as a standalone PWA. The title screen offers browser installation or device instructions. A complete cached build supports offline play after its first successful online download. Custom unicorn icons and a promotional share illustration extend the existing storybook direction; they are distinct from gameplay screenshots.
+
+Installed copies receive new levels through the normal site release. Check at launch, foreground return and reconnection. Precache a whole release before offering Update game in a menu, preserve progress and preferences, and never reload an active chase. Another tab accepting an update must not force the current chase to reload. A failed update leaves the previous complete release usable.
+
 ## Open Creative Decisions
 World names, unicorn names, Glender's base coat, UI/art details and all tuning are provisional. The brief explicitly authorizes independent choices; record them in DESIGN_NOTES.md.
