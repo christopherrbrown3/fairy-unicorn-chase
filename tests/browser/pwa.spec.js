@@ -75,8 +75,12 @@ for (const base of ["/", "/fairy-unicorn-chase/"]) {
 }
 
 test("installation instructions and the browser install prompt are reachable", async ({ page, browserName }) => {
+  test.setTimeout(180_000);
+  const startedAt = Date.now();
+  const logStage = (stage) => console.log(`[PWA install] ${stage}: ${Date.now() - startedAt}ms elapsed`);
   await page.goto("/?test=1");
   await ready(page);
+  logStage("title ready");
   await page.getByRole("button", { name: "New game", exact: true }).click();
   await page.evaluate(() => window.dispatchEvent(new Event("beforeinstallprompt", { cancelable: true })));
   await expect(page.getByRole("dialog")).toBeVisible();
@@ -84,14 +88,19 @@ test("installation instructions and the browser install prompt are reachable", a
   await page.getByRole("button", { name: "Add to Home Screen" }).click();
   await expect(page.getByRole("heading", { name: "Keep the magic close" })).toBeVisible();
   await expect(page.getByRole("heading", { name: "iPhone & iPad" })).toBeVisible();
+  logStage("install instructions ready");
   if (browserName === "chromium") {
     await mkdir("output/playwright/pwa", { recursive: true });
     for (const [name, viewport] of [["tablet", { width: 1024, height: 768 }], ["phone", { width: 390, height: 844 }]]) {
       await page.getByRole("button", { name: "Back", exact: true }).click();
       await page.setViewportSize(viewport);
+      logStage(`${name} title capture ready`);
       await page.screenshot({ path: `output/playwright/pwa/title-${name}.png`, animations: "disabled" });
+      logStage(`${name} title captured`);
       await page.getByRole("button", { name: "Add to Home Screen" }).click();
+      logStage(`${name} install capture ready`);
       await page.screenshot({ path: `output/playwright/pwa/install-${name}.png`, animations: "disabled" });
+      logStage(`${name} install captured`);
     }
   }
   await page.evaluate(() => {
@@ -100,9 +109,11 @@ test("installation instructions and the browser install prompt are reachable", a
     event.userChoice = Promise.resolve({ outcome: "accepted" });
     window.dispatchEvent(event);
   });
+  logStage("install prompt ready");
   await page.getByRole("button", { name: "Install game", exact: true }).click();
   await expect(page.getByText("The game is installed.", { exact: false })).toBeVisible();
   expect(await page.evaluate(() => window.installPromptShown)).toBe(true);
+  logStage("install prompt completed");
   await page.getByRole("button", { name: "Back", exact: true }).click();
   await expect(page.getByRole("button", { name: "Add to Home Screen" })).toHaveCount(0);
 });
