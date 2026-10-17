@@ -13,6 +13,7 @@ export const MANES = [
   "#b6e4bd",
   "#3b9f73",
   "#518ae8",
+  "#e96798",
 ];
 const worlds = [
   [
@@ -118,6 +119,7 @@ const worlds = [
   ["Spooky House", "Boo", "spooky", "#34385e", "#787295", "#d8c6b0", "#60587b", "#ffc276"],
   ["Minecraft Meadow", "Pixel", "minecraft", "#a6d6f5", "#84b956", "#d2b48a", "#528340", "#69dcd2"],
   ["Pokémon Park", "Spark", "pokemon", "#b6e3ee", "#95c994", "#f5deb5", "#5ba68a", "#ef8793"],
+  ["Candy Carnival", "Taffy", "carnival", "#f4cddd", "#9dccba", "#f5dba8", "#dca3bb", "#e96798"],
 ];
 export const LEVELS = worlds.map(
   ([name, unicorn, theme, sky, ground, road, foliage, accent], i) => ({

@@ -1,5 +1,11 @@
 # Creative decisions
 
+## Candy Carnival extension
+
+World 14 appends Candy Carnival and Taffy, a white unicorn with coral-pink hair. These names and palette are provisional. Candy Wonderland and Clover remain world 5 with their original scenery and saved IDs. The new setting is a confectionery fairground: peppermint pinwheels, wrapped sweets, mint gummy bears, cupcake stalls, macaron stacks and gumdrops line a biscuit-colored road. Strawberry-frosted donut gateways and tiered cake pavilions create large recognizable landmarks against a mint ground and strawberry sky. A cupcake icon identifies the world in the existing menus.
+
+The visual contract extends the current playable storybook: Mia and Glender lead the frame; a clear, broad road shows the next potion and chased friend; confectionery silhouettes establish the theme immediately. Donut supports stand beyond the playable corridor and cake pavilions sit back from the road. Shared low-resolution shapes and material-baked scenery keep the new static artwork bounded. The existing gentle-motion scene clock, forgiving chase, water magic and preferences are unchanged. Collection, unlocks and the finale derive their totals from the appended configuration.
+
 ## Confirmed by the child — preserve
 Fairy Unicorn Chase. Mia has blonde hair, a blue dress, fairy wings and water-spray powers; she rides Glender. Glender has yellow hair and stars on her body. Ten white unicorns have different-colored hair. Friendly chase, one unicorn in each of ten different magical settings; catch to advance and catch all ten to win. Sparkly potions are speed-ups. Automatic jumps over suitable obstacles. Simple iPad steering with a gentle arcade racing rhythm.
 

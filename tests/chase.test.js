@@ -156,3 +156,25 @@ test("original completed adventure unlocks the first added world without losing 
     assert.equal(unlockCount(save), Math.min(i + 2, LEVELS.length));
   }
 });
+
+test("thirteen-world save unlocks the new candy world and carries forward cleanly", () => {
+  const previousRelease = sanitizeSave({
+    version: 1,
+    completed: Array.from({ length: 13 }, (_, i) => i),
+    sound: false,
+    quality: "low",
+    reducedMotion: true,
+  });
+  assert.deepEqual(previousRelease.completed, Array.from({ length: 13 }, (_, i) => i));
+  assert.equal(unlockCount(previousRelease), LEVELS.length);
+  assert.equal(previousRelease.sound, false);
+  assert.equal(previousRelease.quality, "low");
+  assert.equal(previousRelease.reducedMotion, true);
+
+  const continued = completeLevel(previousRelease, 13);
+  assert.deepEqual(continued.completed, Array.from({ length: 14 }, (_, i) => i));
+  assert.equal(unlockCount(continued), LEVELS.length);
+  assert.equal(continued.sound, false);
+  assert.equal(continued.quality, "low");
+  assert.equal(continued.reducedMotion, true);
+});

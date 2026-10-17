@@ -49,7 +49,7 @@ export function dressVerge(root, level) {
     new THREE.Color(level.ground),
     0.45,
   );
-  const isCloud = ["cloud", "minecraft"].includes(level.theme);
+  const isCloud = ["cloud", "minecraft", "carnival"].includes(level.theme);
   const grassMat = new THREE.MeshStandardMaterial({
     color: grassColor,
     vertexColors: true,
@@ -69,7 +69,7 @@ export function dressVerge(root, level) {
       transformed.z += cos(anchor.z*0.27+windTime*1.2) * position.y * position.y * 0.13;`,
       );
   };
-  const stoneMat = material(level.theme === "crystal" ? "#9296c5" : "#bdbaa5", {
+  const stoneMat = material(level.theme === "carnival" ? "#fff2d5" : level.theme === "crystal" ? "#9296c5" : "#bdbaa5", {
     roughness: 0.9,
   });
   const dummy = new THREE.Object3D();
@@ -106,7 +106,7 @@ export function dressVerge(root, level) {
       stoneMat,
       16,
     );
-    stones.name = "Path pebbles";
+    stones.name = level.theme === "carnival" ? "Sugar sprinkle verge" : "Path pebbles";
     stones.receiveShadow = true;
     for (let i = 0; i < 16; i++) {
       const seed = chunk * 23 + i;
@@ -122,6 +122,7 @@ export function dressVerge(root, level) {
       dummy.scale.set(scale * 1.5, scale * 0.6, scale);
       dummy.updateMatrix();
       stones.setMatrixAt(i, dummy.matrix);
+      if (level.theme === "carnival") stones.setColorAt(i, new THREE.Color(["#ed748c", "#7fcdb6", "#b39adb", "#f6c665"][i % 4]));
     }
     stones.computeBoundingSphere();
     root.add(stones);
