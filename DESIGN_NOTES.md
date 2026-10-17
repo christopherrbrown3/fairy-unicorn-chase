@@ -1,5 +1,11 @@
 # Creative decisions
 
+## Christmas Village extension
+
+World 16 appends Christmas Village and Holly, a white unicorn with cranberry-red hair. These names and colors are provisional. A biscuit-colored trail stays distinct from snow-blue ground, with decorated snowy evergreens, striped candy canes, wrapped presents, scarf-wearing snowpeople and cozy cottages with warm windows. Large garland gateways and village Christmas trees create festive landmarks without closing the playable road.
+
+The visual contract keeps the storybook's Mia, Glender, white unicorn and potion pickups readable in a snowy holiday setting. Green fir silhouettes, cranberry ornaments, gold stars and warm cottage windows supply contrast against the snow. Ninety-six small instanced snowflakes use the existing scene clock, freeze with Gentle motion and pause, and are disposed with the world. All static art shares low-resolution shapes and joins the existing material batches. There are no new controls, penalties or character changes, and the previous 15 worlds and saved IDs remain intact.
+
 ## Coral Lagoon extension
 
 World 15 appends Coral Lagoon and Pearl, a white unicorn with sea-blue hair; these names and colors are provisional. The underwater storybook keeps Mia and Glender's familiar chase on a pale sand trail. Rose branching coral, kelp fronds, lavender tube sponges, gold sea stars and open pearl shells surround the route. Broad coral gateways and giant shells set the scale; striped fish and rising bubble rings make the submerged setting legible from the chase camera.

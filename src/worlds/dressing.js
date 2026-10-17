@@ -49,7 +49,7 @@ export function dressVerge(root, level) {
     new THREE.Color(level.ground),
     0.45,
   );
-  const isCloud = ["cloud", "minecraft", "carnival"].includes(level.theme);
+  const isCloud = ["cloud", "minecraft", "carnival", "christmas"].includes(level.theme);
   const grassMat = new THREE.MeshStandardMaterial({
     color: grassColor,
     vertexColors: true,

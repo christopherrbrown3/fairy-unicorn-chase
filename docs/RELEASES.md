@@ -1,5 +1,15 @@
 # Release history
 
+## v1.7.0 — Christmas Village
+
+World 16 adds Holly, a white unicorn with a cranberry mane, to a snowy village with decorated firs, presents, candy canes, snow friends, cozy cottages and garland gates. Gentle-motion snowfall is bounded and pauses with the scene clock. Existing saves with all fifteen friends unlock Christmas Village while preserving collection progress and preferences.
+
+![Christmas Village with Holly ahead on the path at desktop size](screenshots/christmas-village-desktop-holly-near.jpg)
+
+![Christmas Village with Holly ahead on the path at iPad landscape size](screenshots/christmas-village-ipad-landscape-holly-near.jpg)
+
+The sixteen-friend finale, captured at both sizes: [desktop](screenshots/christmas-finale-desktop.jpg) · [iPad landscape](screenshots/christmas-finale-ipad-landscape.jpg). [Rainbow Meadow preservation capture](screenshots/christmas-meadow-preservation.jpg) checks the established daylight course after the Christmas world.
+
 ## v1.6.0 — Coral Lagoon
 
 World 15 adds Pearl, a white unicorn with a sea-blue mane, to an underwater reef of branching coral, kelp, lavender tube sponges, golden sea stars, pearl shells and friendly striped fish. Rising bubbles and the luminous rippled canopy follow Gentle motion. Existing saves with all fourteen friends unlock Coral Lagoon without losing progress or preferences.
