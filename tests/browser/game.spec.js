@@ -514,7 +514,9 @@ for (const viewport of [
       expect(
         await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth),
       ).toBe(true);
-      await page.screenshot({
+      // Capture the responsive pause sheet itself. The full-page WebGL canvas
+      // capture can stall SwiftShader in CI after the all-world chase scenario.
+      await page.locator(".pause-sheet").screenshot({
         path: resolve(output, `pause-${viewport.name}.png`),
         animations: "disabled",
       });
