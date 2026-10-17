@@ -34,6 +34,7 @@ import { spookyHouse, spookyHall, pumpkin, friendlyGhost } from "./spooky.js";
 import { peppermint, wrappedSweet, gummyBear, cupcake, macaron, gumdrops, donutGate, cakePavilion } from "./carnival.js";
 import { coralFan, kelp, tubeSponge, seaStar, pearlShell, coralGate, ReefLife } from "./underwater.js";
 import { christmasTree, presents, candyCane, snowFriend, holidayCottage, festiveGate, Snowfall } from "./christmas.js";
+import { pancakeStack, waffle, strawberry, sunnyEgg, orangeWedge, toastCottage, breakfastGate } from "./breakfast.js";
 
 let authoredPotion = null;
 export async function loadWorldAssets() {
@@ -126,6 +127,9 @@ export class World {
           let dist = level.width / 2 + 3 + rnd(seed) * 9;
           let prop;
           switch (level.theme) {
+            case "breakfast":
+              prop = [pancakeStack, strawberry, waffle, sunnyEgg, toastCottage, orangeWedge][k % 6](chunk, 1.1);
+              break;
             case "christmas":
               prop = [christmasTree, presents, candyCane, snowFriend, christmasTree, holidayCottage][k % 6](chunk, 1.05);
               if (k % 6 === 5) dist += 3;
@@ -240,6 +244,7 @@ export class World {
             level.theme === "carnival" ||
             level.theme === "underwater" ||
             level.theme === "christmas" ||
+            level.theme === "breakfast" ||
             level.theme === "minecraft" ||
             (level.theme === "spooky" && k % 4 === 0) ||
             level.theme === "candy"
@@ -363,6 +368,13 @@ export class World {
         villageTree.rotation.y += Math.PI;
         place(presents(landmarks, 1.8), level, s + 35, (i % 2 ? 1 : -1) * 18);
       }
+      if (level.theme === "breakfast") {
+        const gate = place(breakfastGate(landmarks), level, s + 62, 0);
+        gate.rotation.y += Math.PI;
+        place(pancakeStack(landmarks, 3), level, s + 40, (i % 2 ? 1 : -1) * 22);
+        const cottage = place(toastCottage(landmarks, 1.8), level, s + 30, (i % 2 ? -1 : 1) * 19);
+        cottage.rotation.y += Math.PI;
+      }
       if (level.theme === "minecraft") {
         place(mineGate(landmarks), level, s + 60, 0);
         for (const side of [-1, 1]) {
@@ -480,6 +492,8 @@ export class World {
               ? coralFan(this.root, 0.6)
               : level.theme === "christmas" && item.kind === "tree"
                 ? christmasTree(this.root, 0.65)
+                : level.theme === "breakfast" && item.kind === "tree"
+                  ? strawberry(this.root, 0.8)
             : obstacle(this.root, item.kind);
         place(g, level, item.s, item.lane);
         bake(g);
