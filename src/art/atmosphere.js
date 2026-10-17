@@ -13,6 +13,7 @@ export class Atmosphere {
         sunStrength: { value: 1 },
         time: { value: 0 },
         night: { value: 0 },
+        underwater: { value: 0 },
       },
       vertexShader: `varying vec3 skyDirection;
         void main() {
@@ -21,7 +22,7 @@ export class Atmosphere {
         }`,
       fragmentShader: `varying vec3 skyDirection;
         uniform vec3 zenith, horizon, sunColor;
-        uniform float sunStrength, time, night;
+        uniform float sunStrength, time, night, underwater;
         float hash(vec2 p) { return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453); }
         float noise(vec2 p) {
           vec2 i=floor(p), f=fract(p); f=f*f*(3.0-2.0*f);
@@ -45,6 +46,14 @@ export class Atmosphere {
           float curtain = sin(d.x*5.0+d.z*4.0+time*0.06)*0.055+0.15;
           float aurora = exp(-pow((d.y-curtain)*14.0,2.0));
           color += mix(vec3(0.06,0.3,0.27),vec3(0.18,0.09,0.3),noise(d.xz*6.0)) * aurora * night;
+          if (underwater > 0.5) {
+            // A rippled luminous canopy replaces the daylight sky underwater.
+            vec2 waterUv = d.xz / max(d.y + 0.45, 0.12) * 4.0;
+            float ripple = sin(waterUv.x*3.0 + sin(waterUv.y*2.5 + time*0.16));
+            float crossRipple = sin(waterUv.y*3.4 + sin(waterUv.x*2.0 - time*0.13));
+            float caustic = pow(max(0.0, 1.0-abs(ripple+crossRipple)*0.6), 7.0);
+            color += vec3(0.18,0.32,0.25) * caustic * smoothstep(0.0,0.7,d.y) * 0.32;
+          }
           gl_FragColor = vec4(color, 1.0);
           #include <colorspace_fragment>
         }`,
@@ -72,6 +81,14 @@ export class Atmosphere {
     this.material.uniforms.sunStrength.value = dark ? 0.08 : 1;
     this.material.uniforms.night.value = level.theme === "night" ? 1 : 0;
     if (level.theme === "crystal") this.material.uniforms.sunStrength.value = 0;
+    const underwater = level.theme === "underwater";
+    this.material.uniforms.underwater.value = underwater ? 1 : 0;
+    if (underwater) {
+      horizon.set(level.sky).lerp(new THREE.Color("#8cd5cc"), 0.25);
+      this.material.uniforms.horizon.value.copy(horizon);
+      this.material.uniforms.zenith.value.set("#73d4d8");
+      this.material.uniforms.sunStrength.value = 0;
+    }
     return horizon;
   }
   update(camera, time = 0) {

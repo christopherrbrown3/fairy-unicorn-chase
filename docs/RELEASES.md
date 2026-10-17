@@ -1,5 +1,15 @@
 # Release history
 
+## v1.6.0 — Coral Lagoon
+
+World 15 adds Pearl, a white unicorn with a sea-blue mane, to an underwater reef of branching coral, kelp, lavender tube sponges, golden sea stars, pearl shells and friendly striped fish. Rising bubbles and the luminous rippled canopy follow Gentle motion. Existing saves with all fourteen friends unlock Coral Lagoon without losing progress or preferences.
+
+![Coral Lagoon with Pearl ahead on the path at desktop size](screenshots/coral-lagoon-desktop-pearl-near.jpg)
+
+![Coral Lagoon with Pearl ahead on the path at iPad landscape size](screenshots/coral-lagoon-ipad-landscape-pearl-near.jpg)
+
+The fifteen-friend finale, captured at both sizes: [desktop](screenshots/coral-finale-desktop.jpg) · [iPad landscape](screenshots/coral-finale-ipad-landscape.jpg). [Rainbow Meadow after changing from the underwater world](screenshots/coral-meadow-preservation.jpg) confirms its daylight colors and familiar scenery return.
+
 ## v1.5.0 — Candy Carnival
 
 World 14 adds Taffy, a white unicorn with a coral mane, to a confectionery fairground of peppermint pinwheels, friendly gummy bears, cupcake stalls, sprinkle donut gateways, and tiered cake pavilions. The new course and collection entry unlock for existing saves with all thirteen prior friends preserved.

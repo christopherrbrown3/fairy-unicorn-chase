@@ -2,21 +2,22 @@
 
 ## Automated coverage
 
-Thirteen Node tests cover real pursuit in every world, proximity-only captures after an unaligned overtake, curve closure, steering and recentering, screen-relative lane direction on multiple bends in all fourteen courses, potion speed and expiry, automatic jumps, gentle collisions, cosmetic water, save validation, release-to-release save migration, batched art geometry preservation, and unavailable storage.
+Sixteen Node tests cover real pursuit in every world, proximity-only captures after an unaligned overtake, curve closure, steering and recentering, screen-relative lane direction on multiple bends in all fifteen courses, potion speed and expiry, automatic jumps, gentle collisions, cosmetic water, save validation, release-to-release save migration, batched art geometry preservation, bounded reduced-time reef life and underwater-atmosphere reset, and unavailable storage.
 
-Five browser scenarios run in Chromium and WebKit at 1024 × 768 with touch support (ten passing browser cases). They cover:
+Browser scenarios run in Chromium and WebKit at 1024 × 768 with touch support. They cover:
 
 - Custom-domain root and repository subpath, entry point, no failed asset requests, runtime errors or shader console errors, and actual Mia/Glender/unicorn meshes and Blender potion.
 - Arrow/A/D input with projected on-screen movement matching the arrow direction, held pointer steering, touch water, Chromium two-finger steering plus water, pause/resume and saved sound/picture/motion preferences.
 - Potion pickup with actual increased movement speed, automatic jump triggers and gentle obstacle contact.
-- Locked worlds, all fourteen genuine distance-based catches, Continue, collection unlocks, fourteen-unicorn finale, reload persistence and unlocked replay.
+- Locked worlds, all fifteen genuine distance-based catches, Continue, collection unlocks, fifteen-unicorn finale, reload persistence and unlocked replay.
+- Migration from the previous fourteen-world save into Coral Lagoon, completing Pearl, the full collection/finale, preserved preferences and progress, plus New Game reset behavior.
 - Corrupt storage recovery, portrait hint and touch targets at least 80 CSS px.
 
 The opt-in `?test=1` API advances the same physical simulation faster. It does not set a catch flag, invent wins or appear as a player-facing menu. These checks verify systems; they do not substitute for a child's playtest.
 
 ## Screenshot review
 
-The real rendered game was captured at 1024 × 768. `docs/screenshots/` includes the title, ten worlds, boost, water spray, automatic jump, friendly catch, world menu, collection and final group celebration, plus the 390 × 844 portrait hint. A twentieth capture, `butterfly-detail.jpg`, uses a deliberately close camera to show the actual in-game butterfly model; it is not the ordinary chase view. The gallery is refreshed after visual changes; file sizes remain suitable for the README.
+The real rendered game was captured at 1024 × 768. `docs/screenshots/` includes the title, ten worlds, boost, water spray, automatic jump, friendly catch, world menu, collection and final group celebration, plus the 390 × 844 portrait hint. A twentieth capture, `butterfly-detail.jpg`, uses a deliberately close camera to show the actual in-game butterfly model; it is not the ordinary chase view. Release captures add desktop and iPad-landscape gameplay and finale views for later worlds; Coral Lagoon's Pearl-near view shows the friend at a measured natural chase distance, and the accompanying Rainbow Meadow capture checks that daylight scenery returns. The gallery is refreshed after visual changes; file sizes remain suitable for the README.
 
 The review corrected disconnected hoof geometry, terrain alignment, an overly subtle water stream, missing nearby mountain silhouettes, the night sky, and accessible names for the portrait Back button. Celebrations now use a flower-ringed island so the portrait camera cannot enter course scenery. Test-accelerated celebration cameras are settled before capture. The owner's reported reversed steering was corrected in the lateral basis, camera basis and road winding, with unit and browser screen-direction regression checks.
 
@@ -25,6 +26,8 @@ The review corrected disconnected hoof geometry, terrain alignment, an overly su
 WebGL rendering; no WebGPU or postprocessing. Scenery is merged by material into spatial chunks. Props use lower-detail meshes than characters. Roadside grass and pebbles use spatially chunked instancing, and terrain color variation and the sky each render without additional texture downloads. Particle count is bounded at 160; water adds fourteen small droplets while active. Pixel ratio starts at at most 1.5 in Automatic, can be reduced after a sustained slow frame sample, and can be set to Gentle (1) or Crisp (at most 2). Automatic/Crisp use a single 1024 px directional shadow map; Gentle uses soft contact shadows. Automatic also disables the shadow map when the sustained slow-frame threshold is reached. Original compressed font is approximately 33 KB; authored potion approximately 28 KB; JavaScript approximately 193 KB gzipped.
 
 Geometry and terrain materials created for a world or character, including the instanced planting buffers, are disposed during level changes. Shared primitives, materials and the loaded GLB are reused. The player remains a single persistent model. Context loss displays a reload action; completed progress is already saved. Backgrounding pauses active play.
+
+Coral Lagoon adds a fixed school of 24 reef fish and one instanced draw for 64 bubbles. Both use the existing scene clock, so Gentle motion holds their ambient movement still; world-specific fog and the luminous canopy reset when returning to a daylight world. The reset is covered by unit checks and a Rainbow Meadow gameplay capture. This desktop/WebKit/Chromium coverage is not a physical iPad performance claim.
 
 ## First October graphics validation
 

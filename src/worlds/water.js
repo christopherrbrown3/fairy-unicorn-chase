@@ -47,7 +47,7 @@ export class WaterGardens {
         diffuseColor.rgb+=rim*0.18;`,
         );
     };
-    if (["cloud", "candy", "carnival", "mountain", "minecraft"].includes(level.theme)) return;
+    if (["cloud", "candy", "carnival", "underwater", "mountain", "minecraft"].includes(level.theme)) return;
     const surface = geometry("pond-surface", () => {
       const geo = new THREE.CircleGeometry(1, 48);
       const p = geo.attributes.position;

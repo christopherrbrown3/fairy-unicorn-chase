@@ -1,4 +1,5 @@
 const paths = {
+  shell: '<path d="M12 28 4 14a7 7 0 0 1 7-9 6 6 0 0 1 10 0 7 7 0 0 1 7 9l-8 14ZM16 26V4m-3 22L8 8m11 18 5-18M11 28h10"/>',
   cupcake: '<path d="m7 18 3 12h12l3-12ZM6 18a5 5 0 0 1 1-9 6 6 0 0 1 11-4 5 5 0 0 1 7 5 4 4 0 0 1 1 8ZM13 22l1 5m5-5-1 5"/>',
   pokeball: '<circle cx="16" cy="16" r="13"/><circle cx="16" cy="16" r="4"/><path d="M3 16h9m8 0h9"/>',
   block: '<path d="m3 9 13-6 13 6v14l-13 7-13-7ZM3 9l13 7 13-7M16 16v14M8 7l13 7"/>',
@@ -49,4 +50,5 @@ export const worldIcon = [
   "block",
   "pokeball",
   "cupcake",
+  "shell",
 ];

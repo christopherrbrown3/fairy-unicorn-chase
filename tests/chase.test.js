@@ -157,22 +157,23 @@ test("original completed adventure unlocks the first added world without losing 
   }
 });
 
-test("thirteen-world save unlocks the new candy world and carries forward cleanly", () => {
+test("previous-release save unlocks the newest world and carries forward cleanly", () => {
+  const priorWorldCount = LEVELS.length - 1;
   const previousRelease = sanitizeSave({
     version: 1,
-    completed: Array.from({ length: 13 }, (_, i) => i),
+    completed: Array.from({ length: priorWorldCount }, (_, i) => i),
     sound: false,
     quality: "low",
     reducedMotion: true,
   });
-  assert.deepEqual(previousRelease.completed, Array.from({ length: 13 }, (_, i) => i));
+  assert.deepEqual(previousRelease.completed, Array.from({ length: priorWorldCount }, (_, i) => i));
   assert.equal(unlockCount(previousRelease), LEVELS.length);
   assert.equal(previousRelease.sound, false);
   assert.equal(previousRelease.quality, "low");
   assert.equal(previousRelease.reducedMotion, true);
 
-  const continued = completeLevel(previousRelease, 13);
-  assert.deepEqual(continued.completed, Array.from({ length: 14 }, (_, i) => i));
+  const continued = completeLevel(previousRelease, priorWorldCount);
+  assert.deepEqual(continued.completed, Array.from({ length: priorWorldCount + 1 }, (_, i) => i));
   assert.equal(unlockCount(continued), LEVELS.length);
   assert.equal(continued.sound, false);
   assert.equal(continued.quality, "low");
