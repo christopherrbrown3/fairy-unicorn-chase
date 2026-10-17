@@ -447,6 +447,11 @@ for (const viewport of [
 ]) {
   test(`new game menus and confirmation fit ${viewport.name}`, async ({ page, browserName }) => {
     test.skip(browserName !== "chromium", "One visual capture set is sufficient.");
+    test.setTimeout(180_000);
+    const startedAt = Date.now();
+    const reportStage = (stage) => {
+      console.log(`[responsive ${viewport.name}] ${stage}: ${Date.now() - startedAt}ms elapsed`);
+    };
     const errors = [];
     page.on("pageerror", (e) => errors.push(e.message));
     page.on("console", (m) => {
@@ -460,6 +465,7 @@ for (const viewport of [
     await page.setViewportSize({ width: viewport.width, height: viewport.height });
     await page.goto("/?test=1");
     await ready(page);
+    reportStage("initial ready");
     await page.evaluate(() => {
       localStorage.setItem(
         "fairy-unicorn-chase:v1",
@@ -475,6 +481,7 @@ for (const viewport of [
     });
     await page.reload();
     await ready(page);
+    reportStage("save reload ready");
     await expect(page.getByRole("button", { name: "New game" })).toBeVisible();
     await expect(page.getByRole("button", { name: "Turn sound on" })).toBeVisible();
     expect(
@@ -489,6 +496,7 @@ for (const viewport of [
       path: resolve(output, `menu-${viewport.name}.png`),
       animations: "disabled",
     });
+    reportStage("menu screenshot");
 
     await page.getByRole("button", { name: "New game" }).click();
     const dialog = page.getByRole("dialog", { name: "Start a new adventure?" });
@@ -503,6 +511,7 @@ for (const viewport of [
       path: resolve(output, `confirmation-${viewport.name}.png`),
       animations: "disabled",
     });
+    reportStage("confirmation screenshot");
     await page.keyboard.press("Escape");
     await expect(page.getByRole("button", { name: "New game" })).toBeFocused();
 
@@ -514,12 +523,12 @@ for (const viewport of [
       expect(
         await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth),
       ).toBe(true);
-      // Capture the responsive pause sheet itself. The full-page WebGL canvas
-      // capture can stall SwiftShader in CI after the all-world chase scenario.
-      await page.locator(".pause-sheet").screenshot({
+      reportStage("pause ready");
+      await page.screenshot({
         path: resolve(output, `pause-${viewport.name}.png`),
         animations: "disabled",
       });
+      reportStage("pause screenshot");
     }
     expect(errors).toEqual([]);
   });
