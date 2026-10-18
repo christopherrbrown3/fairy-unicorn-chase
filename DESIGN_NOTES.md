@@ -1,5 +1,11 @@
 # Creative decisions
 
+## Big City Downtown extension
+
+World 18 appends Big City Downtown and Metro, a white unicorn with deep periwinkle hair. These names and colors are provisional. A broad blue-slate boulevard with pale sidewalks and restrained lane dashes runs through a layered pastel skyline. Tall office blocks have repeated window grids and stepped skyscrapers rise farther back. Striped shop awnings, parked yellow taxis, streetlights, planters and benches establish the street-level scale; station clock towers act as major urban landmarks.
+
+The visual contract makes this a recognizable big-city downtown within the same gentle storybook. Tower footprints and parked taxis sit outside the boulevard and sidewalks, shopfronts face the route, and the clear road keeps Mia, Glender, Metro and potions visible. There is no moving traffic or new control system. Shared procedural geometry and the existing spatial material batches bound the static scenery. All 17 previous worlds and saved IDs, plus install/offline/update/share-preview behavior, remain intact.
+
 ## Pancake Picnic extension
 
 World 17 appends Pancake Picnic and Maple, a white unicorn with maple-brown hair; these names and colors are provisional. A cool blue table-runner trail crosses a warm cream breakfast landscape, contrasting with the rider, white unicorn and golden food scenery. Butter-and-syrup pancake stacks, waffles with raised grids, giant strawberries, sunny-side-up eggs, orange halves and jam-toast cottages line the route. Giant pancake towers and fork-and-spoon gateways establish the playful breakfast-table scale.

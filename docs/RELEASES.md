@@ -1,5 +1,17 @@
 # Release history
 
+## v1.10.0 — Big City Downtown
+
+World 18 adds Metro, a white unicorn with a periwinkle mane, to a broad city boulevard with pale sidewalks, shopfront awnings, parked taxis, planters, benches, streetlights and clock towers. Existing saves with all seventeen prior friends unlock Big City Downtown while preserving collection progress and preferences.
+
+![Big City Downtown with Metro naturally close ahead at desktop size](screenshots/downtown-desktop-metro-near.jpg)
+
+![Big City Downtown with Metro naturally close ahead at iPad landscape size](screenshots/downtown-ipad-landscape-metro-near.jpg)
+
+The opening course also shows the blue potion pickup: [normal city chase](screenshots/downtown-potion-visible-ahead.jpg).
+
+The eighteen-friend finale, captured at both sizes: [desktop](screenshots/downtown-finale-desktop.jpg) · [iPad landscape](screenshots/downtown-finale-ipad-landscape.jpg). [Rainbow Meadow preservation capture](screenshots/downtown-meadow-preservation.jpg) checks that the original renderer still presents its familiar world.
+
 ## v1.9.0 — Pancake Picnic
 
 World 17 adds Maple, a white unicorn with a maple-brown mane, to a sunny breakfast picnic. A blue runner winds past pancake stacks with butter and syrup, golden waffles, strawberries, sunny-side-up eggs, orange halves, toast cottages, and giant fork-and-spoon gates. Existing saves with all sixteen prior friends unlock Pancake Picnic while preserving progress and preferences. The Home Screen version downloads the complete new world before offering its safe menu update; cached releases continue to launch offline.
