@@ -2,6 +2,7 @@ import * as THREE from "three";
 import { coursePoint, courseItems } from "../config/levels.js";
 import {
   mesh,
+  box,
   geometry,
   orb,
   cone,
@@ -35,6 +36,7 @@ import { peppermint, wrappedSweet, gummyBear, cupcake, macaron, gumdrops, donutG
 import { coralFan, kelp, tubeSponge, seaStar, pearlShell, coralGate, ReefLife } from "./underwater.js";
 import { christmasTree, presents, candyCane, snowFriend, holidayCottage, festiveGate, Snowfall } from "./christmas.js";
 import { pancakeStack, waffle, strawberry, sunnyEgg, orangeWedge, toastCottage, breakfastGate } from "./breakfast.js";
+import { officeTower, skylineTower, storefront, parkedTaxi, cityPlanter, cityBench, streetlight, clockTower } from "./downtown.js";
 
 let authoredPotion = null;
 export async function loadWorldAssets() {
@@ -101,7 +103,7 @@ export class World {
     ground.userData.ownedMaterial = true;
     for (const [width, y, color] of [
       [35, -0.13, level.ground],
-      [level.width / 2 + 0.15, -0.025, level.ground],
+      [level.width / 2 + (level.theme === "downtown" ? 1.4 : 0.15), -0.025, level.theme === "downtown" ? "#e4dfce" : level.ground],
       [level.width / 2, 0, level.road],
     ]) {
       const m = mesh(this.root, roadGeometry(level, width, y), color);
@@ -127,6 +129,11 @@ export class World {
           let dist = level.width / 2 + 3 + rnd(seed) * 9;
           let prop;
           switch (level.theme) {
+            case "downtown":
+              prop = [officeTower, storefront, parkedTaxi, cityPlanter, officeTower, cityBench][k % 6](chunk);
+              dist = [0, 1, 4].includes(k % 6) ? 16 + rnd(seed) * 5 : 9.2 + rnd(seed) * 2;
+              if ([0, 4].includes(k % 6)) prop.scale.y = 0.8 + rnd(seed + 6) * 0.6;
+              break;
             case "breakfast":
               prop = [pancakeStack, strawberry, waffle, sunnyEgg, toastCottage, orangeWedge][k % 6](chunk, 1.1);
               break;
@@ -237,6 +244,10 @@ export class World {
             level.theme === "cloud" ? -1.4 : 0,
           );
           prop.rotation.y += (rnd(seed + 55) - 0.5) * 0.6;
+          if (level.theme === "downtown") {
+            // Shopfronts and seats face the boulevard; parked cars follow it.
+            prop.rotation.y = coursePoint(level, s).yaw + ([1, 5].includes(k % 6) ? side * Math.PI / 2 : 0);
+          }
           if (
             (level.theme === "castle" && k % 8 === 0) ||
             (level.theme === "palace" && k % 7 === 0) ||
@@ -269,6 +280,16 @@ export class World {
           }
         }
       }
+      if (level.theme === "downtown") {
+        for (let i = 0; i < 10; i++) {
+          const s = (j + i / 10) * length / 16;
+          place(box(chunk, "#f3e8bf", [0, 0, 0], [0.16, 0.025, 2.6]), level, s, 0, 0.03);
+        }
+        for (const side of [-1, 1]) {
+          const lamp = place(streetlight(chunk), level, (j + 0.3) * length / 16, side * 7.1);
+          lamp.rotation.y += side < 0 ? Math.PI : 0;
+        }
+      }
       bake(chunk);
       chunk.traverse((o) => {
         if (o.isMesh) o.castShadow = true;
@@ -280,7 +301,12 @@ export class World {
       if (level.theme === "minecraft") {
         for (const side of [-1, 1]) place(blockHill(landmarks, 1 + rnd(i) * 0.6), level, s, side * (42 + rnd(i + 8) * 24));
       }
-      if (!["crystal", "cloud", "minecraft"].includes(level.theme)) {
+      if (level.theme === "downtown") {
+        for (const side of [-1, 1]) {
+          place(skylineTower(landmarks, 0.8 + rnd(i + 7) * 0.6), level, s, side * (42 + rnd(i + 3) * 22));
+        }
+      }
+      if (!["crystal", "cloud", "minecraft", "downtown"].includes(level.theme)) {
         for (const side of [-1, 1]) {
           const tone = new THREE.Color(level.foliage)
             .lerp(new THREE.Color(level.sky), 0.2 + 0.2 * rnd(i + 14))
@@ -374,6 +400,9 @@ export class World {
         place(pancakeStack(landmarks, 3), level, s + 40, (i % 2 ? 1 : -1) * 22);
         const cottage = place(toastCottage(landmarks, 1.8), level, s + 30, (i % 2 ? -1 : 1) * 19);
         cottage.rotation.y += Math.PI;
+      }
+      if (level.theme === "downtown" && i % 2 === 0) {
+        place(clockTower(landmarks, 1.3), level, s + 38, (i % 4 ? 1 : -1) * 26);
       }
       if (level.theme === "minecraft") {
         place(mineGate(landmarks), level, s + 60, 0);
@@ -494,6 +523,8 @@ export class World {
                 ? christmasTree(this.root, 0.65)
                 : level.theme === "breakfast" && item.kind === "tree"
                   ? strawberry(this.root, 0.8)
+                  : level.theme === "downtown" && item.kind === "tree"
+                    ? cityPlanter(this.root, 0.65)
             : obstacle(this.root, item.kind);
         place(g, level, item.s, item.lane);
         bake(g);
