@@ -7,6 +7,7 @@ import { View } from "./ui/view.js";
 import { Input } from "./game/input.js";
 import { Audio } from "./audio/audio.js";
 import { setupPwa } from "./pwa/install.js";
+import { loadCharacterAssets } from "./characters/characters.js";
 
 const root = document.querySelector("#ui"),
   audio = new Audio();
@@ -154,8 +155,8 @@ root.addEventListener("change", (e) => {
 document.addEventListener("visibilitychange", () => {
   if (document.hidden && game?.mode === "playing") pause();
 });
-await loadWorldAssets();
 try {
+  await Promise.all([loadWorldAssets(), loadCharacterAssets()]);
   game = new GameScene(document.querySelector("#world"), {
     quality: save.quality,
     reducedMotion: save.reducedMotion,

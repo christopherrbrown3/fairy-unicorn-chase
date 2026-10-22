@@ -2,7 +2,7 @@
 
 **A little fairy. A starry pony. Eighteen magical new friends.**
 
-[![Mia riding Glender in the actual Fairy Unicorn Chase title scene](docs/screenshots/title.jpg)](https://fuc.christopherbrown.ai)
+[![Mia riding Glender in the actual Fairy Unicorn Chase title scene](docs/screenshots/character-title.png)](https://fuc.christopherbrown.ai)
 
 ### [Play Fairy Unicorn Chase →](https://fuc.christopherbrown.ai)
 
@@ -40,6 +40,17 @@ Sharing [the game link](https://fuc.christopherbrown.ai/) supplies a custom 1200
 Mia has flowing blonde locks, a blue dress, gently fluttering fairy wings, and water powers. She rides **Glender**, an apricot pony with a golden-yellow mane and tail, star markings, a cheerful gallop, and a knack for hopping over puddles.
 
 The unicorns have white coats, gold horns, friendly faces, and eighteen different mane and tail colors. They are playing chase with Mia, and are happy to be found.
+
+**Character art:** Mia, Glender and the unicorns use original
+skinned Blender models with connected anatomy, sculpted faces, swept hair,
+detailed riding clothes and tack, and translucent veined wings. The image below
+is an actual render from the local character studio.
+
+![Mia riding Glender beside a white unicorn in the local character studio](docs/screenshots/character-cast.png)
+
+With `npm run dev` running, open `/art/characters/preview.html` to turn and zoom
+the models, try their gallop and jump, and inspect all eighteen unicorn palettes.
+[Editable Blender source and rebuild instructions](docs/CHARACTER_ART.md).
 
 ## A peek into the adventure
 
@@ -148,7 +159,9 @@ The static JavaScript modules use **Three.js + WebGL**, **Vite**, **Web Audio**,
 | Change | Start here |
 | --- | --- |
 | World names, unicorn names, mane colors, palettes, widths and chase tuning | [src/config/levels.js](src/config/levels.js) |
-| Mia’s colors and Glender’s coat / mane | `CHARACTER` in the same config, then [src/characters/characters.js](src/characters/characters.js) |
+| Mia and Glender’s hair, unicorn mane palettes | `CHARACTER.hair` and `MANES` in the same config, then [src/characters/characters.js](src/characters/characters.js) |
+| Painted coat, skin and dress colors | Materials and vertex paint in [tools/blender_characters.py](tools/blender_characters.py) |
+| Character shapes, wardrobe, tack, wings and skeletons | [Blender authoring source](tools/blender_characters.py), [editable master](art/characters/character-masters.blend) |
 | World scenery and landmarks | [src/worlds/world.js](src/worlds/world.js), [props.js](src/worlds/props.js) |
 | Water duration / cooldown and visual stream | `MAGIC` in config, [src/game/scene.js](src/game/scene.js) |
 | Pursuit, potion pickup, automatic jumping and gentle bumps | [src/game/chase.js](src/game/chase.js) |
@@ -156,7 +169,7 @@ The static JavaScript modules use **Three.js + WebGL**, **Vite**, **Web Audio**,
 | Menus, icons and touch controls | [src/ui](src/ui), [game.css](src/styles/game.css) |
 | Save schema and graceful recovery | [src/game/save.js](src/game/save.js) |
 
-Characters and environments use custom procedural models with reusable geometry and animation pivots. Mia and the ponies blink; articulated knees bend through gallops and jumps. Flowing hair, embroidered dress details, butterfly wings and spiral unicorn horns reward a closer look. The sparkly potion is an optimized, original Blender GLB, with a procedural fallback. Its [authoring script](tools/blender_potion.py) creates a separate scene and exports only that scene.
+Characters use original Blender GLBs with shared geometry, independent skeletons and palette materials. Mia and the ponies blink; articulated knees bend through gallops and jumps, and Mia shares Glender's riding motion. Painted faces and coats, swept hair, silk dress details, veined wings and spiral unicorn horns reward a closer look. The character models and decoder are cached for offline play. Environments retain their procedural geometry. The sparkly potion is an optimized, original Blender GLB, with a procedural fallback. Its [authoring script](tools/blender_potion.py) creates a separate scene and exports only that scene.
 
 Scenery combines soft shadows, textured paths, petaled flowers, layered hills, floating islands and moonlit lighting. Instanced grass bends in the wind; lily ponds ripple; drifting clouds and a starlight aurora use a single sky pass. The boost ribbon follows the actual path and fades, as do individual magic sparkles. Gentle motion holds the new environmental animation still and omits the ribbon. Geometry, particles, shadow maps and render resolution are bounded; level resources are disposed on replacement.
 

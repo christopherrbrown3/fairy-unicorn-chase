@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-10-14T20:07:36Z",
+  "generatedAt": "2026-10-22T18:03:35Z",
   "title": "Design System: Fairy Unicorn Chase",
   "extensions": {
     "colorMeta": {
@@ -158,6 +158,21 @@
         "name": "chase-progress",
         "value": "transform 0.2s",
         "purpose": "Scale progress from the left edge rather than animating width."
+      },
+      {
+        "name": "character-gallop",
+        "value": "phase = time * 10.5; boosted phase = time * 15",
+        "purpose": "Four offset leg contacts with knee flexion; rider and tack share the pony body suspension."
+      },
+      {
+        "name": "character-blink",
+        "value": "4.8s period; 0.22s blink window",
+        "purpose": "Independent Blink shape state; offsets are 0s for Glender, 0.8s for Mia and 1.3s for unicorns."
+      },
+      {
+        "name": "character-gentle-motion",
+        "value": "Suppress time-driven hair, tail, wing flutter and head turns",
+        "purpose": "Retain locomotion, jump poses, suspension, blinking, water gestures and steering response; pause freezes the scene clock."
       }
     ],
     "breakpoints": [
@@ -261,17 +276,22 @@
   ],
   "narrative": {
     "northStar": "The Playable Storybook",
-    "overview": "Rounded original 3D figurines inhabit magical pastel landscapes. Blinking eyes, flowing tapered hair, pearlescent fairy wings and a scalloped dress give the characters their storybook detail. Patterned butterflies, wind-bent grass, drifting clouds and rippling lily ponds animate the planted scenery around textured paths and recognizable landmarks. The interface uses warm paper, sturdy rounded lettering and generous controls to keep that world readable.\n\nThe world remains animated behind the title and celebrations. Paper menus provide a quieter place to choose worlds and revisit friends. Preserve Mia's blonde hair, blue dress and wings; Glender's yellow mane, yellow tail and body stars; and white unicorn bodies with distinct mane colors. Exact provisional appearance choices remain in `DESIGN_NOTES.md`.",
+    "overview": "Original sculpted 3D characters inhabit magical pastel landscapes. Blender-authored skinning, painted coat and facial color, layered blinking eyes, flowing tapered hair, pearlescent fairy wings and a folded scalloped dress give the cast its storybook detail. Patterned butterflies, wind-bent grass, drifting clouds and rippling lily ponds animate the planted scenery around textured paths and recognizable landmarks. The interface uses warm paper, sturdy rounded lettering and generous controls to keep that world readable.\n\nThe world remains animated behind the title and celebrations. Paper menus provide a quieter place to choose worlds and revisit friends. Preserve Mia's blonde hair, blue dress and wings; Glender's yellow mane, yellow tail and body stars; and white unicorn bodies with distinct mane colors. Exact provisional appearance choices remain in `DESIGN_NOTES.md`.",
     "keyCharacteristics": [
-      "Expressive dimensional characters, patterned butterflies and living planted scenery, with original artwork.",
+      "Sculpted, skinned characters with expressive faces, distinct material surfaces and original artwork; patterned butterflies and living planted scenery.",
       "Warm paper, blue actions, navy ink and pink/gold accents.",
       "Large icon-led controls and short, friendly labels.",
-      "Galloping, hinged wing flutter, water magic, fading rainbow boosts and shared celebrations."
+      "Four-contact galloping, shared rider suspension, hinged wing flutter, water magic, fading rainbow boosts and shared celebrations."
     ],
     "rules": [
       {
         "name": "The World Palette Rule",
         "body": "Keep the interface palette stable across worlds; distinguish worlds through scenery, landmarks and the configured environment colors.",
+        "section": "colors"
+      },
+      {
+        "name": "The Character Identity Rule",
+        "body": "Preserve Mia's blonde hair, blue clothing and fairy wings, Glender's golden mane and tail with body stars, and white unicorn coats with configured mane colors; richer surface detail must keep these identities readable from the chase camera.",
         "section": "colors"
       },
       {
@@ -285,23 +305,35 @@
         "section": "layout"
       },
       {
+        "name": "The Membrane Light Rule",
+        "body": "Keep wing membranes independently sortable and lit by the world's lights; their environment map is null and environment intensity is zero so studio-wall reflections do not become dark bands on the curved surface.",
+        "section": "elevation"
+      },
+      {
         "name": "The Soft Lift Rule",
         "body": "Raised interface surfaces use blurred, tinted shadows; do not restore the removed hard offset primary-button shadow.",
         "section": "elevation"
+      },
+      {
+        "name": "The Shared Cast Rule",
+        "body": "Reuse loaded geometry and the tiny surface maps while giving each character independent skeletons, blink state and palette materials; release instance materials and skeleton textures when a character leaves the scene.",
+        "section": "components"
       }
     ],
     "dos": [
       "**Do** preserve confirmed character colors, powers and recognizable silhouettes.",
       "**Do** reuse the paper/blue/ink hierarchy while each world contributes its own scenery.",
       "**Do** retain large touch targets, visible keyboard focus and safe-area clearance.",
-      "**Do** keep portraits and celebrations unobstructed, with all thirteen friends visible in the finale.",
-      "**Do** keep provisional names, coat choices and tuning editable through configuration and documented in `DESIGN_NOTES.md`."
+      "**Do** keep portraits and celebrations unobstructed, with every configured friend visible in the finale.",
+      "**Do** keep provisional names and tuning editable through configuration, character appearance editable through its authoring source, and choices documented in `DESIGN_NOTES.md`.",
+      "**Do** keep independent character poses and expressions while sharing geometry and disposing replaced instance resources."
     ],
     "donts": [
       "**Don't** add an eyebrow above the title or restore the removed hard offset primary shadow.",
       "**Don't** replace original icons or dimensional artwork with glyph icons or placeholder figures.",
       "**Don't** add text-heavy instructions or developer controls to the play surface.",
-      "**Don't** treat browser viewport captures as physical iPad performance or touch validation."
+      "**Don't** treat browser viewport captures as physical iPad performance or touch validation.",
+      "**Don't** promote the local character studio's interface, backdrop or lighting into production UI rules."
     ]
   }
 }

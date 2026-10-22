@@ -1,505 +1,247 @@
 import * as THREE from "three";
+import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+import { clone } from "three/addons/utils/SkeletonUtils.js";
+import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
+import { MeshoptDecoder } from "three/addons/libs/meshopt_decoder.module.js";
 import { CHARACTER, MANES } from "../config/levels.js";
-import {
-  orb,
-  cone,
-  cylinder,
-  mesh,
-  group,
-  tube,
-  lock,
-  star,
-  bake,
-  geometry,
-} from "../art/primitives.js";
 
-function tint(color, lightness) {
-  return new THREE.Color(color).offsetHSL(0, 0, lightness).getStyle();
+// Original sculpted storybook cast. Geometry is shared; skeletons, expressions,
+// and palette materials belong to each instance. Source: blender_characters.py.
+const templates = new Map();
+let loading;
+export function loadCharacterAssets(baseURL = document.baseURI) {
+  if (!loading) {
+    const loader = new GLTFLoader();
+    loader.setMeshoptDecoder(MeshoptDecoder);
+    loading = Promise.all(
+      ["glender", "unicorn", "mia"].map(async (name) => {
+        const { scene } = await loader.loadAsync(
+          new URL(`assets/models/${name}.glb`, baseURL).href,
+        );
+        templates.set(name, scene);
+      }),
+    ).catch((error) => {
+      loading = null;
+      throw error;
+    });
+  }
+  return loading;
 }
-function hairColor(hair, i) {
-  return hair === "rainbow"
-    ? ["#ef8cac", "#ffd26e", "#8ad0a4", "#79caf0", "#b095df"][i % 5]
-    : tint(hair, [0, 0.055, -0.035, 0.025, -0.015][i % 5]);
+
+// Broad studio reflections, computed once per renderer. Applied to characters
+// only, preserving the existing lighting and palette of every world.
+export function createCharacterEnvironment(renderer) {
+  const room = new RoomEnvironment();
+  const pmrem = new THREE.PMREMGenerator(renderer);
+  const environment = pmrem.fromScene(room, 0.06, 0.1, 100, { size: 128 });
+  room.dispose();
+  pmrem.dispose();
+  return environment;
 }
-function eyelid(parent, color, position, scale) {
-  const lid = orb(parent, color, position, scale);
-  lid.name = "Blinking eyelid";
-  lid.visible = false;
-  lid.userData.dynamic = true;
-  return lid;
+
+const surfaceMaps = new Map();
+function fiberNormal(kind) {
+  if (surfaceMaps.has(kind)) return surfaceMaps.get(kind);
+  const size = 128,
+    pixels = new Uint8Array(size * size * 4);
+  // Deterministic microstructure: woven silk or longitudinal hair fibers.
+  for (let y = 0; y < size; y++)
+    for (let x = 0; x < size; x++) {
+      const nx = Math.sin((x * Math.PI) / 2) * (kind === "hair" ? 17 : 10);
+      const ny =
+        kind === "hair"
+          ? Math.sin((y * Math.PI) / 16) * 2
+          : Math.sin((y * Math.PI) / 2) * 10;
+      pixels.set([128 + nx, 128 + ny, 253, 255], (y * size + x) * 4);
+    }
+  const texture = new THREE.DataTexture(pixels, size, size);
+  texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+  texture.magFilter = THREE.LinearFilter;
+  texture.minFilter = THREE.LinearMipmapLinearFilter;
+  texture.generateMipmaps = true;
+  texture.repeat.set(kind === "hair" ? 1 : 6, kind === "hair" ? 1 : 4);
+  texture.needsUpdate = true;
+  surfaceMaps.set(kind, texture);
+  return texture;
 }
-function blink(lids, time, offset = 0) {
-  const phase = (time + offset) % 4.7;
-  lids.forEach((lid) => {
-    lid.visible = phase > 4.48;
+const rainbow = ["#ed91b5", "#ffd476", "#9bd4b2", "#8acfe9", "#baa2e2"];
+const shades = [0, -0.025, 0.035, -0.055, 0.065];
+function makeMaterial(source, hair, environment, isUnicorn) {
+  const name = source.name;
+  const mat = new THREE.MeshPhysicalMaterial({
+    name,
+    color: source.color,
+    vertexColors: source.vertexColors,
+    roughness: source.roughness,
+    metalness: source.metalness,
+    opacity: source.opacity,
+    transparent: source.transparent,
+    side: source.side,
+    envMap: environment,
+    envMapIntensity: 0.42,
   });
+  if (name.startsWith("Hair |")) {
+    const index = Number(name.match(/strand (\d)/)?.[1] || 0);
+    mat.color.set(hair === "rainbow" ? rainbow[index] : hair);
+    if (hair !== "rainbow") mat.color.offsetHSL(0, 0, shades[index]);
+    mat.roughness = 0.43;
+    mat.metalness = 0.01;
+    mat.sheen = 0.35;
+    mat.sheenColor.copy(mat.color).lerp(new THREE.Color("#fff4db"), 0.65);
+    mat.sheenRoughness = 0.43;
+    mat.normalMap = fiberNormal("hair");
+    mat.normalScale.setScalar(0.23);
+    mat.anisotropy = 0.45;
+    mat.anisotropyRotation = Math.PI / 2;
+  } else if (name.startsWith("Coat |") || name.startsWith("Skin |")) {
+    mat.roughness = 0.58;
+    mat.sheen = 0.22;
+    mat.sheenColor.set("#f7d5c0");
+    mat.sheenRoughness = 0.75;
+    mat.envMapIntensity = 0.22;
+  } else if (name.startsWith("Dress |")) {
+    mat.sheen = 0.55;
+    mat.sheenColor.set("#bbdef4");
+    mat.sheenRoughness = 0.65;
+    mat.normalMap = fiberNormal("silk");
+    mat.normalScale.setScalar(0.15);
+    mat.side = THREE.DoubleSide;
+  } else if (name.startsWith("Eyes |")) {
+    mat.clearcoat = 1;
+    mat.clearcoatRoughness = 0.08;
+    mat.envMapIntensity = 0.7;
+    if (name.includes("iris") && isUnicorn) mat.color.set("#8074bb");
+  } else if (name.startsWith("Wings | opal")) {
+    mat.side = THREE.DoubleSide;
+    mat.depthWrite = false;
+    mat.transparent = true;
+    mat.opacity = 0.56;
+    mat.iridescence = 0.85;
+    mat.iridescenceIOR = 1.3;
+    mat.iridescenceThicknessRange = [180, 410];
+    mat.roughness = 0.58;
+    mat.clearcoat = 0.15;
+    mat.clearcoatRoughness = 0.65;
+    // Thin membranes catch the world's light without reflecting studio walls.
+    mat.envMap = null;
+    mat.envMapIntensity = 0;
+  } else if (name.startsWith("Gold |")) mat.envMapIntensity = 0.9;
+  else if (isUnicorn && name.startsWith("Hooves |")) mat.color.set("#a796b6");
+  return mat;
 }
+
+function instantiate(name, { hair = CHARACTER.hair, environment = null } = {}) {
+  const template = templates.get(name);
+  if (!template) throw new Error(`Character asset ${name} has not loaded`);
+  const root = new THREE.Group(),
+    body = new THREE.Group(),
+    model = clone(template);
+  root.add(body);
+  body.add(model);
+  const materials = new Map(),
+    bones = {},
+    morphs = [],
+    rests = new Map();
+  model.updateMatrixWorld(true);
+  model.traverse((o) => {
+    if (o.isBone) {
+      bones[o.name] = o;
+      const basis = o.getWorldQuaternion(new THREE.Quaternion());
+      rests.set(o, {
+        quaternion: o.quaternion.clone(),
+        basis,
+        inverse: basis.clone().invert(),
+      });
+    }
+    if (!o.isMesh) return;
+    const source = o.material;
+    if (!materials.has(source))
+      materials.set(
+        source,
+        makeMaterial(source, hair, environment, name === "unicorn"),
+      );
+    o.material = materials.get(source);
+    o.userData.ownedMaterial = true;
+    o.castShadow = o.receiveShadow = !o.material.transparent;
+    // Bind-pose bounds exclude galloping hooves and fluttering wings.
+    o.frustumCulled = false;
+    if (o.morphTargetDictionary?.Blink !== undefined) morphs.push(o);
+  });
+  root.userData = {
+    body,
+    bones,
+    rests,
+    morphs,
+    model,
+    asset: name,
+    materials: [...materials.values()],
+  };
+  return root;
+}
+
+const rotation = new THREE.Quaternion(),
+  localRotation = new THREE.Quaternion();
+const angles = new THREE.Euler();
+function pose(character, bone, x = 0, y = 0, z = 0) {
+  if (!bone) return;
+  const rest = character.userData.rests.get(bone);
+  rotation.setFromEuler(angles.set(x, y, z));
+  localRotation.copy(rest.inverse).multiply(rotation).multiply(rest.basis);
+  bone.quaternion.copy(rest.quaternion).multiply(localRotation);
+}
+function blink(character, time, offset) {
+  const phase = (time + offset) % 4.8;
+  const strength =
+    phase < 4.58 ? 0 : Math.sin(((phase - 4.58) / 0.22) * Math.PI);
+  for (const mesh of character.userData.morphs)
+    mesh.morphTargetInfluences[mesh.morphTargetDictionary.Blink] = strength;
+}
+
 export function makePony({
   unicorn = false,
   hair = CHARACTER.hair,
-  coat = CHARACTER.coat,
+  environment = null,
 } = {}) {
-  const root = group();
+  const root = instantiate(unicorn ? "unicorn" : "glender", {
+    hair,
+    environment,
+  });
   root.name = unicorn ? "White unicorn" : "Glender";
-  const body = group(root);
-  const hoof = unicorn ? "#bd9fc4" : "#ab7863",
-    muzzle = unicorn ? "#f7d8df" : "#f3c8a9";
-  orb(body, coat, [0, 1.38, 0], [0.58, 0.64, 1]);
-  const neck = orb(body, coat, [0, 1.82, 0.6], [0.43, 0.77, 0.48]);
-  neck.rotation.x = 0.15;
-  orb(body, tint(coat, 0.065), [0, 1.1, 0.56], [0.4, 0.39, 0.43]);
-  const head = group(body, [0, 2.22, 0.94]);
-  const lids = [];
-  head.rotation.x = -0.15;
-  orb(head, coat, [0, 0.14, 0], [0.42, 0.48, 0.59]);
-  orb(head, muzzle, [0, -0.05, 0.5], [0.39, 0.26, 0.31]);
-  for (const side of [-1, 1]) {
-    const ear = orb(
-      head,
-      coat,
-      [side * 0.27, 0.58, -0.13],
-      [0.115, 0.32, 0.16],
-    );
-    ear.rotation.z = -side * 0.28;
-    orb(head, muzzle, [side * 0.272, 0.62, -0.022], [0.06, 0.2, 0.047]);
-    orb(head, "#fff9f4", [side * 0.364, 0.24, 0.25], [0.056, 0.145, 0.13]);
-    orb(
-      head,
-      unicorn ? "#614b8f" : "#45566f",
-      [side * 0.409, 0.23, 0.275],
-      [0.038, 0.113, 0.087],
-      {
-        roughness: 0.18,
-      },
-    );
-    orb(head, "#233148", [side * 0.436, 0.23, 0.285], [0.016, 0.078, 0.053]);
-    orb(head, "#ffffff", [side * 0.451, 0.274, 0.304], [0.013, 0.031, 0.022]);
-    orb(head, "#ffffff", [side * 0.45, 0.2, 0.267], [0.012, 0.014, 0.012]);
-    lids.push(
-      eyelid(head, coat, [side * 0.428, 0.24, 0.265], [0.044, 0.151, 0.14]),
-    );
-    orb(head, "#db9ca5", [side * 0.36, 0.035, 0.42], [0.038, 0.07, 0.1]);
-    orb(head, "#976f81", [side * 0.19, -0.017, 0.752], [0.044, 0.029, 0.018]);
-  }
-  tube(
-    head,
-    "#ac7183",
-    [
-      [-0.12, -0.17, 0.74],
-      [0, -0.2, 0.78],
-      [0.12, -0.17, 0.74],
-    ],
-    0.012,
-  );
-  const mane = group(body);
-  for (let i = 0; i < 7; i++) {
-    const z = 0.88 - i * 0.13,
-      y = 2.61 - i * 0.105;
-    lock(
-      mane,
-      hairColor(hair, i),
-      [
-        [-0.05, y, z],
-        [0.25, y + 0.03, z - 0.12],
-        [0.38, y - 0.24, z - 0.28],
-        [0.31, y - 0.53, z - 0.45],
-        [0.43, y - 0.61, z - 0.57],
-      ],
-      0.125,
-    );
-  }
-  for (let i = 0; i < 4; i++)
-    lock(
-      mane,
-      hairColor(hair, i),
-      [
-        [0.04 * (i - 1), 2.72, 0.76],
-        [0.15 * (i - 1), 2.81, 1.04],
-        [0.19 * (i - 1), 2.61, 1.32],
-        [0.16 * (i - 1) - 0.1, 2.4 + i * 0.025, 1.35],
-      ],
-      0.105,
-    );
-  if (unicorn) {
-    const horn = cone(head, "#ffde8a", [0, 0.78, 0.22], [0.105, 0.68, 0.105]);
-    horn.rotation.x = 0.12;
-    const spiral = [];
-    for (let i = 0; i <= 64; i++) {
-      const t = i / 64,
-        a = t * Math.PI * 7,
-        r = 0.096 * (1 - t);
-      spiral.push([
-        Math.cos(a) * r,
-        0.46 + t * 0.63,
-        0.185 + t * 0.076 + Math.sin(a) * r,
-      ]);
-    }
-    tube(head, "#e6ad50", spiral, 0.012, { roughness: 0.3, metalness: 0.35 });
-  } else
-    for (const side of [-1, 1])
-      for (const [z, y, size] of [
-        [-0.35, 1.55, 0.17],
-        [0.12, 1.35, 0.13],
-        [-0.66, 1.24, 0.11],
-      ]) {
-        const s = star(body, "#ffdc7b", [side * 0.56, y, z], size);
-        s.rotation.y = (side * Math.PI) / 2;
-      }
-  const legs = [],
-    knees = [];
-  for (const side of [-1, 1])
-    for (const z of [-0.59, 0.61]) {
-      const leg = group(root, [side * 0.36, 1.35, z]);
-      orb(leg, coat, [0, -0.27, 0], [0.16, 0.39, 0.17]);
-      const knee = group(leg, [0, -0.67, 0.02]);
-      orb(knee, coat, [0, 0, 0], [0.145, 0.16, 0.155]);
-      cylinder(knee, coat, [0, -0.23, 0.015], [0.12, 0.43, 0.12]);
-      cylinder(knee, tint(coat, 0.08), [0, -0.365, 0.025], [0.13, 0.14, 0.13]);
-      orb(knee, hoof, [0, -0.46, 0.07], [0.19, 0.15, 0.26], {
-        roughness: 0.42,
-      });
-      bake(knee);
-      bake(leg, false);
-      legs.push(leg);
-      knees.push(knee);
-    }
-  const tail = group(root, [0, 1.66, -0.85]);
-  for (let i = 0; i < 7; i++)
-    lock(
-      tail,
-      hairColor(hair, i),
-      [
-        [0.045 * (i - 3), 0.05, 0],
-        [0.07 * (i - 3), 0.12, -0.38],
-        [0.1 * (i - 3) + 0.07, -0.22, -0.78],
-        [0.075 * (i - 3) + 0.12, -0.69, -1.03],
-        [0.04 * (i - 3) + 0.27, -0.92, -0.98],
-      ],
-      0.11,
-    );
-  bake(tail);
-  if (!unicorn) {
-    orb(body, "#f6d489", [0, 1.85, -0.13], [0.57, 0.17, 0.63]);
-    orb(body, "#6488bf", [0, 1.9, -0.13], [0.53, 0.13, 0.59]);
-    tube(
-      body,
-      "#d0a572",
-      [
-        [0.28, 2.22, 1.3],
-        [0.6, 1.95, 0.8],
-        [0.35, 2.1, -0.15],
-      ],
-      0.025,
-    );
-    tube(
-      body,
-      "#d0a572",
-      [
-        [-0.28, 2.22, 1.3],
-        [-0.6, 1.95, 0.8],
-        [-0.35, 2.1, -0.15],
-      ],
-      0.025,
-    );
-  }
-  bake(head);
-  bake(mane);
-  bake(body, false);
-  root.traverse((o) => {
-    if (o.isMesh) o.castShadow = true;
+  const u = root.userData,
+    b = u.bones;
+  Object.assign(u, {
+    unicorn,
+    head: b.head,
+    mane: b.mane,
+    tail: b.tail,
+    legs: [b.front_L, b.front_R, b.back_L, b.back_R],
+    knees: [b.front_L_shin, b.front_R_shin, b.back_L_shin, b.back_R_shin],
   });
-  root.userData = { body, legs, knees, tail, head, mane, lids, unicorn };
   return root;
 }
-
-export function makeMia() {
-  const root = group();
+export function makeMia(options) {
+  const root = instantiate("mia", options);
   root.name = "Mia";
-  const c = CHARACTER;
-  const body = group(root, [0, 2.05, -0.08]);
-  orb(body, c.dress, [0, 0.45, 0], [0.29, 0.43, 0.22]);
-  const skirtGeo = geometry("petal-skirt", () => {
-    const points = [];
-    for (let i = 0; i <= 8; i++) {
-      const t = i / 8;
-      points.push(new THREE.Vector2(0.26 + 0.34 * t, 0.26 - 0.5 * t));
-    }
-    const geo = new THREE.LatheGeometry(points, 36);
-    const positions = geo.attributes.position;
-    for (let i = 0; i < positions.count; i++) {
-      const x = positions.getX(i),
-        z = positions.getZ(i),
-        y = positions.getY(i);
-      const a = Math.atan2(x, z),
-        hem = (0.26 - y) / 0.5;
-      const fold = 1 + Math.cos(a * 8) * 0.045 * hem;
-      positions.setXYZ(
-        i,
-        x * fold,
-        y + Math.cos(a * 8) * 0.045 * hem,
-        z * fold,
-      );
-    }
-    geo.computeVertexNormals();
-    return geo;
+  const u = root.userData;
+  Object.assign(u, {
+    head: u.bones.head,
+    arm: u.bones.arm_R,
+    wings: [u.bones.wing_L, u.bones.wing_R],
   });
-  mesh(body, skirtGeo, c.dress, [0, 0.18, 0], [1, 1, 1], {
-    side: THREE.DoubleSide,
-  });
-  cylinder(body, "#f4dba1", [0, 0.39, 0], [0.28, 0.055, 0.23]);
-  star(body, "#fff1c0", [0, 0.6, 0.213], 0.09);
-  const hem = [];
-  for (let i = 0; i <= 64; i++) {
-    const a = (i / 64) * Math.PI * 2,
-      fold = Math.cos(a * 8);
-    hem.push([
-      Math.sin(a) * (0.6 + fold * 0.027),
-      -0.06 + fold * 0.045,
-      Math.cos(a) * (0.6 + fold * 0.027),
-    ]);
-  }
-  tube(body, "#c1e7f3", hem, 0.016);
-  for (let i = 0; i < 8; i++) {
-    const a = (i * Math.PI) / 4;
-    const decoration = star(
-      body,
-      "#d5edf5",
-      [Math.sin(a) * 0.5, 0.035, Math.cos(a) * 0.5],
-      0.044,
-    );
-    decoration.rotation.y = a;
-  }
-  for (const side of [-1, 1]) {
-    orb(body, c.skin, [side * 0.49, -0.15, 0.28], [0.12, 0.32, 0.14]);
-    orb(body, "#527bbe", [side * 0.49, -0.43, 0.35], [0.14, 0.13, 0.22]);
-    const arm = group(body, [side * 0.27, 0.58, 0.04]);
-    arm.rotation.z = side * 0.25;
-    orb(arm, c.dress, [side * 0.05, -0.08, 0.05], [0.13, 0.19, 0.14]);
-    orb(arm, c.skin, [side * 0.09, -0.23, 0.12], [0.075, 0.21, 0.085]);
-    orb(arm, c.skin, [side * 0.12, -0.36, 0.24], [0.09, 0.085, 0.11]);
-    if (side === 1) root.userData.arm = arm;
-  }
-  const head = group(body, [0, 1.05, 0]);
-  const lids = [];
-  orb(head, c.skin, [0, 0.1, 0], [0.38, 0.43, 0.33]);
-  orb(head, c.hair, [0, 0.23, -0.1], [0.405, 0.4, 0.32]);
-  for (let i = 0; i < 7; i++) {
-    const x = (i - 3) * 0.095;
-    lock(
-      head,
-      hairColor(c.hair, i),
-      [
-        [x, 0.43, -0.24],
-        [x * 1.2, 0.1, -0.4],
-        [x * 1.25, -0.32, -0.39],
-        [x * 1.4 + 0.045, -0.55, -0.53],
-      ],
-      0.072,
-    );
-  }
-  for (const side of [-1, 1]) {
-    orb(head, "#325174", [side * 0.135, 0.16, 0.305], [0.043, 0.07, 0.025]);
-    orb(head, "#ffffff", [side * 0.14, 0.18, 0.328], [0.014, 0.02, 0.009]);
-    lids.push(
-      eyelid(head, c.skin, [side * 0.135, 0.16, 0.328], [0.053, 0.08, 0.027]),
-    );
-    tube(
-      head,
-      "#b38b4e",
-      [
-        [side * 0.08, 0.26, 0.296],
-        [side * 0.14, 0.28, 0.3],
-        [side * 0.195, 0.26, 0.28],
-      ],
-      0.009,
-    );
-    orb(head, "#efa5aa", [side * 0.245, 0.017, 0.269], [0.075, 0.045, 0.025]);
-    orb(head, c.hair, [side * 0.285, -0.12, -0.075], [0.16, 0.4, 0.17]);
-    const hairLock = lock(
-      head,
-      c.hair,
-      [
-        [side * 0.28, 0.17, -0.18],
-        [side * 0.35, -0.16, -0.24],
-        [side * 0.27, -0.52, -0.38],
-        [side * 0.43, -0.64, -0.49],
-      ],
-      0.095,
-    );
-    hairLock.name = "Flowing blonde lock";
-  }
-  orb(head, c.skin, [0, 0.045, 0.333], [0.043, 0.053, 0.043]);
-  tube(
-    head,
-    "#b27b84",
-    [
-      [-0.075, -0.09, 0.302],
-      [0, -0.12, 0.326],
-      [0.075, -0.09, 0.302],
-    ],
-    0.012,
-  );
-  for (let i = 0; i < 4; i++) {
-    const fringe = orb(
-      head,
-      c.hair,
-      [(i - 1.5) * 0.13, 0.38, 0.23],
-      [0.125, 0.14, 0.1],
-    );
-    fringe.rotation.z = (i - 1.5) * 0.2;
-  }
-  for (let i = 0; i < 5; i++) {
-    const a = (i - 2) * 0.35;
-    orb(
-      head,
-      "#faf4d5",
-      [Math.sin(a) * 0.36, 0.44, Math.cos(a) * 0.26],
-      [0.055, 0.055, 0.05],
-    );
-    orb(
-      head,
-      "#ecafd3",
-      [Math.sin(a) * 0.36, 0.465, Math.cos(a) * 0.27],
-      [0.025, 0.027, 0.022],
-    );
-  }
-  const wings = [];
-  const wingMaterial = new THREE.MeshPhysicalMaterial({
-    color: "#ffffff",
-    vertexColors: true,
-    side: THREE.DoubleSide,
-    transparent: true,
-    opacity: 0.82,
-    depthWrite: false,
-    roughness: 0.34,
-    metalness: 0.08,
-    iridescence: 0.75,
-    iridescenceIOR: 1.3,
-    iridescenceThicknessRange: [180, 380],
-    clearcoat: 0.25,
-    clearcoatRoughness: 0.3,
-  });
-  for (const side of [-1, 1]) {
-    const w = group(body, [side * 0.16, 0.6, -0.22]);
-    const shape = new THREE.Shape();
-    shape.moveTo(0, 0);
-    shape.bezierCurveTo(0.12, 0.56, 0.62, 0.92, 1.02, 0.78);
-    shape.bezierCurveTo(1.18, 0.53, 0.88, 0.11, 0.24, -0.025);
-    shape.bezierCurveTo(0.7, 0.02, 0.88, -0.32, 0.66, -0.53);
-    shape.bezierCurveTo(0.34, -0.6, 0.06, -0.24, 0, 0);
-    const wingGeo = geometry("fairy-wing", () => {
-      const geo = new THREE.ShapeGeometry(shape, 24);
-      const colors = [];
-      for (let i = 0; i < geo.attributes.position.count; i++) {
-        const y = geo.attributes.position.getY(i);
-        const color = new THREE.Color("#bca1ed").lerp(
-          new THREE.Color("#a0e5f1"),
-          THREE.MathUtils.clamp((y + 0.5) / 1.2, 0, 1),
-        );
-        colors.push(color.r, color.g, color.b);
-      }
-      geo.setAttribute("color", new THREE.Float32BufferAttribute(colors, 3));
-      return geo;
-    });
-    const membrane = mesh(w, wingGeo, "#ffffff", [0, 0, -0.08], [1, 1, 1], {
-      vertexColors: true,
-      side: THREE.DoubleSide,
-      transparent: true,
-      opacity: 0.88,
-      roughness: 0.36,
-      metalness: 0.08,
-      depthWrite: false,
-    });
-    membrane.name = "Pearlescent butterfly wing";
-    membrane.material = wingMaterial;
-    membrane.userData.ownedMaterial = true;
-    const outline = shape.getPoints(32).map((p) => [p.x, p.y, -0.085]);
-    tube(w, "#ecf9ec", outline, 0.017);
-    for (const points of [
-      [
-        [0.04, 0, 0],
-        [0.3, 0.28, 0],
-        [0.68, 0.57, 0],
-        [1.01, 0.76, 0],
-      ],
-      [
-        [0.27, 0.25, 0],
-        [0.44, 0.38, 0],
-        [0.52, 0.78, 0],
-      ],
-      [
-        [0.39, 0.36, 0],
-        [0.65, 0.25, 0],
-        [0.95, 0.3, 0],
-      ],
-      [
-        [0.04, -0.03, 0],
-        [0.28, -0.21, 0],
-        [0.64, -0.49, 0],
-      ],
-    ])
-      tube(
-        w,
-        "#efffef",
-        points.map(([x, y]) => [x, y, -0.1]),
-        0.012,
-      );
-    for (const [x, y] of [
-      [0.92, 0.64],
-      [0.77, 0.65],
-      [0.82, 0.44],
-      [0.61, -0.39],
-    ])
-      orb(w, "#fff4c4", [x, y, -0.11], [0.025, 0.025, 0.018]);
-    for (const [x, y, rx, ry] of [
-      [0.62, 0.5, 0.12, 0.18],
-      [0.43, -0.31, 0.115, 0.12],
-    ]) {
-      const ring = [];
-      for (let i = 0; i <= 32; i++) {
-        const a = (i / 32) * Math.PI * 2;
-        ring.push([
-          x + Math.cos(a) * rx,
-          y + Math.sin(a) * ry,
-          -0.105,
-        ]);
-      }
-      tube(w, "#e6f4cd", ring, 0.01);
-      orb(w, "#b2dbe8", [x, y, -0.1], [rx * 0.67, ry * 0.7, 0.009]);
-      orb(
-        w,
-        "#f9efc6",
-        [x - 0.015, y + 0.025, -0.113],
-        [0.024, 0.034, 0.009],
-      );
-    }
-    bake(w);
-    // Mirror the finished group so the renderer also reverses face winding.
-    // Baking a negative membrane scale leaves its lighting normals inverted.
-    w.scale.x = side;
-    w.children.forEach((o) => {
-      if (o.material === wingMaterial) o.userData.ownedMaterial = true;
-    });
-    w.traverse((o) => {
-      if (o.isMesh) o.receiveShadow = false;
-    });
-    wings.push(w);
-  }
-  bake(head);
-  bake(body, false);
-  root.traverse((o) => {
-    if (o.isMesh && !o.material.transparent) o.castShadow = true;
-  });
-  root.userData = { ...root.userData, body, wings, head, lids };
   return root;
 }
-export function makeRider() {
-  const pony = makePony();
-  const mia = makeMia();
-  pony.add(mia);
+export function makeRider(options) {
+  const pony = makePony(options),
+    mia = makeMia(options);
+  pony.userData.body.add(mia);
   pony.userData.mia = mia;
   return pony;
 }
+export function makeCollectionUnicorn(id, options = {}) {
+  return makePony({ ...options, unicorn: true, hair: MANES[id] });
+}
+
+const gaitOffsets = [0, 0.65, Math.PI + 0.35, Math.PI + 1.0];
 export function animatePony(
   pony,
   time,
@@ -514,44 +256,81 @@ export function animatePony(
   } = {},
 ) {
   const u = pony.userData,
-    phase = time * (boost ? 16 : 11);
-  for (let i = 0; i < u.legs.length; i++) {
-    const stride = phase + (i % 3 === 0 ? 0 : Math.PI);
-    u.legs[i].rotation.x = running
-      ? Math.sin(stride) * 0.55
-      : Math.sin(time * 2 + i) * 0.045;
-    u.knees[i].rotation.x = running ? Math.max(0, Math.cos(stride)) * 0.75 : 0;
-  }
-  u.head.rotation.x =
-    -0.15 + (running ? Math.sin(phase) * 0.035 : Math.sin(time * 1.4) * 0.025);
-  u.head.rotation.y = reduced ? 0 : Math.sin(time * 0.9) * 0.045;
-  u.mane.rotation.x = reduced ? 0 : Math.sin(time * 4) * 0.018;
-  blink(u.lids, time, u.unicorn ? 1.3 : 0);
+    phase = time * (boost ? 15 : 10.5);
+  // Four offset contacts with two-joint flexion; rider and tack share suspension.
+  u.legs.forEach((leg, i) => {
+    const stride = phase + gaitOffsets[i];
+    let swing = running ? Math.sin(stride) * (i < 2 ? 0.49 : 0.43) : 0;
+    let knee = running
+      ? Math.max(0, Math.cos(stride)) * (i < 2 ? 0.72 : -0.54)
+      : 0;
+    if (jump > 0) {
+      swing = i < 2 ? -0.58 : 0.56;
+      knee = i < 2 ? 0.98 : -0.72;
+    }
+    pose(pony, leg, swing);
+    pose(pony, u.knees[i], knee);
+  });
+  pose(
+    pony,
+    u.bones.neck,
+    running ? Math.sin(phase) * 0.025 : Math.sin(time * 1.5) * 0.012,
+  );
+  pose(
+    pony,
+    u.head,
+    running ? Math.sin(phase + 0.5) * 0.035 : Math.sin(time * 1.4) * 0.02,
+    reduced ? 0 : Math.sin(time * 0.85) * 0.045,
+  );
+  pose(
+    pony,
+    u.mane,
+    reduced ? 0 : Math.sin(time * 3.4) * 0.025,
+    0,
+    steer * 0.025,
+  );
+  pose(
+    pony,
+    u.tail,
+    reduced ? 0 : 0.03 + Math.sin(time * 4.2) * 0.09,
+    reduced ? 0 : Math.sin(time * 2.3) * 0.1,
+    steer * 0.07,
+  );
   u.body.position.y = running
-    ? Math.abs(Math.sin(phase)) * 0.085
-    : Math.sin(time * 2) * 0.018;
-  u.body.rotation.z = -steer * 0.09;
-  u.tail.rotation.x = Math.sin(time * 5) * 0.13;
-  u.tail.rotation.z = Math.sin(time * 3) * 0.12;
-  if (jump > 0) {
-    u.legs.forEach((l, i) => (l.rotation.x = i % 2 ? 0.8 : -0.7));
-    u.knees.forEach((k) => (k.rotation.x = 0.8));
-    u.body.rotation.x = -0.1;
-  } else
-    u.body.rotation.x = celebrate && !reduced ? Math.sin(time * 3) * 0.06 : 0;
+    ? Math.abs(Math.sin(phase + 0.2)) * 0.065
+    : Math.sin(time * 1.7) * 0.012;
+  u.body.rotation.set(
+    jump > 0 ? -0.07 : celebrate && !reduced ? Math.sin(time * 2.5) * 0.035 : 0,
+    0,
+    -steer * 0.075,
+  );
+  blink(pony, time, u.unicorn ? 1.3 : 0);
   if (u.mia) {
-    const m = u.mia.userData;
-    blink(m.lids, time, 0.8);
-    m.wings.forEach(
-      (w, i) =>
-        (w.rotation.y =
-          (i ? 1 : -1) * (0.2 + Math.sin(time * (running ? 6 : 3)) * 0.14)),
+    const mia = u.mia,
+      m = mia.userData;
+    blink(mia, time, 0.8);
+    pose(
+      mia,
+      m.bones.spine,
+      jump > 0
+        ? -0.08
+        : boost
+          ? 0.055
+          : running
+            ? Math.sin(phase + 0.7) * 0.018
+            : 0,
     );
-    m.body.rotation.x = jump > 0 ? -0.12 : boost ? 0.07 : 0;
-    m.arm.rotation.x = water > 0 ? -1.2 : 0;
-    m.head.rotation.y = Math.sin(time * 1.6) * 0.08;
+    pose(mia, m.head, 0, reduced ? 0 : Math.sin(time * 1.25) * 0.055);
+    pose(mia, m.bones.hair, reduced ? 0 : Math.sin(time * 3.7) * 0.027);
+    pose(mia, m.arm, water > 0 ? -1.05 : 0);
+    m.wings.forEach((wing, i) =>
+      pose(
+        mia,
+        wing,
+        0,
+        (i ? 1 : -1) *
+          (0.16 + (reduced ? 0 : Math.sin(time * (running ? 6 : 3)) * 0.17)),
+      ),
+    );
   }
-}
-export function makeCollectionUnicorn(id) {
-  return makePony({ unicorn: true, coat: "#fff9f4", hair: MANES[id] });
 }

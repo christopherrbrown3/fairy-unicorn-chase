@@ -1,9 +1,10 @@
 {
   "name": "fairy-unicorn-chase",
-  "version": "1.10.0",
+  "version": "1.11.0",
   "private": true,
   "type": "module",
   "scripts": {
+    "art:characters": "node tools/build-characters.mjs",
     "dev": "vite --host 127.0.0.1",
     "build": "vite build",
     "preview": "vite preview --host 127.0.0.1",

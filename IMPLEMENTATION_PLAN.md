@@ -46,3 +46,32 @@ Eight deterministic tests and ten browser cases passed locally in Chromium and W
 - [x] Pass all eight Node tests and ten Chromium/WebKit cases, with corrected steering retained.
 
 The graphics build rendered without browser console errors. A short meadow sample on Apple M2/Metal measured 16.5 ms median and 19 ms p95 with shadows enabled. Quality-mode switching and Automatic fallback were checked at runtime; four consecutive world replacements retained stable GPU resource counts. These are desktop observations; physical iPad testing remains unperformed. Independent visual review found the supplied graphics direction met, with one documentation correction to the stale lighting paragraph.
+
+## Character art upgrade — October 22
+
+- [x] Rebuild Glender, Mia and the shared unicorn cast as original Blender assets with connected anatomy, painted faces and coats, detailed hair, clothes, tack and wings.
+- [x] Preserve the established character identities and all eighteen mane palettes.
+- [x] Integrate independent skeletons, blinking, gait, jumping, shared rider suspension and water-arm motion into the existing game.
+- [x] Bundle mesh decoding, keep all three models below 2 MB combined, and include them in the existing offline asset cache.
+- [x] Save an editable Blender master and a reproducible factory-startup build, preserving the unrelated open Blender project.
+- [x] Add a local character studio for turntable, palette and motion review.
+- [x] Check actual game and studio captures on desktop and phone-sized viewports; repair the wing membrane shading/topology issue identified by the finish reviewer.
+- [x] Pass all 22 unit tests and the production build; add GLB isolation/budget checks and browser rig/resource checks.
+- [x] Complete the final Chromium/WebKit gameplay and offline suite: 31 passed; three duplicate WebKit screenshot cases intentionally skipped.
+- [x] Owner approved publication of the character upgrade.
+- [x] Prepare v1.11.0 release notes and the approved publication branch.
+- [ ] Physical iPad playtest.
+
+The finish reviewer scored the wing fix resolved and returned `ship` at that
+fix scope. The character studio and game captures have no browser console errors.
+The final browser run used Chromium with ANGLE Metal on Apple M2 and WebKit,
+with unchanged test assertions, and finished in 6.3 minutes. The temporary local
+runner is `output/characters.playwright.config.mjs`; the repository's SwiftShader
+CI configuration is unchanged. Both root and repository-subpath cold offline
+launches, update recovery, all eighteen catches, save migration, controls and the
+new skeleton checks passed. All 22 unit tests and the final production build
+passed; Vite retains its large-chunk advisory for the bundled Three.js runtime.
+The owner approved publication from `codex/character-art-upgrade` as v1.11.0.
+Publication and live checks are tracked by the release pull request and Pages
+workflow. Physical-device frame rate remains unverified. See
+`docs/CHARACTER_ART.md` for source, rebuild instructions and saved review images.
