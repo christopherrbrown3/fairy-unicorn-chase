@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Character studio · Fairy Unicorn Chase</title>
+    <link rel="icon" href="../../favicon.svg" type="image/svg+xml" />
+    <style>
+      @font-face {
+        font-family: Baloo;
+        src: url("../../assets/fonts/Baloo2.woff2");
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: #eeeae2;
+        color: #243e62;
+        font:
+          18px Baloo,
+          system-ui,
+          sans-serif;
+      }
+      canvas {
+        display: block;
+        width: 100%;
+        height: 100dvh;
+        touch-action: none;
+      }
+      header {
+        position: fixed;
+        top: 20px;
+        left: 24px;
+        pointer-events: none;
+      }
+      h1 {
+        font-size: 25px;
+        line-height: 1.1;
+        margin: 0;
+      }
+      p {
+        font-size: 16px;
+        margin: 7px 0;
+      }
+      nav {
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        justify-content: center;
+        width: max-content;
+        max-width: calc(100% - 24px);
+        background: #fff8ef;
+        padding: 12px;
+        border-radius: 18px;
+        box-shadow: 0 6px 24px #243e6210;
+      }
+      button,
+      select {
+        font: inherit;
+        color: inherit;
+        background: #e2ebef;
+        border: 0;
+        padding: 10px 16px;
+        min-height: 48px;
+        border-radius: 10px;
+        cursor: pointer;
+      }
+      button[aria-pressed="true"] {
+        background: #2874b8;
+        color: white;
+      }
+      button:hover {
+        filter: brightness(0.96);
+      }
+      :focus-visible {
+        outline: 3px solid #e76e9c;
+        outline-offset: 3px;
+      }
+      #status {
+        position: fixed;
+        top: 50%;
+        width: 100%;
+        text-align: center;
+      }
+      a {
+        color: #2874b8;
+        pointer-events: auto;
+      }
+      @media (max-width: 600px) {
+        header {
+          top: 14px;
+          left: 16px;
+        }
+        h1 {
+          font-size: 21px;
+        }
+        nav {
+          bottom: 12px;
+          gap: 6px;
+          padding: 8px;
+        }
+        button,
+        select {
+          font-size: 16px;
+          padding: 8px 12px;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        * {
+          scroll-behavior: auto;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <canvas
+      aria-label="Interactive 3D character preview. Drag to rotate and pinch to zoom."
+    ></canvas>
+    <header>
+      <h1>Character studio</h1>
+      <p>
+        Drag to turn · Scroll or pinch to zoom<br /><a href="../../"
+          >Play the game</a
+        >
+      </p>
+    </header>
+    <p id="status" role="status">Loading Mia and her friends…</p>
+    <nav aria-label="Character preview controls">
+      <button id="cast" aria-pressed="true">The cast</button>
+      <button id="rider" aria-pressed="false">Mia &amp; Glender</button>
+      <select id="unicorn" aria-label="Unicorn friend">
+        <option value="">Unicorns</option>
+      </select>
+      <button id="motion" aria-pressed="false">Gallop</button>
+      <button id="jump" aria-pressed="false">Jump</button>
+    </nav>
+    <script type="module">
+      import * as THREE from "three";
+      import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+      import {
+        loadCharacterAssets,
+        createCharacterEnvironment,
+        makeRider,
+        makeCollectionUnicorn,
+        animatePony,
+      } from "../../src/characters/characters.js";
+      import { LEVELS } from "../../src/config/levels.js";
+      import { disposeTree } from "../../src/art/primitives.js";
+      const canvas = document.querySelector("canvas");
+      const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+      renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+      renderer.outputColorSpace = THREE.SRGBColorSpace;
+      renderer.toneMapping = THREE.ACESFilmicToneMapping;
+      renderer.toneMappingExposure = 1;
+      renderer.shadowMap.enabled = true;
+      renderer.shadowMap.type = THREE.PCFShadowMap;
+      const scene = new THREE.Scene();
+      scene.background = new THREE.Color("#eeeae2");
+      const camera = new THREE.PerspectiveCamera(35, 1, 0.1, 60);
+      const controls = new OrbitControls(camera, canvas);
+      controls.target.set(0, 1.75, 0);
+      controls.minDistance = 3;
+      controls.maxDistance = 24;
+      controls.maxPolarAngle = Math.PI * 0.53;
+      const env = createCharacterEnvironment(renderer),
+        options = { environment: env.texture };
+      scene.add(new THREE.HemisphereLight("#fff8ec", "#aaa6bc", 1.5));
+      const key = new THREE.DirectionalLight("#fff1dc", 2.6);
+      key.position.set(-3, 6, 5);
+      key.castShadow = true;
+      key.shadow.mapSize.set(2048, 2048);
+      Object.assign(key.shadow.camera, {
+        left: -6,
+        right: 6,
+        top: 6,
+        bottom: -6,
+      });
+      key.shadow.normalBias = 0.025;
+      scene.add(key);
+      const rim = new THREE.DirectionalLight("#c7dcff", 1.3);
+      rim.position.set(2, 4, -4);
+      scene.add(rim);
+      const floor = new THREE.Mesh(
+        new THREE.PlaneGeometry(200, 200),
+        new THREE.MeshStandardMaterial({ color: "#eeeae2", roughness: 0.9 }),
+      );
+      floor.rotation.x = -Math.PI / 2;
+      floor.position.y = -0.02;
+      floor.receiveShadow = true;
+      scene.add(floor);
+      let cast = [],
+        running = false,
+        jumping = false,
+        time = 0,
+        then = performance.now(),
+        selection = "cast";
+      const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const choice = document.querySelector("#unicorn");
+      LEVELS.forEach((l) => choice.add(new Option(l.unicorn, l.id)));
+      function frame() {
+        const now = performance.now();
+        time += Math.min(0.04, (now - then) / 1000);
+        then = now;
+        cast.forEach((o, i) =>
+          animatePony(o, reduced ? 0 : time + i * 0.4, {
+            running,
+            jump: jumping ? 1 : 0,
+            reduced,
+          }),
+        );
+        controls.update();
+        renderer.render(scene, camera);
+      }
+      function fit() {
+        const factor =
+          camera.aspect < 1 ? (selection === "cast" ? 1.7 : 1.3) : 1;
+        camera.position.set(
+          (selection === "cast" ? 5.7 : 4.7) * factor,
+          1.75 + 1.65 * factor,
+          (selection === "cast" ? 8.4 : 6.7) * factor,
+        );
+        controls.target.set(0, 1.75, 0);
+        controls.update();
+      }
+      function show(kind, id = 0) {
+        selection = kind;
+        cast.forEach(disposeTree);
+        cast = [];
+        if (kind !== "unicorn") {
+          const rider = makeRider(options);
+          rider.position.x = kind === "cast" ? -1.3 : 0;
+          cast.push(rider);
+        }
+        if (kind !== "rider") {
+          const u = makeCollectionUnicorn(id, options);
+          u.position.x = kind === "cast" ? 1.4 : 0;
+          u.position.z = kind === "cast" ? 0.15 : 0;
+          cast.push(u);
+        }
+        cast.forEach((o) => scene.add(o));
+        document
+          .querySelector("#cast")
+          .setAttribute("aria-pressed", kind === "cast");
+        document
+          .querySelector("#rider")
+          .setAttribute("aria-pressed", kind === "rider");
+        if (kind !== "unicorn") choice.value = "";
+        fit();
+        frame();
+        frame();
+      }
+      function resize() {
+        renderer.setSize(innerWidth, innerHeight, false);
+        camera.aspect = innerWidth / innerHeight;
+        camera.updateProjectionMatrix();
+        fit();
+      }
+      addEventListener("resize", resize);
+      resize();
+      try {
+        await loadCharacterAssets(new URL("../../", location.href));
+        show("cast");
+        document.querySelector("#status").remove();
+        renderer.setAnimationLoop(frame);
+      } catch (error) {
+        document.querySelector("#status").textContent =
+          "Could not load the characters. Reload to try again.";
+        console.error(error);
+      }
+      document.querySelector("#cast").onclick = () => show("cast");
+      document.querySelector("#rider").onclick = () => show("rider");
+      choice.onchange = () => {
+        if (choice.value !== "") show("unicorn", Number(choice.value));
+      };
+      document.querySelector("#motion").onclick = (e) => {
+        running = !running;
+        e.currentTarget.setAttribute("aria-pressed", running);
+      };
+      document.querySelector("#jump").onclick = (e) => {
+        jumping = !jumping;
+        e.currentTarget.setAttribute("aria-pressed", jumping);
+      };
+      // Local art QA only; this page is not an entry in the production build.
+      window.characterStudio = {
+        renderer,
+        scene,
+        camera,
+        controls,
+        get cast() {
+          return cast;
+        },
+        show,
+        frame,
+      };
+    </script>
+  </body>
+</html>

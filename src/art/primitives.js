@@ -172,10 +172,15 @@ export function bake(root, recursive = true) {
   return root;
 }
 export function disposeTree(root) {
+  const skeletons = new Set();
+  const ownedMaterials = new Set();
   root.traverse((o) => {
+    if (o.isSkinnedMesh) skeletons.add(o.skeleton);
     if (o.isInstancedMesh) o.dispose();
     if (o.isMesh && o.userData.ownedGeometry) o.geometry.dispose();
-    if (o.isMesh && o.userData.ownedMaterial) o.material.dispose();
+    if (o.isMesh && o.userData.ownedMaterial) ownedMaterials.add(o.material);
   });
+  skeletons.forEach((skeleton) => skeleton.dispose());
+  ownedMaterials.forEach((material) => material.dispose());
   root.removeFromParent();
 }

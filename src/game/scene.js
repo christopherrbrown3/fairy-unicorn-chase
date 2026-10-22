@@ -4,6 +4,7 @@ import {
   makeRider,
   makeCollectionUnicorn,
   animatePony,
+  createCharacterEnvironment,
 } from "../characters/characters.js";
 import { World } from "../worlds/world.js";
 import { Chase } from "./chase.js";
@@ -73,9 +74,11 @@ export class GameScene {
     this.camera = new THREE.PerspectiveCamera(52, 1, 0.1, 230);
     this.lastTime = performance.now();
     this.elapsed = 0;
-    this.player = makeRider();
+    this.characterEnvironment = createCharacterEnvironment(this.renderer);
+    this.characterOptions = { environment: this.characterEnvironment.texture };
+    this.player = makeRider(this.characterOptions);
     this.scene.add(this.player);
-    this.unicorn = makeCollectionUnicorn(0);
+    this.unicorn = makeCollectionUnicorn(0, this.characterOptions);
     this.scene.add(this.unicorn);
     this.waterStream = group(this.player);
     this.waterStream.name = "Mia water magic";
@@ -175,7 +178,7 @@ export class GameScene {
     this.friends.forEach(disposeTree);
     this.friends = [];
     disposeTree(this.unicorn);
-    this.unicorn = makeCollectionUnicorn(id);
+    this.unicorn = makeCollectionUnicorn(id, this.characterOptions);
     this.scene.add(this.unicorn);
     this.world = new World(this.scene, LEVELS[id]);
     this.level = LEVELS[id];
@@ -268,7 +271,7 @@ export class GameScene {
     if (final) {
       this.unicorn.visible = false;
       for (let i = 0; i < LEVELS.length; i++) {
-        const u = makeCollectionUnicorn(i);
+        const u = makeCollectionUnicorn(i, this.characterOptions);
         this.scene.add(u);
         const columns = Math.ceil(LEVELS.length / 2);
         const row = Math.floor(i / columns);
@@ -415,7 +418,7 @@ export class GameScene {
         water: c.water,
         reduced: this.reducedMotion,
       });
-      animatePony(this.unicorn, time);
+      animatePony(this.unicorn, time, { reduced: this.reducedMotion });
       this.updateChaseCamera(dt);
       this.waterStream.visible = c.water > 0;
       this.waterDrops.forEach((drop, i) => {
@@ -468,7 +471,7 @@ export class GameScene {
         celebrate: this.mode !== "title",
         reduced: this.reducedMotion,
       });
-      animatePony(this.unicorn, time, { running: false });
+      animatePony(this.unicorn, time, { running: false, reduced: this.reducedMotion });
       this.friends.forEach((u) =>
         animatePony(u, time, {
           running: false,
@@ -535,6 +538,10 @@ export class GameScene {
     this.trail.dispose();
     this.particles.dispose();
     this.shadows.forEach((s) => s.material.dispose());
+    disposeTree(this.player);
+    disposeTree(this.unicorn);
+    this.friends.forEach(disposeTree);
+    this.characterEnvironment.dispose();
     this.renderer.dispose();
   }
 }
@@ -550,6 +557,7 @@ export function renderPortraits() {
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.05;
+  const environment = createCharacterEnvironment(renderer);
   const scene = new THREE.Scene();
   scene.add(new THREE.HemisphereLight("#ffffff", "#9d8fac", 1.8));
   const sun = new THREE.DirectionalLight("#fff4e5", 3);
@@ -560,12 +568,13 @@ export function renderPortraits() {
   camera.lookAt(0, 1.3, 0);
   const images = [];
   for (let i = 0; i < LEVELS.length; i++) {
-    const u = makeCollectionUnicorn(i);
+    const u = makeCollectionUnicorn(i, { environment: environment.texture });
     scene.add(u);
     renderer.render(scene, camera);
     images.push(renderer.domElement.toDataURL("image/png"));
     disposeTree(u);
   }
+  environment.dispose();
   renderer.dispose();
   renderer.forceContextLoss();
   return images;
