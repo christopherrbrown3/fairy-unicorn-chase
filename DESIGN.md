@@ -113,18 +113,18 @@ components:
 
 **Creative North Star: "The Playable Storybook"**
 
-Rounded original 3D figurines inhabit magical pastel landscapes. Blinking eyes, flowing tapered hair, pearlescent fairy wings and a scalloped dress give the characters their storybook detail. Patterned butterflies, wind-bent grass, drifting clouds and rippling lily ponds animate the planted scenery around textured paths and recognizable landmarks. The interface uses warm paper, sturdy rounded lettering and generous controls to keep that world readable.
+Original sculpted 3D characters inhabit magical pastel landscapes. Blender-authored skinning, painted coat and facial color, layered blinking eyes, flowing tapered hair, pearlescent fairy wings and a folded scalloped dress give the cast its storybook detail. Patterned butterflies, wind-bent grass, drifting clouds and rippling lily ponds animate the planted scenery around textured paths and recognizable landmarks. The interface uses warm paper, sturdy rounded lettering and generous controls to keep that world readable.
 
 The world remains animated behind the title and celebrations. Paper menus provide a quieter place to choose worlds and revisit friends. Preserve Mia's blonde hair, blue dress and wings; Glender's yellow mane, yellow tail and body stars; and white unicorn bodies with distinct mane colors. Exact provisional appearance choices remain in `DESIGN_NOTES.md`.
 
 **Key Characteristics:**
 
-- Expressive dimensional characters, patterned butterflies and living planted scenery, with original artwork.
+- Sculpted, skinned characters with expressive faces, distinct material surfaces and original artwork; patterned butterflies and living planted scenery.
 - Warm paper, blue actions, navy ink and pink/gold accents.
 - Large icon-led controls and short, friendly labels.
-- Galloping, hinged wing flutter, water magic, fading rainbow boosts and shared celebrations.
+- Four-contact galloping, shared rider suspension, hinged wing flutter, water magic, fading rainbow boosts and shared celebrations.
 
-Recorded from `src/styles/game.css`, `src/ui/view.js`, `src/game/scene.js` and their art/config dependencies after the finish review. Surface composition and the five-block built contract are in `.impeccable/surfaces/src-main-js.md`; visitor mode belongs there. No design comp was selected.
+Recorded from `src/styles/game.css`, `src/ui/view.js`, `src/game/scene.js` and their art/config dependencies after the finish review. Character details come from `tools/blender_characters.py` and `src/characters/characters.js`. Surface composition and the five-block built contract are in `.impeccable/surfaces/src-main-js.md`; the character-only refinement is scoped in `.impeccable/surfaces/src-characters-characters-js.md`. Visitor mode belongs in those surface briefs. No design comp was selected. These character records describe the local implementation, not publication, AAA parity or physical iPad performance.
 
 ## Colors
 
@@ -148,6 +148,14 @@ Pastel world colors sit behind a stable warm-paper interface. Frontmatter holds 
 Pink chase progress and gold stars/sparkles use component-specific values. They retain the incumbent accent character without becoming primary actions. The unused declared `--pink` and `--gold` properties are not additional canonical palette entries.
 
 **The World Palette Rule.** Keep the interface palette stable across worlds; distinguish worlds through scenery, landmarks and the configured environment colors.
+
+### Character Artwork
+
+Vertex colors supply soft local variation without adding interface tokens. Glender's coat blends warm chestnut (`#cf9269`) into a lighter amber (`#eab78c`), with a peach muzzle and an ivory blaze. Unicorn coats blend warm white (`#fff7ee`) into near-white (`#fffef9`) with a pink muzzle. Mia's face blends peach (`#f7cfb0`) toward rose (`#e6a596`) on the cheeks. These painted values come from the Blender authoring source; the legacy coat, skin, dress and wing fields in `CHARACTER` do not recolor the imported meshes.
+
+Mia and Glender share the configured golden hair (`#ffcf53`). Five material bands vary HSL lightness by `0`, `-0.025`, `0.035`, `-0.055` and `0.065`; unicorns substitute their existing `MANES` color. The rainbow uses rose, gold, mint, sky and lilac bands (`#ed91b5`, `#ffd476`, `#9bd4b2`, `#8acfe9`, `#baa2e2`). Cornflower silk (`#448fce`), indigo piping (`#245a99`) and sky organza (`#a6d8ed`) keep Mia's clothing blue. Leather and champagne gold remain small tack, jewelry and inlay accents.
+
+**The Character Identity Rule.** Preserve Mia's blonde hair, blue clothing and fairy wings, Glender's golden mane and tail with body stars, and white unicorn coats with configured mane colors; richer surface detail must keep these identities readable from the chase camera.
 
 ## Typography
 
@@ -181,7 +189,11 @@ Spacing entries are observed recurring steps, not an implied mathematical scale.
 
 Automatic and Crisp picture quality enable one 1024 × 1024 PCF directional shadow map centered on the rider. Soft fading contact shadows anchor the rider and chased unicorn in every quality mode; Gentle disables the map. Automatic starts with a pixel-ratio cap of 1.5 and, when the sustained frame sample exceeds 24 ms at frame 300 during play, lowers the ratio to 1 and disables mapped shadows. Crisp caps the ratio at 2. These are implemented performance controls, not a physical iPad performance claim.
 
-Shared mesh materials normally use roughness 0.72. Hair, wings and quartz use smoother materials; terrain uses roughness 0.96 with world-space color variation and feathered path edges. Mia's translucent blue/lilac wing membranes use a physical iridescent material; pearl contours and eyespot motifs sit above that changing sheen. Mirror each complete wing group so both sides retain the intended lighting.
+Shared scenery mesh materials normally use roughness 0.72; quartz uses a smoother material and terrain uses roughness 0.96 with world-space color variation and feathered path edges. Character meshes use `MeshPhysicalMaterial` with their imported vertex colors. Coat and skin have soft sheen (roughness 0.58, sheen 0.22); hair uses fine longitudinal fibers (roughness 0.43, sheen 0.35, anisotropy 0.45), and blue clothing uses a subtle woven-silk normal map with sheen 0.55. Both deterministic normal maps are 128 × 128 and shared. Layered eyes have clearcoat 1 with clearcoat roughness 0.08. A small PMREM environment (size 128) is shared per renderer and applied only to character materials; environment intensity is 0.22 for coat/skin, 0.7 for eyes and 0.9 for gold.
+
+Mia's four blue/lilac wing membranes are separate, double-sided transparent meshes with opacity 0.56 and depth writing disabled. A center and six surface rings, each sampled at 80 points, follow each curved lobe, avoiding the folded slivers produced by a boundary-only triangulation. Pearl contours, branching veins and eyespot outlines remain modeled above the surface. The runtime membrane uses roughness 0.58, iridescence 0.85, iridescence IOR 1.3, thickness range 180–410 and restrained clearcoat (0.15, roughness 0.65).
+
+**The Membrane Light Rule.** Keep wing membranes independently sortable and lit by the world's lights; their environment map is null and environment intensity is zero so studio-wall reflections do not become dark bands on the curved surface.
 
 Billowed clouds and Starlight Valley's soft aurora share the sky shader. Opaque pond surfaces use painted depth, animated ripples, glints and pale shores without reflection render targets. Chunked geometry, instanced grass/pebbles and a bounded boost ribbon keep the richer scenery within the existing rendering approach, without postprocessing or external terrain textures.
 
@@ -191,7 +203,7 @@ UI elevation uses blurred tinted shadows: shared ambient lift, blue-tinted prima
 
 ## Shapes
 
-Sculpted rounded silhouettes define characters and much of the scenery. Hair locks taper into flowing ends; Mia's blue/lilac fairy wings carry pearl contours, veins and delicate eyespots. Her blue dress has a scalloped pale hem and small stars; unicorn horns have a gold spiral. Flowers use eight cupped petals around detailed centers. Branching trees, arched castle openings, faceted quartz and floating cloud islands retain recognizable forms.
+Sculpted rounded silhouettes define characters and much of the scenery. Equine bodies connect the barrel, chest, neck, muzzle and jointed legs through a smoothed continuous surface. Layered eyes combine sockets, pale sclera, iris rings, pupils and two catchlights. Swept hair locks taper into flowing ends with shallow strand relief. Mia has softly sculpted cheeks and nose, lashes, freckles, a small floral crown and riding boots. Her two-layer blue dress uses real folds, tailored seams, a pale scalloped hem and small stars. Four curved wing lobes carry pearl contours, veins and delicate eyespots. Glender's tack uses leather, a blue saddle blanket and gold details; unicorns have pearl constellations, lavender hooves and an ivory horn wrapped by a gold spiral. Flowers use eight cupped petals around detailed centers. Branching trees, arched castle openings, faceted quartz and floating cloud islands retain recognizable forms.
 
 Butterflies have scalloped upper and lower wing lobes, radial veins, contrasting borders, cream edge spots and paired lower-wing eyespots. Their thin painted panels remain flat and parallel as each wing hinges; body, eyes and curled antennae give the small figures dimension.
 
@@ -221,15 +233,25 @@ The home menu places a labeled New game button beside Sound, clear of the main P
 
 ### Celebration Stage
 
-Course scenery is hidden for a clear flower-ringed island, a physical rainbow, floating hearts and sparkles. A catch frames Mia, Glender and the newly found unicorn; the finale frames Mia, Glender and all thirteen unicorns. The friends are split dynamically into two independently centered rows, currently seven and six. Copy sits above the family and actions below it. Maintain this clear portrait stage so nearby trees or buildings cannot obscure the group.
+Course scenery is hidden for a clear flower-ringed island, a physical rainbow, floating hearts and sparkles. A catch frames Mia, Glender and the newly found unicorn; the finale frames Mia, Glender and every configured unicorn. The friends are split dynamically into two independently centered rows, currently nine and nine for eighteen worlds. Copy sits above the family and actions below it. Maintain this clear portrait stage so nearby trees or buildings cannot obscure the group.
+
+### Sculpted Storybook Cast
+
+The editable Blender master contains Glender, Mia and a reusable unicorn rig. `tools/blender_characters.py` authors the meshes, smooths and reduces sculpted volumes, paints vertex colors, builds joints and a Blink shape, and exports the three GLBs without baked animation. `npm run art:characters` runs the authoring script in a separate factory-startup Blender process, saves `art/characters/character-masters.blend` and compresses the exports with Meshopt. Runtime motion stays in `src/characters/characters.js`; normal game builds use the committed GLBs. See `docs/CHARACTER_ART.md` for rebuilding and inspection.
+
+Glender and the unicorn rig each have thirteen bones; Mia has eight. Four offset leg contacts bend the upper legs and knees, with a tucked pose for jumps. Rider and tack share Glender's body suspension; Mia adds a small spine response and raises her right arm for water magic. Poses retain the imported bone bases so glTF coordinate conversion and compression do not separate the anatomy. Blink expressions repeat every 4.8 seconds with a 0.22-second closing/opening window and staggered character offsets.
+
+**The Shared Cast Rule.** Reuse loaded geometry and the tiny surface maps while giving each character independent skeletons, blink state and palette materials; release instance materials and skeleton textures when a character leaves the scene.
+
+World changes dispose the replaced unicorn and celebration friends. Scene teardown also releases its character environment target; portrait rendering uses the same GLBs and materials and releases its own environment target after all portraits. The local studio at `art/characters/preview.html` uses that same character code for orbit, cast, gallop and jump inspection, but its page styling and lighting are review aids outside the production build.
 
 ### Living Scenery and Magic
 
 Four coordinated butterfly palettes repeat through the planted worlds. Butterfly Garden uses larger figures, including two that accompany the rider; smaller butterflies occupy the meadow, forest, castle and palace verges. Keep their patterns legible through the hinged flutter. Lily ponds sit beyond the playable path, with lily pads, reeds and stones.
 
-Staggered blinks, bending pony knees, subtle head movement, galloping and fairy-wing motion keep the characters expressive. A six-color ribbon follows Glender's travelled path during a potion boost, including turns and jumps; it fades over 0.65 seconds and retains at most 40 samples. Magic particles use soft four-point sparkles with individual lifetime fades.
+A six-color ribbon follows Glender's travelled path during a potion boost, including turns and jumps; it fades over 0.65 seconds and retains at most 40 samples. Magic particles use soft four-point sparkles with individual lifetime fades.
 
-Gentle motion holds scenery animation at a fixed time, omits new boost ribbons and extra boost particles, removes boost camera widening and reduces celebratory movement. Character motion continues. Pause freezes the scene clock; the CSS reduced-motion preference removes interface transitions and animation. Keep the scene visible throughout state changes.
+Gentle motion holds scenery animation at a fixed time, omits new boost ribbons and extra boost particles, removes boost camera widening and reduces celebratory movement. Characters retain locomotion, jump poses, body suspension, blinking and the water gesture, while time-driven hair, tail, wing flutter and head turns are suppressed. Steering can still lean the body, mane and tail; wings hold their resting spread. Pause freezes the scene clock; the CSS reduced-motion preference removes interface transitions and animation. Keep the scene visible throughout state changes.
 
 ## Do's and Don'ts
 
@@ -238,8 +260,9 @@ Gentle motion holds scenery animation at a fixed time, omits new boost ribbons a
 - **Do** preserve confirmed character colors, powers and recognizable silhouettes.
 - **Do** reuse the paper/blue/ink hierarchy while each world contributes its own scenery.
 - **Do** retain large touch targets, visible keyboard focus and safe-area clearance.
-- **Do** keep portraits and celebrations unobstructed, with all thirteen friends visible in the finale.
-- **Do** keep provisional names, coat choices and tuning editable through configuration and documented in `DESIGN_NOTES.md`.
+- **Do** keep portraits and celebrations unobstructed, with every configured friend visible in the finale.
+- **Do** keep provisional names and tuning editable through configuration, character appearance editable through its authoring source, and choices documented in `DESIGN_NOTES.md`.
+- **Do** keep independent character poses and expressions while sharing geometry and disposing replaced instance resources.
 
 ### Don't:
 
@@ -247,5 +270,6 @@ Gentle motion holds scenery animation at a fixed time, omits new boost ribbons a
 - **Don't** replace original icons or dimensional artwork with glyph icons or placeholder figures.
 - **Don't** add text-heavy instructions or developer controls to the play surface.
 - **Don't** treat browser viewport captures as physical iPad performance or touch validation.
+- **Don't** promote the local character studio's interface, backdrop or lighting into production UI rules.
 
 The sidecar extends the frontmatter with exact shadows, motion, responsive thresholds and component samples. Its synthesized tonal ramps are palette previews only, not additional shipped color tokens.
