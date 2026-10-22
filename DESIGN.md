@@ -124,7 +124,7 @@ The world remains animated behind the title and celebrations. Paper menus provid
 - Large icon-led controls and short, friendly labels.
 - Four-contact galloping, shared rider suspension, hinged wing flutter, water magic, fading rainbow boosts and shared celebrations.
 
-Recorded from `src/styles/game.css`, `src/ui/view.js`, `src/game/scene.js` and their art/config dependencies after the finish review. Character details come from `tools/blender_characters.py` and `src/characters/characters.js`. Surface composition and the five-block built contract are in `.impeccable/surfaces/src-main-js.md`; the character-only refinement is scoped in `.impeccable/surfaces/src-characters-characters-js.md`. Visitor mode belongs in those surface briefs. No design comp was selected. These character records describe the local implementation, not publication, AAA parity or physical iPad performance.
+Recorded from `src/styles/game.css`, `src/ui/view.js`, `src/game/scene.js` and their art/config dependencies after the finish review. Character details come from `tools/blender_characters.py` and `src/characters/characters.js`. Surface composition and the five-block built contract are in `.impeccable/surfaces/src-main-js.md`; the character-only refinement is scoped in `.impeccable/surfaces/src-characters-characters-js.md`. Visitor mode belongs in those surface briefs. No design comp was selected. These character records describe the implementation; physical iPad performance remains unverified.
 
 ## Colors
 

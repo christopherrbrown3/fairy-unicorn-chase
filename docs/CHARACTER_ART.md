@@ -1,10 +1,10 @@
 # Character art
 
-This local character upgrade covers Mia, Glender and all eighteen unicorn
+The v1.11.0 character upgrade covers Mia, Glender and all eighteen unicorn
 variants. It preserves the original identities and the existing game worlds,
 controls, saves and forgiving chase rules. It is a step toward richer stylized
 character art; AAA production quality and physical iPad performance are not
-claimed. The live game has not been updated with this branch.
+claimed. [Release history](RELEASES.md).
 
 ## Inspect the models
 

@@ -1,5 +1,24 @@
 # Release history
 
+## v1.11.0 — Sculpted character cast
+
+Mia, Glender and all eighteen unicorn variants use original skinned Blender
+models with connected anatomy, painted faces and coats, layered eyes, swept hair,
+detailed clothing and tack, and translucent veined wings. Independent skeletons
+and blink shapes animate the gallop, jumps, rider suspension and water gesture.
+The three compressed character models total 1.8 MB and join the complete offline
+cache. Existing progress and preferences carry forward.
+
+![Mia, Glender and a unicorn rendered in the character studio](screenshots/character-cast.png)
+
+[Actual chase view](screenshots/character-chase.png) ·
+[Mia and Glender close-up](screenshots/character-mia.png) ·
+[Editable source and rebuilding](CHARACTER_ART.md).
+
+Local verification passed 22 unit tests and 31 browser cases across
+Chromium/Metal and WebKit; three duplicate WebKit screenshot cases were skipped.
+Physical iPad playtesting remains outstanding.
+
 ## v1.10.0 — Big City Downtown
 
 World 18 adds Metro, a white unicorn with a periwinkle mane, to a broad city boulevard with pale sidewalks, shopfront awnings, parked taxis, planters, benches, streetlights and clock towers. Existing saves with all seventeen prior friends unlock Big City Downtown while preserving collection progress and preferences.

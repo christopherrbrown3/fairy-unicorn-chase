@@ -47,7 +47,7 @@ Eight deterministic tests and ten browser cases passed locally in Chromium and W
 
 The graphics build rendered without browser console errors. A short meadow sample on Apple M2/Metal measured 16.5 ms median and 19 ms p95 with shadows enabled. Quality-mode switching and Automatic fallback were checked at runtime; four consecutive world replacements retained stable GPU resource counts. These are desktop observations; physical iPad testing remains unperformed. Independent visual review found the supplied graphics direction met, with one documentation correction to the stale lighting paragraph.
 
-## Character art upgrade — October 22 (local review)
+## Character art upgrade — October 22
 
 - [x] Rebuild Glender, Mia and the shared unicorn cast as original Blender assets with connected anatomy, painted faces and coats, detailed hair, clothes, tack and wings.
 - [x] Preserve the established character identities and all eighteen mane palettes.
@@ -58,8 +58,9 @@ The graphics build rendered without browser console errors. A short meadow sampl
 - [x] Check actual game and studio captures on desktop and phone-sized viewports; repair the wing membrane shading/topology issue identified by the finish reviewer.
 - [x] Pass all 22 unit tests and the production build; add GLB isolation/budget checks and browser rig/resource checks.
 - [x] Complete the final Chromium/WebKit gameplay and offline suite: 31 passed; three duplicate WebKit screenshot cases intentionally skipped.
-- [ ] Owner likeness approval and physical iPad playtest.
-- [ ] Publish after review.
+- [x] Owner approved publication of the character upgrade.
+- [x] Prepare v1.11.0 release notes and the approved publication branch.
+- [ ] Physical iPad playtest.
 
 The finish reviewer scored the wing fix resolved and returned `ship` at that
 fix scope. The character studio and game captures have no browser console errors.
@@ -70,6 +71,7 @@ CI configuration is unchanged. Both root and repository-subpath cold offline
 launches, update recovery, all eighteen catches, save migration, controls and the
 new skeleton checks passed. All 22 unit tests and the final production build
 passed; Vite retains its large-chunk advisory for the bundled Three.js runtime.
-This is a local art draft on `codex/character-art-upgrade`; there is no new public
-release or physical-device frame-rate claim. See `docs/CHARACTER_ART.md` for source,
-rebuild instructions and saved review images.
+The owner approved publication from `codex/character-art-upgrade` as v1.11.0.
+Publication and live checks are tracked by the release pull request and Pages
+workflow. Physical-device frame rate remains unverified. See
+`docs/CHARACTER_ART.md` for source, rebuild instructions and saved review images.

@@ -2,7 +2,7 @@
 
 **A little fairy. A starry pony. Eighteen magical new friends.**
 
-[![Mia riding Glender in the actual Fairy Unicorn Chase title scene](docs/screenshots/title.jpg)](https://fuc.christopherbrown.ai)
+[![Mia riding Glender in the actual Fairy Unicorn Chase title scene](docs/screenshots/character-title.png)](https://fuc.christopherbrown.ai)
 
 ### [Play Fairy Unicorn Chase →](https://fuc.christopherbrown.ai)
 
@@ -41,11 +41,10 @@ Mia has flowing blonde locks, a blue dress, gently fluttering fairy wings, and w
 
 The unicorns have white coats, gold horns, friendly faces, and eighteen different mane and tail colors. They are playing chase with Mia, and are happy to be found.
 
-**Character art preview:** this branch rebuilds Mia, Glender and the unicorns as
+**Character art:** Mia, Glender and the unicorns use original
 skinned Blender models with connected anatomy, sculpted faces, swept hair,
 detailed riding clothes and tack, and translucent veined wings. The image below
-is an actual render from the local character studio. This artwork is awaiting
-review and has not been published to the live game.
+is an actual render from the local character studio.
 
 ![Mia riding Glender beside a white unicorn in the local character studio](docs/screenshots/character-cast.png)
 
