@@ -43,6 +43,8 @@ test("share metadata is in the raw HTML and install icons resolve at both hostin
 
 for (const base of ["/", "/fairy-unicorn-chase/"]) {
   test(`a cold offline launch loads the complete game and saved progress at ${base}`, async ({ browser }) => {
+    // Budget two independent WebGL startups, precaching and GPU teardown.
+    test.setTimeout(180_000);
     const context = await browser.newContext();
     let page = await context.newPage();
     const errors = [];

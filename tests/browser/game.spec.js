@@ -237,6 +237,8 @@ test("all real chases unlock friends, continue, finale and reload persistence", 
 });
 
 test("previous release save unlocks the newest world without losing progress or preferences", async ({ page }) => {
+  // Three cold WebGL startups plus the full family scene on the software GPU.
+  test.setTimeout(180_000);
   await page.goto("/?test=1");
   await ready(page, { animate: false });
   await page.evaluate((completedCount) => {
@@ -315,6 +317,8 @@ test("new game cancellation and confirmation preserve only the intended state", 
   page,
   browserName,
 }) => {
+  // This workflow reloads three times in addition to exercising both dialogs.
+  test.setTimeout(180_000);
   const errors = [];
   page.on("pageerror", (e) => errors.push(e.message));
   page.on("console", (m) => {
