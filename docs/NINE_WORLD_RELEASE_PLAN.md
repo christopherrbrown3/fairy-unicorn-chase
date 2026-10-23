@@ -25,7 +25,7 @@ scene.
 | --- | --- | --- |
 | 1 / 19 | **The Thundermans inspired:** recognizable suburban super-family home and secret laboratory, paired warm/cool twin-power motifs, rabbit and gadget displays; no villain combat or new failure state. Provisional world/friend: Thundermans Town / Bolt. | COMPLETE — v1.12.0 published and live/profile/offline verified at 55e3ae6; PR #16 merged. |
 | 2 / 20 | **Fast food:** unmistakable pizza, burgers, fries and milkshakes, with dimensional food scenery and clear pursuit visibility. Fast Food Land / Sesame. | COMPLETE — v1.13.0 published and live/profile/offline verified; PR #20 merged at 2b5b09c. |
-| 3 / 21 | **Water park:** recognizable dimensional slides, structural supports and pools; safe path and unchanged controls. Splash Water Park / Dipper. | ACTIVE — source/geometry/unit/build checks ready; browser/visual/release/live gates pending. Stop after this release. |
+| 3 / 21 | **Water park:** recognizable dimensional slides, structural supports and pools; safe path and unchanged controls. Splash Water Park / Dipper. | QA SHIP — research and density review passed; 24 unit tests/build, Chromium Metal + WebKit 20→21 migration/progression, Meadow preservation, eight opened route/finale captures and measured visible cost pass. PR CI, publication and live profile/offline checks pending. STOP after this release. |
 | 4 / 22 | **Zebra savannah:** many visibly striped zebras distributed through the actual playable savannah, rather than a sparse zebra ornament or only a menu illustration. | Research brief saved; implementation paused by owner until a new human instruction. |
 | 5 / 23 | **Wizard of Oz:** the player actually follows a yellow brick road that **ends at Emerald City**. Repeating green castles around an endless loop does not satisfy this requirement. The endpoint must fit the forgiving pursuit/catch model. | Research brief saved; implementation paused by owner until a new human instruction. |
 | 6 / 24 | **Princesses:** many visible princess characters as well as princess objects and scenery; an empty palace landscape is insufficient. | Research brief saved; implementation paused by owner until a new human instruction. |
@@ -199,22 +199,34 @@ IDs 0–19 and sound/Low/Gentle preferences intact; live/offline gameplay and th
 `live-v113-offline-report.json`. These are ignored QA artifacts, not shipped
 assets. The owner subsequently opened only the Water Park gate.
 
-## World 21 source handoff — release pending
+## World 21 — local QA and visual review SHIP; publication pending
 
-Splash Water Park / Dipper appends ID20 / mane `#e89936`. See the
+Splash Water Park / Dipper appends ID20 / mane `#e89936`. The
 [source-linked inspected-image and geometry record](WORLD_THEME_RESEARCH.md#world-21-visual-inspection-and-implementation--october-23)
-and current contract in `DESIGN_NOTES.md`. New source uses three thick supported
-slide variants, pools/entry steps/ladders, bucket splash decks, lounge/umbrella
-sets, ring/towel racks and deck planting in 16 spatial batches. No cast, PWA,
-controls, camera or finale code changes. First 20 IDs/palettes are preserved.
+and current contract in `DESIGN_NOTES.md` document the original art. All six
+factory families and their variants passed finite position/normal/UV and exact
+pre/post-bake triangle-count checks; open and enclosed slide floor normals face
+correctly. The 21-world inventory is 414 meshes / 1,277,504 triangles; 413 owned
+geometries dispose and the scene root is removed. Inventory is not visible-frame
+performance.
 
-Source smoke: 23 unit tests and build pass; six factory families × three
-variants preserve triangles through baking with finite indexed attributes.
-Full world: 414 meshes / 1,277,504 triangles; all 413 owned geometries dispose
-and scene root removal succeeds. GLB/runtime hashes match the approved baseline.
-These inventory checks do not establish actual visible render cost or visual
-quality. Required next: desktop/iPad opening/middle/near-catch captures, full
-21-friend finales, fresh density/detail/readability review, bounded render
-measurements, 20→21 migration/preferences/Meadow checks, CI, publication and
-live/offline previous-release update. **Stop after this world**, regardless of
-remaining research briefs. No Zebra code is authorized.
+**Local QA passed:** 24 unit tests, production build, focused previous-release
+20→21 migration/progression in Chromium with verified Apple M2 Metal and in
+WebKit, plus selection/catch/preservation checks for Rainbow Meadow in both.
+Migration preserves IDs0–19, sound-off/Low/Gentle settings and unrelated storage;
+Dipper catch, 21/21 collection, finale and reload preserve IDs0–20/settings.
+The genuine v1.13 installed profile remains preserved for live update/offline
+validation. Eight route/finale screenshots and the Meadow preservation image
+are saved in `docs/screenshots/waterpark-*.jpg`; full state and render evidence
+are in `output/qa-waterpark/`. An independent fresh visual reviewer returned
+SHIP on all eight Water Park route/finale captures.
+
+Verified Apple M2/Metal near-chase visible cost was about 904k triangles / 226
+calls at Automatic, and 486k / 146 at Low; bounded 180-frame CPU render
+submission samples were 1.1 ms median / 2.0 ms p95 and 0.6 / 2.5 ms. The
+21-friend finale was 3.00m triangles / 844 calls at Automatic and 1.51m / 427 at
+Low; Automatic CPU submission was 4.5 / 5.1 ms median / p95. These are not GPU
+timings or physical iPad results. Physical iPad playtesting and live release
+verification remain outstanding; wait for PR CI, merge/deployment, exact v1.14.0
+tag, and genuine v1.13 client update/offline/gameplay checks before marking
+complete. **Stop after this world**; no Zebra implementation is authorized.

@@ -16,13 +16,15 @@ planting lead into shallow bucket/wheel/mini-slide play pools, with higher slide
 complexes behind. Density must be visible across all three chase stages; raw
 object counts do not substitute for opened desktop/iPad views.
 
-The broad warm-stone route stays dry and quiet for Mia/Glender, white Dipper and
-blue potions. Large structures stay beyond the low foreground layer. All new
+The 10.5-unit warm-stone route stays dry and clear for Mia/Glender, white Dipper
+and blue potions. Large structures stay beyond the low foreground layer. All new
 scenery is static and baked by material in 16 spatial chunks with shared source
 geometry. There is no slide gameplay, new failure state, UI redesign, camera or
 character change. Existing pause, Gentle motion, saves/preferences, 20 prior
-worlds, dynamic 21-friend finale and PWA behavior remain intact. Fresh visual,
-render-cost and live-release verification are still required after source smoke.
+worlds, dynamic 21-friend finale and PWA behavior remain intact. Final desktop
+and iPad-landscape viewport captures received an independent visual SHIP review.
+Geometry inventory is not frame-rate evidence; physical iPad testing and
+live-release verification remain outstanding.
 
 
 ## Fast Food Land extension — October 23

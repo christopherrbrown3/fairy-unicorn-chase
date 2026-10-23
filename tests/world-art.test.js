@@ -9,6 +9,7 @@ import * as christmas from "../src/worlds/christmas.js";
 import * as breakfast from "../src/worlds/breakfast.js";
 import * as downtown from "../src/worlds/downtown.js";
 import * as thundermans from "../src/worlds/thundermans.js";
+import * as waterpark from "../src/worlds/waterpark.js";
 import { group } from "../src/art/primitives.js";
 import { Atmosphere } from "../src/art/atmosphere.js";
 import { LEVELS } from "../src/config/levels.js";
@@ -124,6 +125,43 @@ test("Thundermans Town scenery keeps every triangle when combined into static ba
     bake(model);
     assert.equal(triangles(model), before, `${name} lost geometry during batching`);
     disposeTree(parent);
+  }
+});
+
+test("Splash Water Park flumes retain their open and enclosed shells through batching", () => {
+  for (const enclosed of [false, true]) {
+    const geo = waterpark.slideGeometry(2, enclosed);
+    const sides = enclosed ? 20 : 12;
+    const stride = sides + 1;
+    const skin = 49 * stride;
+    const floor = geo.attributes.normal;
+    const sample = 24 * stride + (enclosed ? 5 : 6);
+    assert.ok(floor.getY(sample) > 0.9, "inside flume floor faces upward");
+    assert.ok(floor.getY(sample + skin) < -0.9, "outside shell faces downward");
+    geo.dispose();
+  }
+
+  for (const [name, make] of Object.entries(waterpark)) {
+    if (name === "slideGeometry") continue;
+    for (let variant = 0; variant < 3; variant++) {
+      const container = group();
+      const root = group(container);
+      make(root, 1, variant);
+      const before = triangles(root);
+      assert.ok(before > 0, `${name} variant ${variant} has geometry`);
+      bake(root);
+      assert.equal(triangles(root), before, `${name} variant ${variant} lost triangles`);
+      let owned = 0, disposed = 0;
+      root.traverse((object) => {
+        if (!object.isMesh || !object.userData.ownedGeometry) return;
+        owned++;
+        object.geometry.addEventListener("dispose", () => disposed++);
+      });
+      disposeTree(root);
+      assert.ok(owned > 0, `${name} variant ${variant} owns baked batch geometry`);
+      assert.equal(disposed, owned, `${name} variant ${variant} disposes its baked geometry`);
+      assert.equal(container.children.length, 0, `${name} variant ${variant} releases its scene root`);
+    }
   }
 });
 
