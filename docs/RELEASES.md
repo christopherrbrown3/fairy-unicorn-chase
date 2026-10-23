@@ -9,18 +9,39 @@ friends unlock Thundermans Town while preserving collection progress and
 preferences. The expanded finale gathers all nineteen friends in three raised
 rows while keeping the player, rainbow and controls in view.
 
-![Thundermans Town with Bolt ahead at desktop size](screenshots/thundermans-town-desktop-bolt-near.jpg)
+The route layers detailed suburban homes and planted yards around the playable
+lane, with open gadget labs, twin-power exhibits, rabbit displays and deeper
+garden rows. The visual inspiration and what the sources do not establish are
+recorded in [the design notes](../DESIGN_NOTES.md#thundermans-town-extension--october-22).
 
-![Thundermans Town with Bolt ahead at iPad landscape size](screenshots/thundermans-town-ipad-landscape-bolt-near.jpg)
+The approved density review covers the opening, middle chase and near catch at
+desktop and iPad landscape sizes:
+[opening](screenshots/thundermans-town-opening-desktop.jpg) ·
+[middle](screenshots/thundermans-town-middle-desktop.jpg) ·
+[near Bolt](screenshots/thundermans-town-desktop-bolt-near.jpg) ·
+[iPad opening](screenshots/thundermans-town-opening-ipad-landscape.jpg) ·
+[iPad middle](screenshots/thundermans-town-middle-ipad-landscape.jpg) ·
+[iPad near Bolt](screenshots/thundermans-town-ipad-landscape-bolt-near.jpg).
 
-The opening chase shows the actual potion pickup: [desktop gameplay](screenshots/thundermans-town-potion-visible-ahead.jpg).
+The desktop opening shows an uncollected potion on the route ahead:
+[potion view](screenshots/thundermans-town-potion-visible-ahead.jpg).
 
-The nineteen-friend finale: [desktop](screenshots/thundermans-town-finale-desktop.jpg) · [iPad landscape](screenshots/thundermans-town-finale-ipad-landscape.jpg). [Rainbow Meadow preservation capture](screenshots/thundermans-town-meadow-preservation.jpg) checks that the established world and sculpted cast remain intact.
+The nineteen-friend finale is preserved from the original World 19 visual QA;
+the finale/cast code is unchanged by this scenery-only revision:
+[desktop](screenshots/thundermans-town-finale-desktop.jpg) ·
+[iPad landscape](screenshots/thundermans-town-finale-ipad-landscape.jpg).
+The [Rainbow Meadow preservation capture](screenshots/thundermans-town-meadow-preservation.jpg)
+also predates the density revision; Meadow and cast assets are unchanged.
 
-Local validation covered the world art batching, prior-release migration,
-real chase/catch/collection, New Game preferences, and PWA update/offline
-survival in Chromium/Metal and WebKit. Physical iPad playtesting remains
-outstanding.
+Local validation after the density revision passed 23 unit tests, the
+production build and focused rendered chase/migration checks in Chromium/Metal
+and WebKit. Automatic-quality Apple M2 Metal captures measured about 0.87–0.96
+million visible triangles and 266–298 draw calls; bounded frame submission
+samples were 3.2–3.4 ms median and 4.0–4.1 ms p95. Low quality measured about
+0.65 million triangles, 220–232 calls, and 3.1–3.2/3.7 ms median/p95. These are
+desktop measurements, not physical iPad results. Final CI and live release
+profile/offline checks are tracked by the release workflow; physical iPad
+playtesting remains outstanding.
 
 ## v1.11.0 — Sculpted character cast
 

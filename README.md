@@ -94,6 +94,8 @@ These are real screenshots of the running game, captured at an iPad-sized landsc
 
 Each world has its own complete loop, pickups, obstacles, palette, unicorn, and celebration. The meadow introduces the adventure quickly. Deterministic no-steering play takes about 23 seconds there and 61–70 seconds in later worlds; finding more potions can shorten a chase.
 
+Thundermans Town is an original suburban super-family and open-lab interpretation, informed by Nickelodeon's official Max and Phoebe profiles and the original series announcement. The sources and visual evidence limits are recorded in [the design notes](DESIGN_NOTES.md#thundermans-town-extension--october-22).
+
 World names, unicorn nicknames, Glender’s base coat, and tuning are **provisional**. The creative director can change them. Her confirmed decisions and the open choices are recorded in [DESIGN_NOTES.md](DESIGN_NOTES.md).
 
 ## How to play

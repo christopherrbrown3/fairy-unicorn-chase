@@ -18,7 +18,7 @@ scene.
 
 | Order / world | Required experience | State |
 | --- | --- | --- |
-| 1 / 19 | **The Thundermans inspired:** recognizable suburban super-family home and secret laboratory, paired warm/cool twin-power motifs, rabbit and gadget displays; no villain combat or new failure state. Provisional world/friend: Thundermans Town / Bolt. | October 23 density revision implemented; focused QA, fresh six-view review and v1.12.0 publication pending. PR #16 open. |
+| 1 / 19 | **The Thundermans inspired:** recognizable suburban super-family home and secret laboratory, paired warm/cool twin-power motifs, rabbit and gadget displays; no villain combat or new failure state. Provisional world/friend: Thundermans Town / Bolt. | October 23 density revision, local QA and independent six-view SHIP complete; final PR #16 CI, v1.12.0 publication and live checks pending. |
 | 2 / 20 | **Fast food:** unmistakable pizza, burgers, fries and milkshakes, with dimensional food scenery and clear pursuit visibility. | Research brief saved; implementation gated. |
 | 3 / 21 | **Water park:** recognizable dimensional slides, structural supports and pools; safe path and unchanged controls. | Research brief saved; implementation gated. |
 | 4 / 22 | **Zebra savannah:** many visibly striped zebras distributed through the actual playable savannah, rather than a sparse zebra ornament or only a menu illustration. | Research brief saved; implementation gated. |
@@ -80,7 +80,7 @@ through material batching and a constructed world disposes its scene root.
 The before/after whole-world mesh/triangle metrics below include all scenery
 around the entire lap and instanced decoration, but exclude the sculpted cast.
 They are geometry inventories, **not frame draw calls or GPU timings**. Actual
-six-view render metrics remain required from Luna's capture run.
+visible-frame render metrics are recorded below.
 
 | Inventory | Before (`2e84335`) | Density revision |
 | --- | ---: | ---: |
@@ -92,11 +92,29 @@ The static triangle inventory increases by 598,268; batching limits the mesh
 increase to 51 (8.3%). A current roadside chunk uses 20 material meshes, rather
 than rendering each house fixture/flower separately. All nine factories across
 three variant inputs preserve triangles and finite vertex coordinates after
-baking. This bounded cost is provisional until actual gameplay render metrics
-and fresh density/readability review pass.
+baking. These geometry counts are separate from visible-frame render cost.
 
 The existing Mia, Glender, unicorn GLBs and `characters.js` SHA-256 hashes remain
 exactly unchanged. Existing controls, scene clock, camera, finale and PWA are
-unchanged in this revision. Syntax and static geometry checks pass; focused
-browser QA, six fresh gameplay captures, independent review, PR CI, v1.12.0
-publication and public/profile/offline verification remain pending.
+unchanged in this revision. The refreshed hashes match the live v1.11.0 models:
+Glender `e91d5748df02f43ac65a03650ce3d64c788f95bccb8847054368399c835f5e76`,
+Mia `f92cb748aafac35b1bb4d4f7ba86100923366cc0072a08455e27aace8762cfb5`,
+unicorn `d0317095b9abf274a53b4f60615b61c89c22d03ceccef6765ee87838f68bcfda`,
+and `characters.js` `60b26449166c609f0ef618153e24f83d028416b13a113619d788fc9e0911a495`.
+
+October 23 local QA after the density revision: unit tests 23/23 and production
+build pass. Focused Chromium and WebKit checks pass for rendered potion/jump/
+collision behavior and the previous-release save path through unlocked newest
+world, actual catch, 19-friend finale, saved preferences and reload. Six fresh
+desktop/iPad landscape gameplay captures cover the opening, middle and near-Bolt
+route; their approved copies appear in `docs/screenshots`. The opening shows an
+uncollected potion ahead; near captures show Bolt about 14 units ahead before
+catch. They were rendered at Automatic quality on verified ANGLE Metal / Apple
+M2, with no console, page or failed-resource errors. A bounded 210-frame render
+sample measured 266–298 calls and approximately 0.87–0.96 million visible
+triangles in representative Automatic views, with 3.2–3.4 ms median and
+4.0–4.1 ms p95 frame submission. Low quality measured 220–232 calls and about
+0.65 million visible triangles, with 3.1–3.2 ms median and 3.7 ms p95 across
+150 frames. These are desktop Apple M2 measurements, not physical iPad
+performance. Independent density/readability review is SHIP; final PR CI,
+v1.12.0 publication and public/profile/offline verification remain pending.
