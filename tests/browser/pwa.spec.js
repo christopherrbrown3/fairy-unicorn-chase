@@ -90,7 +90,7 @@ test("installation instructions and the browser install prompt are reachable", a
   const startedAt = Date.now();
   const logStage = (stage) => console.log(`[PWA install] ${stage}: ${Date.now() - startedAt}ms elapsed`);
   await page.goto("/?test=1");
-  await ready(page);
+  await ready(page, { animate: false });
   logStage("title ready");
   await page.getByRole("button", { name: "New game", exact: true }).click();
   await page.evaluate(() => window.dispatchEvent(new Event("beforeinstallprompt", { cancelable: true })));
@@ -105,10 +105,12 @@ test("installation instructions and the browser install prompt are reachable", a
     for (const [name, viewport] of [["tablet", { width: 1024, height: 768 }], ["phone", { width: 390, height: 844 }]]) {
       await page.getByRole("button", { name: "Back", exact: true }).click();
       await page.setViewportSize(viewport);
+      await page.evaluate(() => window.__fairy.game.frame());
       logStage(`${name} title capture ready`);
       await page.screenshot({ path: `output/playwright/pwa/title-${name}.png`, animations: "disabled" });
       logStage(`${name} title captured`);
       await page.getByRole("button", { name: "Add to Home Screen" }).click();
+      await page.evaluate(() => window.__fairy.game.frame());
       logStage(`${name} install capture ready`);
       await page.screenshot({ path: `output/playwright/pwa/install-${name}.png`, animations: "disabled" });
       logStage(`${name} install captured`);
@@ -130,7 +132,9 @@ test("installation instructions and the browser install prompt are reachable", a
 });
 
 test("new releases wait for a menu action, preserve saves across tabs, and survive a failed update", async ({ page, context, browserName }) => {
-  test.setTimeout(180_000);
+  // This lifecycle covers two tabs, three update reloads and a cold offline
+  // startup. Keep time for all of them on the slower hosted software renderer.
+  test.setTimeout(300_000);
   let release = "old";
   const types = { ".html": "text/html", ".js": "text/javascript", ".css": "text/css", ".woff2": "font/woff2", ".glb": "model/gltf-binary", ".png": "image/png", ".svg": "image/svg+xml", ".webmanifest": "application/manifest+json" };
   const root = resolve("dist");
@@ -165,10 +169,9 @@ test("new releases wait for a menu action, preserve saves across tabs, and survi
     console.log("PWA update: opening old release");
     await page.setViewportSize({ width: 640, height: 480 });
     await page.goto(url);
-    await ready(page);
+    await ready(page, { animate: false });
     // The lifecycle test uses real game state, but does not need two continuous
     // software-GPU render loops while another WebGL scene initializes.
-    await page.evaluate(() => window.__fairy.game.renderer.setAnimationLoop(null));
     await offlineReady(page);
     console.log("PWA update: old release is cached");
     await page.evaluate(async () => {
@@ -178,8 +181,7 @@ test("new releases wait for a menu action, preserve saves across tabs, and survi
     const other = await context.newPage();
     await other.setViewportSize({ width: 640, height: 480 });
     await other.goto(url);
-    await ready(other);
-    await other.evaluate(() => window.__fairy.game.renderer.setAnimationLoop(null));
+    await ready(other, { animate: false });
     await other.getByRole("button", { name: "Keep playing", exact: true }).click();
     await page.getByRole("button", { name: "Keep playing", exact: true }).click();
     console.log("PWA update: both copies are playing");
@@ -204,8 +206,7 @@ test("new releases wait for a menu action, preserve saves across tabs, and survi
     }
     await page.getByRole("button", { name: "Update game", exact: true }).click();
     await expect(page.locator('meta[name="test-release"]')).toHaveAttribute("content", "new");
-    await ready(page);
-    await page.evaluate(() => window.__fairy.game.renderer.setAnimationLoop(null));
+    await ready(page, { animate: false });
     console.log("PWA update: first copy has updated");
     expect(await page.evaluate(() => window.__fairy.save)).toMatchObject({ completed: [0], sound: false, quality: "low", reducedMotion: true });
     expect(await page.evaluate(() => caches.has("unrelated-app"))).toBe(true);
@@ -223,7 +224,7 @@ test("new releases wait for a menu action, preserve saves across tabs, and survi
     }
     await other.getByRole("button", { name: "Update game", exact: true }).click();
     await expect(other.locator('meta[name="test-release"]')).toHaveAttribute("content", "new");
-    await ready(other);
+    await ready(other, { animate: false });
     console.log("PWA update: second copy has updated");
     expect(await other.evaluate(() => window.__fairy.save.completed)).toEqual([0, 1]);
     await other.close();
@@ -245,7 +246,7 @@ test("new releases wait for a menu action, preserve saves across tabs, and survi
     expect(await page.evaluate(async () => (await caches.keys()).filter((name) => name.startsWith("fairy-unicorn-chase:")).length)).toBe(1);
     await context.setOffline(true);
     await page.reload();
-    await ready(page);
+    await ready(page, { animate: false });
     await expect(page.locator('meta[name="test-release"]')).toHaveAttribute("content", "new");
     expect(await page.evaluate(() => window.__fairy.save.completed)).toEqual([0, 1]);
   } finally {
