@@ -2,10 +2,14 @@ import { test, expect } from "@playwright/test";
 import { mkdir } from "node:fs/promises";
 import { resolve } from "node:path";
 import { LEVELS } from "../../src/config/levels.js";
-const ready = async (page) => {
+const ready = async (page, { animate = true } = {}) => {
   await page.waitForFunction(
     () => window.__fairy?.game && window.__fairy?.screen === "title",
   );
+  // State scenarios advance the real simulation explicitly. Keep the software
+  // GPU free between those actions; input and visual scenarios still animate.
+  if (!animate)
+    await page.evaluate(() => window.__fairy.game.renderer.setAnimationLoop(null));
 };
 const snap = (page) => page.evaluate(() => window.__fairy.snapshot());
 const seedFullProgress = async (page) => {
@@ -23,7 +27,7 @@ const seedFullProgress = async (page) => {
     localStorage.setItem("new-game-unrelated", "keep this value");
   }, LEVELS.length - 1);
   await page.reload();
-  await ready(page);
+  await ready(page, { animate: false });
 };
 test("root and repository subpath render authored assets without errors", async ({
   page,
@@ -190,7 +194,7 @@ test("all real chases unlock friends, continue, finale and reload persistence", 
     if (m.type() === "error") errors.push(m.text());
   });
   await page.goto("/?test=1");
-  await ready(page);
+  await ready(page, { animate: false });
   await page.getByRole("button", { name: "Worlds", exact: true }).click();
   expect(await page.locator(".world-tile:disabled").count()).toBe(LEVELS.length - 1);
   await page
@@ -215,13 +219,15 @@ test("all real chases unlock friends, continue, finale and reload persistence", 
   expect(
     await page.evaluate(() => {
       const g = window.__fairy.game;
+      // Exercise the complete family on the GPU once before checking its stage.
+      g.frame();
       return !g.world.root.visible && !!g.celebrationArt && g.player.visible;
     }),
   ).toBe(true);
   await page.getByRole("button", { name: "Our unicorns" }).click();
   expect(await page.locator(".collection-tile.found").count()).toBe(LEVELS.length);
   await page.reload();
-  await ready(page);
+  await ready(page, { animate: false });
   expect(await page.evaluate(() => window.__fairy.save.completed.length)).toBe(
     LEVELS.length,
   );
@@ -231,8 +237,10 @@ test("all real chases unlock friends, continue, finale and reload persistence", 
 });
 
 test("previous release save unlocks the newest world without losing progress or preferences", async ({ page }) => {
+  // Three cold WebGL startups plus the full family scene on the software GPU.
+  test.setTimeout(180_000);
   await page.goto("/?test=1");
-  await ready(page);
+  await ready(page, { animate: false });
   await page.evaluate((completedCount) => {
     localStorage.setItem(
       "fairy-unicorn-chase:v1",
@@ -247,7 +255,7 @@ test("previous release save unlocks the newest world without losing progress or 
     localStorage.setItem("migration-unrelated", "keep this value");
   }, LEVELS.length - 1);
   await page.reload();
-  await ready(page);
+  await ready(page, { animate: false });
   expect(await page.evaluate(() => window.__fairy.save.completed)).toEqual(
     Array.from({ length: LEVELS.length - 1 }, (_, id) => id),
   );
@@ -276,7 +284,7 @@ test("previous release save unlocks the newest world without losing progress or 
   await page.getByRole("button", { name: "Our unicorns" }).click();
   await expect(page.locator(".collection-tile.found")).toHaveCount(LEVELS.length);
   await page.reload();
-  await ready(page);
+  await ready(page, { animate: false });
   expect(await page.evaluate(() => window.__fairy.save.completed.length)).toBe(LEVELS.length);
   await page.getByRole("button", { name: "Worlds", exact: true }).click();
   await expect(page.locator(".world-tile:disabled")).toHaveCount(0);
@@ -309,6 +317,8 @@ test("new game cancellation and confirmation preserve only the intended state", 
   page,
   browserName,
 }) => {
+  // This workflow reloads three times in addition to exercising both dialogs.
+  test.setTimeout(180_000);
   const errors = [];
   page.on("pageerror", (e) => errors.push(e.message));
   page.on("console", (m) => {
@@ -319,7 +329,7 @@ test("new game cancellation and confirmation preserve only the intended state", 
   });
 
   await page.goto("/?test=1");
-  await ready(page);
+  await ready(page, { animate: false });
   await seedFullProgress(page);
   const readStorage = () =>
     page.evaluate(() => ({
@@ -422,7 +432,7 @@ test("new game cancellation and confirmation preserve only the intended state", 
   expect(await page.evaluate(() => window.__fairy.save.completed)).toEqual([]);
 
   await page.reload();
-  await ready(page);
+  await ready(page, { animate: false });
   expect(await page.evaluate(() => window.__fairy.save)).toMatchObject({
     completed: [],
     sound: false,

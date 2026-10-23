@@ -3,7 +3,11 @@ import { createServer } from "node:http";
 import { readFile, mkdir } from "node:fs/promises";
 import { extname, resolve } from "node:path";
 
-const ready = (page) => page.waitForFunction(() => window.__fairy?.screen === "title");
+const ready = async (page, { animate = true } = {}) => {
+  await page.waitForFunction(() => window.__fairy?.screen === "title");
+  if (!animate)
+    await page.evaluate(() => window.__fairy.game.renderer.setAnimationLoop(null));
+};
 const offlineReady = (page) => page.evaluate(async () => {
   await navigator.serviceWorker.ready;
   if (!navigator.serviceWorker.controller)
@@ -39,13 +43,15 @@ test("share metadata is in the raw HTML and install icons resolve at both hostin
 
 for (const base of ["/", "/fairy-unicorn-chase/"]) {
   test(`a cold offline launch loads the complete game and saved progress at ${base}`, async ({ browser }) => {
+    // Budget two independent WebGL startups, precaching and GPU teardown.
+    test.setTimeout(180_000);
     const context = await browser.newContext();
     let page = await context.newPage();
     const errors = [];
     context.on("page", (p) => p.on("pageerror", (e) => errors.push(e.message)));
     try {
       await page.goto(`http://127.0.0.1:4173${base}?test=1`);
-      await ready(page);
+      await ready(page, { animate: false });
       await offlineReady(page);
       await page.evaluate(() => {
         localStorage.setItem("fairy-unicorn-chase:v1", JSON.stringify({ version: 1, completed: [0], sound: false, quality: "low", reducedMotion: true }));
@@ -56,8 +62,11 @@ for (const base of ["/", "/fairy-unicorn-chase/"]) {
       await context.setOffline(true);
       page = await context.newPage();
       await page.goto(`http://127.0.0.1:4173${base}?test=1&offline=1`);
-      await ready(page);
+      await ready(page, { animate: false });
       await page.getByRole("button", { name: "Keep playing", exact: true }).click();
+      // Draw the offline scene once without continuously rendering the canvas
+      // while storage, cache, font and menu assertions run.
+      await page.evaluate(() => window.__fairy.game.frame());
       expect(await page.evaluate(() => window.__fairy.game.level.id)).toBe(1);
       expect(await page.evaluate(() => window.__fairy.save.completed)).toEqual([0]);
       expect(await page.evaluate(() => document.fonts.check("20px Baloo"))).toBe(true);

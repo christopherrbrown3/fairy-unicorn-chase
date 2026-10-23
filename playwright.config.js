@@ -9,7 +9,10 @@ export default defineConfig({
     baseURL: "http://127.0.0.1:4173",
     viewport: { width: 1024, height: 768 },
     hasTouch: true,
-    trace: "retain-on-failure",
+    // Continuous canvas capture competes with SwiftShader for the same CPU.
+    // Keep DOM/network traces and take one screenshot if a test fails.
+    trace: { mode: "retain-on-failure", screenshots: false },
+    screenshot: "only-on-failure",
   },
   projects: [
     {
