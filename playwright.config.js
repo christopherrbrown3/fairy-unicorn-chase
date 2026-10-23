@@ -1,4 +1,5 @@
 import { defineConfig } from "@playwright/test";
+const testPort = Number(process.env.FUC_TEST_PORT || 4173);
 export default defineConfig({
   testDir: "./tests/browser",
   timeout: 90000,
@@ -6,7 +7,7 @@ export default defineConfig({
   fullyParallel: false,
   workers: 1,
   use: {
-    baseURL: "http://127.0.0.1:4173",
+    baseURL: `http://127.0.0.1:${testPort}`,
     viewport: { width: 1024, height: 768 },
     hasTouch: true,
     trace: "retain-on-failure",
@@ -29,7 +30,7 @@ export default defineConfig({
   ],
   webServer: {
     command: "node tools/serve.mjs",
-    port: 4173,
+    port: testPort,
     reuseExistingServer: !process.env.CI,
   },
 });

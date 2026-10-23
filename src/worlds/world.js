@@ -37,6 +37,7 @@ import { coralFan, kelp, tubeSponge, seaStar, pearlShell, coralGate, ReefLife } 
 import { christmasTree, presents, candyCane, snowFriend, holidayCottage, festiveGate, Snowfall } from "./christmas.js";
 import { pancakeStack, waffle, strawberry, sunnyEgg, orangeWedge, toastCottage, breakfastGate } from "./breakfast.js";
 import { officeTower, skylineTower, storefront, parkedTaxi, cityPlanter, cityBench, streetlight, clockTower } from "./downtown.js";
+import { familyHouse, rabbitDisplay, gadgetBench, twinPowerDisplay, heroMailbox, secretLab, thunderPylons } from "./thundermans.js";
 
 let authoredPotion = null;
 export async function loadWorldAssets() {
@@ -129,6 +130,10 @@ export class World {
           let dist = level.width / 2 + 3 + rnd(seed) * 9;
           let prop;
           switch (level.theme) {
+            case "thundermans":
+              prop = [familyHouse, heroMailbox, twinPowerDisplay, rabbitDisplay, heroMailbox, gadgetBench][k % 6](chunk, 1.05);
+              if (k % 6 === 0) dist = 18 + rnd(seed) * 4;
+              break;
             case "downtown":
               prop = [officeTower, storefront, parkedTaxi, cityPlanter, officeTower, cityBench][k % 6](chunk);
               dist = [0, 1, 4].includes(k % 6) ? 16 + rnd(seed) * 5 : 9.2 + rnd(seed) * 2;
@@ -248,6 +253,7 @@ export class World {
             // Shopfronts and seats face the boulevard; parked cars follow it.
             prop.rotation.y = coursePoint(level, s).yaw + ([1, 5].includes(k % 6) ? side * Math.PI / 2 : 0);
           }
+          if (level.theme === "thundermans") prop.rotation.y = coursePoint(level, s).yaw + side * Math.PI / 2;
           if (
             (level.theme === "castle" && k % 8 === 0) ||
             (level.theme === "palace" && k % 7 === 0) ||
@@ -403,6 +409,15 @@ export class World {
       }
       if (level.theme === "downtown" && i % 2 === 0) {
         place(clockTower(landmarks, 1.3), level, s + 38, (i % 4 ? 1 : -1) * 26);
+      }
+      if (level.theme === "thundermans") {
+        const side = i % 2 ? 1 : -1;
+        const home = place(familyHouse(landmarks, 1.45), level, s + 24, side * 26);
+        home.rotation.y += side * Math.PI / 2;
+        const lab = place(secretLab(landmarks, 1.4), level, s + 46, -side * 23);
+        lab.rotation.y -= side * Math.PI / 2;
+        const pylons = place(thunderPylons(landmarks), level, s + 62, 0);
+        pylons.rotation.y += Math.PI;
       }
       if (level.theme === "minecraft") {
         place(mineGate(landmarks), level, s + 60, 0);

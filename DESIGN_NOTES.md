@@ -1,5 +1,34 @@
 # Creative decisions
 
+## Thundermans Town extension — October 22
+
+World 19 appends Thundermans Town and Bolt, a white sculpted unicorn with an
+electric-blue mane; names and palette remain provisional. This original fan
+scenery takes its specific cues from a suburban super-family, Phoebe and Max's
+paired powers, Max's secret gadgets and a friendly Dr. Colosso-inspired rabbit.
+A two-story home with siding, porch, paired windows and attached garage anchors
+the neighborhood. Open secret-laboratory pavilions expose potion benches,
+control screens and warm/cool coil towers. Rabbit pedestals, twin-power exhibits
+and mailbox lightning badges connect the smaller scenery to those landmarks.
+
+The visual contract keeps the sculpted Mia, Glender and Bolt prominent on a warm,
+clear route. Homes and labs stand back from the road; paired lightning pylons
+stand beyond its edges with no crossbar to hide the chased friend. Cool cyan and
+warm amber identify the twin motifs, while navy equipment, cream trim and green
+lawns inherit the storybook palette. New scenery is static, shared procedural
+geometry baked into the existing spatial material batches. No downloaded show
+assets, human-character replacements, combat, flashing effect or new controls.
+
+The existing sculpted character GLBs, rigs and runtime remain unchanged. Above
+18 friends, the finale uses bounded rows, physical risers and a wider camera
+with portrait adjustment; the 18-or-fewer arrangement remains unchanged. The
+nine-world plan records the growing-cast review requirement for every release.
+
+Reference: [Nickelodeon's official Thundermans fan hub](https://www.nick.com/fan-hub/the-thundermans)
+confirms the suburban superhero family, twin leads and rabbit character. The
+secret-basement gadget/potion detail also comes from the owner's supplied brief;
+the supplied Max biography URL redirected during the October 22 lookup.
+
 ## Big City Downtown extension
 
 World 18 appends Big City Downtown and Metro, a white unicorn with deep periwinkle hair. These names and colors are provisional. A broad blue-slate boulevard with pale sidewalks and restrained lane dashes runs through a layered pastel skyline. Tall office blocks have repeated window grids and stepped skyscrapers rise farther back. Striped shop awnings, parked yellow taxis, streetlights, planters and benches establish the street-level scale; station clock towers act as major urban landmarks.

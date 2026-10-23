@@ -270,17 +270,21 @@ export class GameScene {
     this.setStageCamera(false, false);
     if (final) {
       this.unicorn.visible = false;
+      const expandedCast = LEVELS.length > 18;
+      const rows = expandedCast ? Math.ceil(LEVELS.length / 9) : 2;
+      const columns = Math.ceil(LEVELS.length / rows);
       for (let i = 0; i < LEVELS.length; i++) {
         const u = makeCollectionUnicorn(i, this.characterOptions);
         this.scene.add(u);
-        const columns = Math.ceil(LEVELS.length / 2);
         const row = Math.floor(i / columns);
         const inRow = Math.min(columns, LEVELS.length - row * columns);
-        this.position(u, s + row * 4.5 - 1, ((i % columns) - (inRow - 1) / 2) * 2.7);
+        this.position(u, s + row * (expandedCast ? 4.1 : 4.5) - 1,
+          ((i % columns) - (inRow - 1) / 2) * 2.7,
+          expandedCast ? (rows - row - 1) * 0.8 : 0);
         u.scale.setScalar(0.72);
         this.friends.push(u);
       }
-      this.position(this.player, s - 3, 0);
+      this.position(this.player, expandedCast ? s + rows * 4.1 : s - 3, 0);
     }
     // A clear celebration island guarantees the portrait camera cannot enter a nearby castle/tree.
     this.world.root.visible = false;
@@ -298,6 +302,19 @@ export class GameScene {
       [base.x, base.y - 0.24, base.z],
       [16, 0.25, 16],
     );
+    if (final && LEVELS.length > 18) {
+      const rows = Math.ceil(LEVELS.length / 9);
+      const columns = Math.ceil(LEVELS.length / rows);
+      for (let row = 0; row < rows - 1; row++) {
+        const p = coursePoint(this.level, s + row * 4.1 - 1);
+        const rise = (rows - row - 1) * 0.8;
+        const tier = cylinder(this.celebrationArt, "#eee6d2",
+          [p.x, p.y + rise / 2 - 0.06, p.z],
+          [(columns - 1) * 1.35 + 1.5, rise + 0.08, 1.8]);
+        tier.name = "Friend celebration riser";
+        tier.rotation.y = p.yaw;
+      }
+    }
     for (let i = 0; i < 18; i++) {
       const a = (i / 18) * Math.PI * 2,
         f = flower(
@@ -353,7 +370,11 @@ export class GameScene {
       right = new THREE.Vector3(p.fz, 0, -p.fx),
       base = new THREE.Vector3(p.x, p.y, p.z);
     const portraitTitle = title && this.camera.aspect < 0.8;
-    const distance = this.mode === "final" || portraitTitle ? 18 : 10;
+    const expandedFinale = this.mode === "final" && LEVELS.length > 18;
+    const rows = Math.ceil(LEVELS.length / 9);
+    const distance = expandedFinale
+      ? (24 + Math.max(0, rows - 3) * 3) * Math.max(1, 1.25 / this.camera.aspect)
+      : this.mode === "final" || portraitTitle ? 18 : 10;
     const cam = base
       .clone()
       .addScaledVector(f, distance * 0.85)
@@ -361,12 +382,15 @@ export class GameScene {
       .add(
         new THREE.Vector3(
           0,
-          this.mode === "final" || portraitTitle ? 7 : 5.2,
+          expandedFinale ? 10.5 * Math.max(1, 1.25 / this.camera.aspect) : this.mode === "final" || portraitTitle ? 7 : 5.2,
           0,
         ),
       );
     const look = base.clone().add(new THREE.Vector3(0, 1.9, 0));
-    if (portraitTitle) {
+    if (expandedFinale) {
+      look.addScaledVector(f, (rows - 1) * 2.05);
+      look.y += 0.6;
+    } else if (portraitTitle) {
       look.y = base.y + 6.4;
     } else if (title) {
       look.addScaledVector(right, -4.1);

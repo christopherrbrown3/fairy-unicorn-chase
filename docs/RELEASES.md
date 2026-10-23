@@ -1,5 +1,27 @@
 # Release history
 
+## v1.12.0 — Thundermans Town
+
+World 19 adds Bolt, a white unicorn with a bright blue mane, to a super-powered
+neighborhood of family homes, open labs, gadget displays, twin-power landmarks,
+rabbit statues and thunder pylons. Existing saves with all eighteen earlier
+friends unlock Thundermans Town while preserving collection progress and
+preferences. The expanded finale gathers all nineteen friends in three raised
+rows while keeping the player, rainbow and controls in view.
+
+![Thundermans Town with Bolt ahead at desktop size](screenshots/thundermans-town-desktop-bolt-near.jpg)
+
+![Thundermans Town with Bolt ahead at iPad landscape size](screenshots/thundermans-town-ipad-landscape-bolt-near.jpg)
+
+The opening chase shows the actual potion pickup: [desktop gameplay](screenshots/thundermans-town-potion-visible-ahead.jpg).
+
+The nineteen-friend finale: [desktop](screenshots/thundermans-town-finale-desktop.jpg) · [iPad landscape](screenshots/thundermans-town-finale-ipad-landscape.jpg). [Rainbow Meadow preservation capture](screenshots/thundermans-town-meadow-preservation.jpg) checks that the established world and sculpted cast remain intact.
+
+Local validation covered the world art batching, prior-release migration,
+real chase/catch/collection, New Game preferences, and PWA update/offline
+survival in Chromium/Metal and WebKit. Physical iPad playtesting remains
+outstanding.
+
 ## v1.11.0 — Sculpted character cast
 
 Mia, Glender and all eighteen unicorn variants use original skinned Blender

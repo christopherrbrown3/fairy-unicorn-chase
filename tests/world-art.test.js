@@ -8,6 +8,7 @@ import * as underwater from "../src/worlds/underwater.js";
 import * as christmas from "../src/worlds/christmas.js";
 import * as breakfast from "../src/worlds/breakfast.js";
 import * as downtown from "../src/worlds/downtown.js";
+import * as thundermans from "../src/worlds/thundermans.js";
 import { group } from "../src/art/primitives.js";
 import { Atmosphere } from "../src/art/atmosphere.js";
 import { LEVELS } from "../src/config/levels.js";
@@ -60,7 +61,10 @@ test("Coral Lagoon scenery keeps every triangle when combined into static batche
 
 test("Coral Lagoon reef life freezes at reduced time and stays bounded", () => {
   const parent = group();
-  const reef = new underwater.ReefLife(parent, LEVELS.at(-1));
+  const reef = new underwater.ReefLife(
+    parent,
+    LEVELS.find(level => level.theme === "underwater"),
+  );
   reef.update(0, 0);
   const fishAtZero = reef.fish.map(fish => fish.position.toArray());
   const bubblesAtZero = [...reef.bubbles.instanceMatrix.array];
@@ -111,9 +115,24 @@ test("Big City Downtown scenery keeps every triangle when combined into static b
   }
 });
 
+test("Thundermans Town scenery keeps every triangle when combined into static batches", () => {
+  for (const [name, make] of Object.entries(thundermans)) {
+    const parent = group();
+    const model = make(parent, 1);
+    const before = triangles(model);
+    assert.ok(before > 0, name);
+    bake(model);
+    assert.equal(triangles(model), before, `${name} lost geometry during batching`);
+    disposeTree(parent);
+  }
+});
+
 test("Christmas snowfall is bounded and freezes with reduced motion", () => {
   const parent = group();
-  const snowfall = new christmas.Snowfall(parent, LEVELS.at(-1));
+  const snowfall = new christmas.Snowfall(
+    parent,
+    LEVELS.find(level => level.theme === "christmas"),
+  );
   snowfall.update(0, 0);
   const atZero = [...snowfall.flakes.instanceMatrix.array];
   assert.equal(snowfall.flakes.count, 96);

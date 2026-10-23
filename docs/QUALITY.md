@@ -2,15 +2,15 @@
 
 ## Automated coverage
 
-Twenty-one Node tests cover real pursuit in every world, proximity-only captures after an unaligned overtake, curve closure, steering and recentering, screen-relative lane direction on multiple bends in all eighteen courses, potion speed and expiry, automatic jumps, gentle collisions, cosmetic water, save validation, release-to-release save migration, batched art geometry preservation for fan and new-world scenery, bounded reduced-time reef life and snowfall, underwater-atmosphere reset, unavailable storage, and offline build version changes when game code, HTML or public assets change.
+Twenty-three Node tests cover real pursuit in every world, proximity-only captures after an unaligned overtake, curve closure, steering and recentering, screen-relative lane direction on multiple bends in all nineteen courses, potion speed and expiry, automatic jumps, gentle collisions, cosmetic water, save validation, release-to-release save migration, batched art geometry preservation for fan and new-world scenery, bounded reduced-time reef life and snowfall, underwater-atmosphere reset, unavailable storage, and offline build version changes when game code, HTML or public assets change.
 
 Browser scenarios run in Chromium and WebKit at 1024 × 768 with touch support. They cover:
 
 - Custom-domain root and repository subpath, entry point, no failed asset requests, runtime errors or shader console errors, and actual Mia/Glender/unicorn meshes and Blender potion.
 - Arrow/A/D input with projected on-screen movement matching the arrow direction, held pointer steering, touch water, Chromium two-finger steering plus water, pause/resume and saved sound/picture/motion preferences.
 - Potion pickup with actual increased movement speed, automatic jump triggers and gentle obstacle contact.
-- Locked worlds, all eighteen genuine distance-based catches, Continue, collection unlocks, eighteen-unicorn finale, reload persistence and unlocked replay.
-- Migration from the previous seventeen-world save into Big City Downtown, completing Metro, the full collection/finale, preserved preferences and progress, plus New Game reset behavior.
+- Locked worlds, all nineteen genuine distance-based catches, Continue, collection unlocks, nineteen-unicorn finale, reload persistence and unlocked replay.
+- Migration from the previous eighteen-world save into Thundermans Town, completing Bolt, the nineteen-friend collection/finale, preserved preferences and progress, plus New Game reset behavior.
 - Corrupt storage recovery, portrait hint and touch targets at least 80 CSS px.
 - Static link-preview metadata, manifest scope and icon dimensions at both hosting paths; a cold offline launch loads the font, authored potion model, saved progress and a playable unlocked world.
 - Installation help and a simulated browser install prompt; actual Home Screen installation remains a device check.
@@ -20,7 +20,7 @@ The opt-in `?test=1` API advances the same physical simulation faster. It does n
 
 ## Screenshot review
 
-The real rendered game was captured at 1024 × 768. `docs/screenshots/` includes the title, ten worlds, boost, water spray, automatic jump, friendly catch, world menu, collection and final group celebration, plus the 390 × 844 portrait hint. A detail capture, `butterfly-detail.jpg`, uses a deliberately close camera to show the actual in-game butterfly model; it is not the ordinary chase view. Release captures add desktop and iPad-landscape gameplay and finale views for later worlds; Coral Lagoon's Pearl-near, Christmas Village's Holly-near, Pancake Picnic's Maple-near and Big City Downtown's Metro-near views show each friend at a measured natural chase distance, while Rainbow Meadow captures check that established scenery returns. The Downtown packet also includes a normal-opening blue potion capture. The gallery is refreshed after visual changes; file sizes remain suitable for the README.
+The real rendered game was captured at 1024 × 768. `docs/screenshots/` includes the title, ten worlds, boost, water spray, automatic jump, friendly catch, world menu, collection and final group celebration, plus the 390 × 844 portrait hint. A detail capture, `butterfly-detail.jpg`, uses a deliberately close camera to show the actual in-game butterfly model; it is not the ordinary chase view. Release captures add desktop and iPad-landscape gameplay and finale views for later worlds; Coral Lagoon's Pearl-near, Christmas Village's Holly-near, Pancake Picnic's Maple-near, Big City Downtown's Metro-near and Thundermans Town's Bolt-near views show each friend at a measured natural chase distance. Rainbow Meadow captures check that established scenery returns. Downtown and Thundermans Town packets include a normal-opening blue potion capture. These are browser viewports, not physical iPad captures; the gallery is refreshed after visual changes and image sizes remain modest.
 
 The review corrected disconnected hoof geometry, terrain alignment, an overly subtle water stream, missing nearby mountain silhouettes, the night sky, and accessible names for the portrait Back button. Celebrations now use a flower-ringed island so the portrait camera cannot enter course scenery. Test-accelerated celebration cameras are settled before capture. The owner's reported reversed steering was corrected in the lateral basis, camera basis and road winding, with unit and browser screen-direction regression checks.
 
