@@ -1,4 +1,5 @@
 const paths = {
+  waterslide: '<path d="M5 24V5h9v5c0 6 5 5 5 10h9v4H16c0-7-6-6-6-14V5M5 10h5m-5 5h5m-5 5h5M3 28q3-3 6 0t6 0 6 0 6 0"/>',
   burger: '<path d="M4 13a12 9 0 0 1 24 0ZM4 19h24M4 24h24v2c0 5-24 5-24 0ZM4 16l4 2 4-2 4 2 4-2 4 2 4-2M11 8h1m7-1h1M7 22h18"/>',
   thunder: '<path d="m18 2-12 16h9l-1 12 13-18h-10ZM4 28V21m24 7v-8"/>',
   city: '<path d="M3 29V13h8v16m0-21h10v21m0-12h8v12M16 3v5M6 18h2m-2 5h2m6-10h4m-4 5h4m-4 5h4m6-1h2M2 29h28"/>',
@@ -62,4 +63,5 @@ export const worldIcon = [
   "city",
   "thunder",
   "burger",
+  "waterslide",
 ];

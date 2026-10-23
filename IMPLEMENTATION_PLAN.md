@@ -10,13 +10,20 @@ merged PR #16, successful main/Pages run 39958486106, and verified genuine
 v1.11→v1.12 profile transition, preserved IDs/preferences, online/offline Bolt
 catch, 19-friend finale and collection.
 
-Fast Food Land / Sesame is the sole active task, internal ID19/world20.
-[Source-linked research and inspected food images](docs/WORLD_THEME_RESEARCH.md#world-20-visual-inspection-and-implementation--october-23)
-guide its abundant dimensional scenery. Source, unit/build and geometry smoke
-are ready; focused QA, six-view density review and release/live checks remain.
-The owner explicitly requested **finish Fast Food Land, then stop**. Water Park
-and later worlds remain research briefs only and need new human authorization.
-Preserve the published sculpted cast, all earlier progress and PWA behavior.
+Fast Food Land / Sesame is COMPLETE: v1.13.0, merged PR #20 at
+`2b5b09c78befade3c27440f8836bbb0863620e92`, published and live verified by the
+release owner, including the genuine v1.12→v1.13 update and online/offline play.
+Its former stop gate was superseded by the owner's “OK build the next one.”
+
+Splash Water Park / Dipper is the **only active task**, internal ID20/world21.
+[Inspected manufacturer/operator images](docs/WORLD_THEME_RESEARCH.md#world-21-visual-inspection-and-implementation--october-23)
+guide thick supported slide shells, receiving pools and dense layered deck art.
+Source integration, factory geometry/batching/disposal checks, unchanged cast
+hashes, 23 unit tests and production build pass. Six real route views, 21-friend
+finales, focused browser QA, render measurements, fresh visual review and all
+release/live/PWA checks remain required. **Stop after Water Park.** Zebra and
+later worlds remain research only and need new explicit human authorization.
+Preserve all earlier IDs, palettes, progress, sculpted cast and PWA behavior.
 
 ## Home Screen and sharing — v1.8.0
 

@@ -1,5 +1,30 @@
 # Creative decisions
 
+## Splash Water Park extension — October 23
+
+World 21 / internal ID20 appends Splash Water Park and Dipper, the existing
+white sculpted unicorn with a unique saffron mane (`#e89936`). Names and palette
+are original provisional choices. The owner authorized this next level only:
+finish its independent release, then stop; no Zebra implementation.
+
+The [opened primary-image observations and construction contract](docs/WORLD_THEME_RESEARCH.md#world-21-visual-inspection-and-implementation--october-23)
+anchor real concave thick flumes, open-ended collared tubes, supported curves,
+connected stairs/landings/rails and receiving pools. Original compact slide
+towers alternate curved coral, winding blue tube and twin yellow layouts.
+Foreground striped lounge sets, umbrellas, drinks tables, ring/towel racks and
+planting lead into shallow bucket/wheel/mini-slide play pools, with higher slide
+complexes behind. Density must be visible across all three chase stages; raw
+object counts do not substitute for opened desktop/iPad views.
+
+The broad warm-stone route stays dry and quiet for Mia/Glender, white Dipper and
+blue potions. Large structures stay beyond the low foreground layer. All new
+scenery is static and baked by material in 16 spatial chunks with shared source
+geometry. There is no slide gameplay, new failure state, UI redesign, camera or
+character change. Existing pause, Gentle motion, saves/preferences, 20 prior
+worlds, dynamic 21-friend finale and PWA behavior remain intact. Fresh visual,
+render-cost and live-release verification are still required after source smoke.
+
+
 ## Fast Food Land extension — October 23
 
 World 20 appends Fast Food Land and Sesame, a white sculpted unicorn with a

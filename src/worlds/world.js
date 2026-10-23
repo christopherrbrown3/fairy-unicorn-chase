@@ -41,6 +41,8 @@ import { familyHouse, rabbitDisplay, gadgetBench, twinPowerDisplay, heroMailbox,
 
 import { burger, fries, milkshake, mealTray, pizzaBoard, shakeCounter, dinerBooth, foodKiosk, burgerDiner, foodPlanter } from "./fastfood.js";
 
+import { slideComplex, splashPlay, loungeSet, floatRack, deckPlanter } from "./waterpark.js";
+
 let authoredPotion = null;
 export async function loadWorldAssets() {
   try {
@@ -132,6 +134,12 @@ export class World {
           let dist = level.width / 2 + 3 + rnd(seed) * 9;
           let prop;
           switch (level.theme) {
+            case "waterpark": {
+              const variant = (j + k + (side + 1) / 2) % 3;
+              prop = [loungeSet, floatRack, splashPlay, deckPlanter, loungeSet, floatRack, splashPlay, deckPlanter, loungeSet][k](chunk, 1, variant);
+              dist = k === 2 || k === 6 ? 19 : k === 3 || k === 7 ? 9 : 11.5;
+              break;
+            }
             case "fastfood": {
               // Each short neighborhood contains all four food families, grouped
               // into meals, counters and restaurants rather than a sparse prop ring.
@@ -269,7 +277,7 @@ export class World {
             // Shopfronts and seats face the boulevard; parked cars follow it.
             prop.rotation.y = coursePoint(level, s).yaw + ([1, 5].includes(k % 6) ? side * Math.PI / 2 : 0);
           }
-          if (["thundermans", "fastfood"].includes(level.theme)) prop.rotation.y = coursePoint(level, s).yaw + side * Math.PI / 2;
+          if (["thundermans", "fastfood", "waterpark"].includes(level.theme)) prop.rotation.y = coursePoint(level, s).yaw + side * Math.PI / 2;
           if (
             (level.theme === "castle" && k % 8 === 0) ||
             (level.theme === "palace" && k % 7 === 0) ||
@@ -299,6 +307,22 @@ export class World {
                 s + f * 0.8 - 1.2,
                 side * (level.width / 2 + 0.9 + rnd(seed + f + 12) * 2.6),
               );
+          }
+        }
+      }
+      if (level.theme === "waterpark") {
+        // Supported slide complexes occupy the rear deck, with the pool outlets
+        // facing the promenade. Keep their whole footprint beyond the low layer.
+        for (const side of [-1, 1]) {
+          for (const offset of [0.05, 0.55]) {
+            const s = (j + offset + (side > 0 ? 0.12 : 0)) * length / 16;
+            const slides = place(slideComplex(chunk, 1, (j + (offset > 0.1 ? 1 : 0) + (side > 0 ? 1 : 0)) % 3), level, s, side * 33);
+            slides.rotation.y += side * Math.PI / 2;
+          }
+          for (let i = 0; i < 8; i++) {
+            const s = (j + i / 8) * length / 16;
+            place(box(chunk, i % 2 ? "#f3e7cd" : "#76969c", [0, 0, 0], [0.7, 0.05, 3.6]), level, s, side * 6.5, 0.04);
+            if (i % 2) place(deckPlanter(chunk, 0.8), level, s + 3, side * 8);
           }
         }
       }
@@ -589,6 +613,8 @@ export class World {
                     ? cityPlanter(this.root, 0.65)
                     : level.theme === "fastfood" && item.kind === "tree"
                       ? foodPlanter(this.root, 0.65)
+                      : level.theme === "waterpark" && item.kind === "tree"
+                        ? deckPlanter(this.root, 0.65)
             : obstacle(this.root, item.kind);
         place(g, level, item.s, item.lane);
         bake(g);
