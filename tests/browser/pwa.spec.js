@@ -84,7 +84,9 @@ for (const base of ["/", "/fairy-unicorn-chase/"]) {
 }
 
 test("installation instructions and the browser install prompt are reachable", async ({ page, browserName }) => {
-  test.setTimeout(180_000);
+  // Four rendered viewport captures can take most of three minutes on a slow
+  // software GPU; leave time for the install assertions and final navigation.
+  test.setTimeout(300_000);
   const startedAt = Date.now();
   const logStage = (stage) => console.log(`[PWA install] ${stage}: ${Date.now() - startedAt}ms elapsed`);
   await page.goto("/?test=1");
