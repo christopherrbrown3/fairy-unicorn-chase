@@ -49,7 +49,7 @@ export function dressVerge(root, level) {
     new THREE.Color(level.ground),
     0.45,
   );
-  const isCloud = ["cloud", "minecraft", "carnival", "christmas", "breakfast", "downtown"].includes(level.theme);
+  const isCloud = ["cloud", "minecraft", "carnival", "christmas", "breakfast", "downtown", "fastfood"].includes(level.theme);
   const grassMat = new THREE.MeshStandardMaterial({
     color: grassColor,
     vertexColors: true,
@@ -99,7 +99,7 @@ export function dressVerge(root, level) {
       grass.computeBoundingSphere();
       root.add(grass);
     }
-    if (level.theme === "downtown") continue;
+    if (["downtown", "fastfood"].includes(level.theme)) continue;
     const stones = new THREE.InstancedMesh(
       level.theme === "minecraft"
         ? geometry("block-stone", () => new THREE.BoxGeometry(1, 1, 1))

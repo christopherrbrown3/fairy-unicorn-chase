@@ -1,8 +1,9 @@
 # Nine worlds: research and density brief
 
 Research checked October 23, 2026. This is a design reference and acceptance
-brief, not a record of published features. Only world 19 is implemented. Worlds
-20–27 remain planning until their individual release gates open. Source facts
+brief, not a record of published features. World 19 is published; world 20 is implemented and local release QA is complete. Worlds
+21–27 remain planning only. The owner has explicitly requested a stop after
+Fast Food Land; a fresh human instruction is required before another world. Source facts
 are distinguished below from our original scenery decisions. We do not import
 show footage, branded product art or museum images into the game.
 
@@ -82,6 +83,44 @@ clusters show ingredient edges; middle-distance kiosks group several foods;
 background giant burger diners, pizza awnings and shake towers provide distinct
 silhouettes. All four requested foods must be recognizable in each route third.
 Avoid repeating breakfast stacks or replacing dimensional toppings with paint.
+
+### World 20 visual inspection and implementation — October 23
+
+These are observations of opened primary images, not guesses from menu labels:
+
+| Inspected reference | Observed form | Original art decision |
+| --- | --- | --- |
+| [McDonald's corporate media-library food photograph](https://corporate.mcdonalds.com/corpmcd/our-stories/media-assets-library.html) ([image](https://s7d1.scene7.com/is/image/mcdonalds/menu%3A2-column-desktop?resmode=sharp2)) | Domed bun, broad projecting lettuce and tomato, cheese corners; thin fries fan outward at uneven heights in an open carton. | Lathed sesame buns, wavy dimensional lettuce, drooping cheese corners, tomato/pickle/onion layers, single/double patty variants. Each fry carton contains 18 separate angled fries in three rows behind a dipped front lip. |
+| [Pizza Hut Slovakia pepperoni page](https://www.pizzahut.sk/en/menu/pizza-pepperoni) ([image](https://static.wixstatic.com/media/dacbf5_953c08ee885245d6a1b823c9acb06157~mv2.jpg)) | Thick raised browned crust, radial slices, pepperoni discs above the cheese, a separated slice showing depth and stretchy cheese. | Whole and quarter-sector pizzas with separate crust/sauce/cheese volumes, raised pepperoni, pepper rings, toasted spots and cut seams. Tilted slices overlap serving boards; stretchy strands are omitted to keep the small model readable. |
+| [McDonald's Austria strawberry shake](https://www.mcdonalds.at/produkt/shake-erdbeer) ([image](https://www.mcdonalds.at/wp-content/uploads/2023/02/1500x1500-web-pop-neu-desserts-shake-erdbeer-768x768.png)) | Tapered glass, thick pale-pink contents, visible rim/base and a soft spiral mound above the fill. | Tapered opaque storybook cups with modeled rim/base, ribs and three flavors. A connected cream coil is informed by the soft spiral; striped straw/cherry are original diner decoration. The [US shake description](https://www.mcdonalds.com/us/en-us/product/strawberry-shake-small.html) separately confirms whipped cream as a served variation. |
+
+Local inspection copies are under ignored `output/research-fast-food/` and are
+not shipped. Some US image endpoints rejected direct downloads; the corporate
+CDN and Austria/Slovakia primary images above were successfully downloaded and
+opened. Menu facts do not imply that our invented diners or food arrangements
+are exact product replicas. No prices, brand logos or ordering interactions are
+part of the game.
+
+**Implemented composition.** Fast Food Land / Sesame is world 20, internal ID19;
+Sesame's unique toasted-rose mane is `#b96d80`. A warm muted-rose route separates
+the white friend and blue bottles from golden food, mint ground and tomato/teal
+restaurant trim. Every spatial chunk repeats a varied nine-scene sequence on
+both sides: complete burger/fries/shake meals, pizza boards, tall full fry
+cartons, three-flavor counters, booths, larger burgers and kitchen kiosks.
+Foreground napkins, dips, trays and herb/tomato planters lead into occupied tables
+and stools. Alternating large round burger diners and pizza-roof kiosks, with
+terraces and tall shakes, make a separate middle/background layer. Food forms
+vary in ingredient stack, flavor, scale and presentation. Roof foods and windowed
+restaurants are visible above the small supporting objects.
+
+**Geometry contract.** All scenery is static, built from shared indexed meshes
+and 11 shared material colors. Restaurants are baked into the same 16 spatial
+chunks as nearby scenery, rather than a single full-lap building batch. The
+entire-world triangle inventory is bounded but is not a frame-performance
+claim. All four required food families occur in every chunk; QA must still open
+six actual gameplay views to judge their recognition and density. Existing
+Gentle motion/pause behavior, sculpted cast, controls and >18-friend finale
+layout are unchanged. No Water Park or later-world code has been started.
 
 ## 21 — Water park
 

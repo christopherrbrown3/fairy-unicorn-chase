@@ -39,6 +39,8 @@ import { pancakeStack, waffle, strawberry, sunnyEgg, orangeWedge, toastCottage, 
 import { officeTower, skylineTower, storefront, parkedTaxi, cityPlanter, cityBench, streetlight, clockTower } from "./downtown.js";
 import { familyHouse, rabbitDisplay, gadgetBench, twinPowerDisplay, heroMailbox, secretLab, thunderPylons, neighborhoodGarden, telekinesisDisplay } from "./thundermans.js";
 
+import { burger, fries, milkshake, mealTray, pizzaBoard, shakeCounter, dinerBooth, foodKiosk, burgerDiner, foodPlanter } from "./fastfood.js";
+
 let authoredPotion = null;
 export async function loadWorldAssets() {
   try {
@@ -130,6 +132,18 @@ export class World {
           let dist = level.width / 2 + 3 + rnd(seed) * 9;
           let prop;
           switch (level.theme) {
+            case "fastfood": {
+              // Each short neighborhood contains all four food families, grouped
+              // into meals, counters and restaurants rather than a sparse prop ring.
+              const variant = (j + k + (side + 1) / 2) % 3;
+              prop = [mealTray, pizzaBoard, fries, shakeCounter, dinerBooth, burger, foodKiosk, pizzaBoard, mealTray][k](chunk, 1.05, variant);
+              if (k === 6) dist = 18 + rnd(seed) * 2;
+              else if (k === 4) dist = 12.5 + rnd(seed) * 1.5;
+              else dist = 9.5 + rnd(seed) * 2.5;
+              if (k === 2) prop.scale.setScalar(1.35);
+              if (k === 5) prop.scale.setScalar(1.45);
+              break;
+            }
             case "thundermans":
               prop = [familyHouse, heroMailbox, twinPowerDisplay, rabbitDisplay, telekinesisDisplay, gadgetBench, familyHouse, neighborhoodGarden, twinPowerDisplay][k](chunk, 1.05, (j + k + (side + 1) / 2) % 3);
               if (k === 0 || k === 6) dist = 19 + rnd(seed) * 3;
@@ -255,7 +269,7 @@ export class World {
             // Shopfronts and seats face the boulevard; parked cars follow it.
             prop.rotation.y = coursePoint(level, s).yaw + ([1, 5].includes(k % 6) ? side * Math.PI / 2 : 0);
           }
-          if (level.theme === "thundermans") prop.rotation.y = coursePoint(level, s).yaw + side * Math.PI / 2;
+          if (["thundermans", "fastfood"].includes(level.theme)) prop.rotation.y = coursePoint(level, s).yaw + side * Math.PI / 2;
           if (
             (level.theme === "castle" && k % 8 === 0) ||
             (level.theme === "palace" && k % 7 === 0) ||
@@ -285,6 +299,26 @@ export class World {
                 s + f * 0.8 - 1.2,
                 side * (level.width / 2 + 0.9 + rnd(seed + f + 12) * 2.6),
               );
+          }
+        }
+      }
+      if (level.theme === "fastfood") {
+        // Restaurants are baked inside their local spatial chunk so only the
+        // nearby part of this dense food boulevard needs to submit its geometry.
+        for (const side of [-1, 1]) {
+          const s = (j + (side < 0 ? 0.2 : 0.67)) * length / 16;
+          const restaurant = place(j % 2 ? foodKiosk(chunk, 1.7, 1) : burgerDiner(chunk, 1.05, j % 3), level, s, side * 27);
+          restaurant.rotation.y += side * Math.PI / 2;
+          const terrace = place(dinerBooth(chunk, 1.1, j % 3), level, s + 9, side * 20);
+          terrace.rotation.y += side * Math.PI / 2;
+          place(milkshake(chunk, 1.8, j % 3), level, s - 10, side * 22);
+          // Raised cream-colored aprons, plants and checker trim connect the
+          // scenes, while the warm road remains visually quiet and unobstructed.
+          for (let i = 0; i < 8; i++) {
+            const ps = (j + i / 8) * length / 16;
+            const planter = place(foodPlanter(chunk, 0.7), level, ps + 2, side * 7.7);
+            planter.rotation.y += side * Math.PI / 2;
+            place(box(chunk, i % 2 ? "#fff0d2" : "#659e9f", [0, 0, 0], [1, 0.06, 4.8]), level, ps, side * 6.5, 0.04);
           }
         }
       }
@@ -553,6 +587,8 @@ export class World {
                   ? strawberry(this.root, 0.8)
                   : level.theme === "downtown" && item.kind === "tree"
                     ? cityPlanter(this.root, 0.65)
+                    : level.theme === "fastfood" && item.kind === "tree"
+                      ? foodPlanter(this.root, 0.65)
             : obstacle(this.root, item.kind);
         place(g, level, item.s, item.lane);
         bake(g);

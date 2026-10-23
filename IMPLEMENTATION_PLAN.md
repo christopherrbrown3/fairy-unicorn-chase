@@ -5,13 +5,18 @@ The owner's complete brief is the scope. Checked items mean implemented and veri
 ## Active work — nine sequential worlds, October 22
 
 The [nine-world release plan](docs/NINE_WORLD_RELEASE_PLAN.md) records the exact
-requested order and per-world acceptance/release gates. The owner's October 23
-quality requirement adds [source-linked theme research](docs/WORLD_THEME_RESEARCH.md),
-abundant varied dimensional scenery and six-view gameplay density review to
-every release. Thundermans Town's density revision is implemented; focused QA,
-fresh captures/review and publication are pending. Later eight research briefs
-are saved, but their implementation remains gated. All additions must retain
-the published v1.11.0 sculpted cast and earlier progress/PWA behavior.
+requested order and gates. Thundermans Town is COMPLETE: v1.12.0 / `55e3ae6`,
+merged PR #16, successful main/Pages run 39958486106, and verified genuine
+v1.11→v1.12 profile transition, preserved IDs/preferences, online/offline Bolt
+catch, 19-friend finale and collection.
+
+Fast Food Land / Sesame is the sole active task, internal ID19/world20.
+[Source-linked research and inspected food images](docs/WORLD_THEME_RESEARCH.md#world-20-visual-inspection-and-implementation--october-23)
+guide its abundant dimensional scenery. Source, unit/build and geometry smoke
+are ready; focused QA, six-view density review and release/live checks remain.
+The owner explicitly requested **finish Fast Food Land, then stop**. Water Park
+and later worlds remain research briefs only and need new human authorization.
+Preserve the published sculpted cast, all earlier progress and PWA behavior.
 
 ## Home Screen and sharing — v1.8.0
 

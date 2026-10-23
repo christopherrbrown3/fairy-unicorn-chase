@@ -1,5 +1,33 @@
 # Creative decisions
 
+## Fast Food Land extension — October 23
+
+World 20 appends Fast Food Land and Sesame, a white sculpted unicorn with a
+unique toasted-rose mane (`#b96d80`). Names and palette remain provisional.
+The [inspected primary-image observations](docs/WORLD_THEME_RESEARCH.md#world-20-visual-inspection-and-implementation--october-23)
+anchor ingredient shapes and dimensional food detail; the diners themselves are
+original storybook scenery. Golden sesame burgers have drooping cheese, wavy
+lettuce and single/double patties. Thick-crust pizzas and separate slices carry
+raised toppings; open fry cartons are full; three shake flavors have rim/base
+and rib detail, cream coils, straws and cherries.
+
+The first viewport and every route third should read as an abundant food
+boulevard: low meal trays/dips/napkins and herb planters in front, booths and
+three-flavor counters in the middle, larger round burger diners or pizza-roof
+kitchens behind. Stools, windows, striped awnings, squeeze bottles and checker
+trim make coherent restaurant scenes. Shape/scale/ingredient/grouping variation
+is required; a sparse ring of giant food tokens would not meet the contract.
+The quiet warm-rose road stays broad and clear, with blue potions and white
+Sesame distinct from the food. Mia/Glender remain the foreground anchor.
+
+All new scenery is static, shared and material-baked into 16 spatial chunks,
+including the restaurants. No new controls, failure state, animation system,
+player model, camera/finale or PWA change. Acceptance requires opened desktop
+and iPad landscape opening/middle/near-catch views, measured render cost, all
+20 friends in the finale and genuine previous-release progress/offline checks.
+The owner explicitly requested stopping after this release. Water Park and all
+later worlds remain unimplemented until new human authorization.
+
 ## Thundermans Town extension — October 22
 
 ### October 23 research and density revision
