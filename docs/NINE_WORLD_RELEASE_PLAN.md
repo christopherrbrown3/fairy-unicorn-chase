@@ -18,7 +18,7 @@ scene.
 
 | Order / world | Required experience | State |
 | --- | --- | --- |
-| 1 / 19 | **The Thundermans inspired:** recognizable suburban super-family home and secret laboratory, paired warm/cool twin-power motifs, rabbit and gadget displays; no villain combat or new failure state. Provisional world/friend: Thundermans Town / Bolt. | Source implemented; QA and release pending. |
+| 1 / 19 | **The Thundermans inspired:** recognizable suburban super-family home and secret laboratory, paired warm/cool twin-power motifs, rabbit and gadget displays; no villain combat or new failure state. Provisional world/friend: Thundermans Town / Bolt. | Source, local QA and visual review complete; PR #16 open. CI, v1.11.0 publication/profile, and v1.12.0 release remain pending. |
 | 2 / 20 | **Fast food:** unmistakable pizza, burgers, fries and milkshakes, with dimensional food scenery and clear pursuit visibility. | Not started. |
 | 3 / 21 | **Water park:** recognizable dimensional slides, structural supports and pools; safe path and unchanged controls. | Not started. |
 | 4 / 22 | **Zebra savannah:** many visibly striped zebras distributed through the actual playable savannah, rather than a sparse zebra ornament or only a menu illustration. | Not started. |
@@ -46,11 +46,18 @@ release notes. Browser captures do not establish physical iPad performance.
 
 ## World 19 evidence
 
-Implementation uses new scenery only and the existing sculpted cast. The prior
-unbounded two-row finale is adapted for more than 18 friends with bounded
-rows, visible risers and camera framing; the old layout remains for smaller
-casts. Local verification, visual review, merge, tag, deployment and public/offline
-checks are pending. Syntax and whitespace checks passed and the three character
-GLBs plus character runtime retain their exact pre-edit SHA-256 values. The
-character v1.11.0 publication must land before this
-world's release.
+Implementation adds only Thundermans scenery/configuration and the >18-friend
+finale adaptation; the original layout remains for smaller casts. Unit tests
+pass 23/23, the production build passes, focused migration/New Game/PWA checks
+pass in Chromium on a verified Apple M2 ANGLE Metal renderer and WebKit, and
+the post-merge strict-server root/subpath check passes. Fresh visual review
+returned SHIP on all seven opened desktop/iPad-sized captures. The captures
+show a real simulated chase at normal physics/events with no target or pickup
+repositioning; this is not a physical iPad test.
+
+PR #16 is open; the follow-up required CI run after this status update is
+still required. The character source baseline
+`27be617` is merged but its v1.11.0 publication/live gate remains pending.
+The Mia, Glender, unicorn GLB and `characters.js` SHA-256 values match that
+baseline exactly. Merge, v1.12.0 tag, Pages deployment, a seeded isolated
+v1.11.0 client update, and public/offline checks remain pending.
