@@ -1,5 +1,47 @@
 # Release history
 
+## v1.13.0 — Fast Food Land
+
+World 20 adds Sesame, a white unicorn with a rose mane, to a colorful fast-food
+course filled with dimensional burgers, fries, pizza and milkshakes. Meal trays,
+booths, diners, kiosks and terraces form linked foreground, middle and background
+scenes around a broad playable road. Existing saves with all nineteen friends
+unlock Fast Food Land while retaining completed worlds, preferences and unrelated
+browser storage. The twenty-friend finale fits both desktop and tablet landscape
+views.
+
+The approved route review covers the opening, middle chase and natural near catch
+at desktop and iPad-landscape browser viewports:
+[desktop opening](screenshots/fast-food-opening-desktop.jpg) ·
+[middle](screenshots/fast-food-middle-desktop.jpg) ·
+[near Sesame](screenshots/fast-food-desktop-sesame-near.jpg) ·
+[iPad opening](screenshots/fast-food-opening-ipad-landscape.jpg) ·
+[middle](screenshots/fast-food-middle-ipad-landscape.jpg) ·
+[near Sesame](screenshots/fast-food-ipad-landscape-sesame-near.jpg).
+The desktop opening capture shows a blue potion pickup ahead.
+The twenty-friend finale is shown at both sizes:
+[desktop](screenshots/fast-food-finale-desktop.jpg) ·
+[iPad landscape](screenshots/fast-food-finale-ipad-landscape.jpg).
+
+Local checks passed 23 unit tests, the production build, and focused migration,
+chase, catch, collection, finale, reload, preferences and preservation scenarios
+in Chromium/Metal and WebKit. A genuine eighteen-friend save unlocked the new
+world and retained settings and unrelated storage. Review confirmed the food
+forms, layered route, Sesame, blue potion and complete finale. The density and
+source observations are in the [research brief](WORLD_THEME_RESEARCH.md#world-20-visual-inspection-and-implementation--october-23).
+Measurements on this Mac's Apple M2/Metal renderer found 229 visible calls and
+1.34 million triangles in the automatic-quality chase, and 150 calls / 0.78
+million triangles in low quality. The twenty-friend finale measured 1,199 calls
+and 2.93 million triangles in automatic quality, and 800 / 1.50 million in low
+quality. Across 180 submitted frames, median/p95 CPU submission time was
+1.6/2.4 ms in automatic chase quality and 1.0/1.5 ms in low; finale samples were
+4.9/5.6 ms and 4.1/4.7 ms. These measurements use a Mac desktop renderer at
+desktop and iPad-sized browser viewports; they are not GPU timings or physical
+iPad results. Physical iPad playtesting remains outstanding.
+
+The GitHub release notes record the deployment, bundle/cache hashes, safe update
+from v1.12.0, preserved save/preferences, offline launch, and live gameplay.
+
 ## v1.12.0 — Thundermans Town
 
 World 19 adds Bolt, a white unicorn with a bright blue mane, to a super-powered

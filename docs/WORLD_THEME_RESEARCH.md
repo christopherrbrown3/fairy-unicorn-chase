@@ -1,7 +1,7 @@
 # Nine worlds: research and density brief
 
 Research checked October 23, 2026. This is a design reference and acceptance
-brief, not a record of published features. World 19 is published; world 20 is now implemented for QA. Worlds
+brief, not a record of published features. World 19 is published; world 20 is implemented and local release QA is complete. Worlds
 21–27 remain planning only. The owner has explicitly requested a stop after
 Fast Food Land; a fresh human instruction is required before another world. Source facts
 are distinguished below from our original scenery decisions. We do not import

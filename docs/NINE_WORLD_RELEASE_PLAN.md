@@ -24,7 +24,7 @@ scene.
 | Order / world | Required experience | State |
 | --- | --- | --- |
 | 1 / 19 | **The Thundermans inspired:** recognizable suburban super-family home and secret laboratory, paired warm/cool twin-power motifs, rabbit and gadget displays; no villain combat or new failure state. Provisional world/friend: Thundermans Town / Bolt. | COMPLETE — v1.12.0 published and live/profile/offline verified at 55e3ae6; PR #16 merged. |
-| 2 / 20 | **Fast food:** unmistakable pizza, burgers, fries and milkshakes, with dimensional food scenery and clear pursuit visibility. Fast Food Land / Sesame. | ACTIVE — source implemented; unit/build/geometry smoke pass; focused QA, six-view review and v1.13.0 publication pending. Stop after this release. |
+| 2 / 20 | **Fast food:** unmistakable pizza, burgers, fries and milkshakes, with dimensional food scenery and clear pursuit visibility. Fast Food Land / Sesame. | READY FOR PR — local unit/build/focused browser checks passed; six route views plus two full-finale views reviewed SHIP; v1.13.0 publication remains pending. Stop after this release. |
 | 3 / 21 | **Water park:** recognizable dimensional slides, structural supports and pools; safe path and unchanged controls. | Research brief saved; implementation paused by owner until a new human instruction. |
 | 4 / 22 | **Zebra savannah:** many visibly striped zebras distributed through the actual playable savannah, rather than a sparse zebra ornament or only a menu illustration. | Research brief saved; implementation paused by owner until a new human instruction. |
 | 5 / 23 | **Wizard of Oz:** the player actually follows a yellow brick road that **ends at Emerald City**. Repeating green castles around an endless loop does not satisfy this requirement. The endpoint must fit the forgiving pursuit/catch model. | Research brief saved; implementation paused by owner until a new human instruction. |
@@ -141,7 +141,7 @@ offline, showing the 19-friend finale/collection. Evidence is saved locally in
 browser checks, not a physical-device claim. Root explicitly opened world20
 only after this gate was complete.
 
-## World 20 source handoff — ACTIVE
+## World 20 source and local QA — COMPLETE; publication pending
 
 Fast Food Land / Sesame appends internal ID19 and mane `#b96d80`. Production
 changes are limited to new `src/worlds/fastfood.js`, the appended level/palette
@@ -162,12 +162,27 @@ The full-lap scenery inventory is 454 mesh objects / 2,839,160 triangles
 (including instances, excluding cast), with 16 spatial chunks and 11 material
 meshes in a representative roadside chunk. Unlike the old global landmark
 pattern, large restaurants are chunked with their neighborhoods. This inventory
-is not a GPU/frame timing claim. Fresh actual opening/middle/near-catch captures
-on desktop/iPad landscape must confirm quality, visibility and render cost.
+is not a GPU/frame timing claim. Six actual opening/middle/near-catch captures
+on desktop/iPad landscape and two full-finale views were opened and reviewed
+SHIP. The scenery is legible and varied across all route thirds; Sesame, the
+potion, path, controls and all twenty finale characters are visible. An
+independent visual reviewer found no material fixes.
 
-Unit tests pass 23/23 and the production build passes at the unchanged v1.12.0
-package version; Luna owns the next release version. Factory geometry/batching
-smoke passes, and constructed world disposal removes its scene root. Focused
-QA, 20-friend finale/collection, genuine previous-release update/offline tests,
-independent visual review, CI and v1.13.0 publication remain pending. After that
-release, stop as requested; do not implement world21 automatically.
+Unit tests pass 23/23 and the production build passes at package version
+v1.13.0. Factory geometry/batching smoke passes, and constructed world disposal
+removes its scene root. Focused Chromium/Metal and WebKit checks cover migration
+from nineteen completed friends, the new chase/catch, collection, twenty-friend
+finale, reload, preferences, and Rainbow Meadow preservation. All passed with
+zero browser errors. The genuine v1.12 profile has not yet been updated to this
+release; live PWA update/offline checks, required PR and main CI, Pages, and
+publication remain pending.
+
+Measured on this Mac's Apple M2/Metal renderer at desktop and iPad-sized browser
+viewports, Automatic chase showed 229 visible draw calls / 1.34 million triangles
+and Low showed 150 / 0.78 million. The twenty-friend finale showed 1,199 / 2.93
+million at Automatic and 800 / 1.50 million at Low. 180-frame CPU submission
+samples were 1.6/2.4 ms median/p95 (Automatic chase), 1.0/1.5 ms (Low chase),
+4.9/5.6 ms (Automatic finale) and 4.1/4.7 ms (Low finale). This is not a GPU
+timing or physical iPad claim. The final release evidence will record the actual
+v1.12→v1.13 update, deployed hashes, live gameplay and offline results. After
+publication, stop as requested; do not implement world21 automatically.

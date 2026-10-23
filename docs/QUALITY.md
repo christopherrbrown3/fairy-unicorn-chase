@@ -2,15 +2,15 @@
 
 ## Automated coverage
 
-Twenty-three Node tests cover real pursuit in every world, proximity-only captures after an unaligned overtake, curve closure, steering and recentering, screen-relative lane direction on multiple bends in all nineteen courses, potion speed and expiry, automatic jumps, gentle collisions, cosmetic water, save validation, release-to-release save migration, batched art geometry preservation for fan and new-world scenery, bounded reduced-time reef life and snowfall, underwater-atmosphere reset, unavailable storage, and offline build version changes when game code, HTML or public assets change.
+Twenty-three Node tests cover real pursuit in every world, proximity-only captures after an unaligned overtake, curve closure, steering and recentering, screen-relative lane direction on multiple bends in all twenty courses, potion speed and expiry, automatic jumps, gentle collisions, cosmetic water, save validation, release-to-release save migration, batched art geometry preservation for fan and new-world scenery, bounded reduced-time reef life and snowfall, underwater-atmosphere reset, unavailable storage, and offline build version changes when game code, HTML or public assets change.
 
 Browser scenarios run in Chromium and WebKit at 1024 × 768 with touch support. They cover:
 
 - Custom-domain root and repository subpath, entry point, no failed asset requests, runtime errors or shader console errors, and actual Mia/Glender/unicorn meshes and Blender potion.
 - Arrow/A/D input with projected on-screen movement matching the arrow direction, held pointer steering, touch water, Chromium two-finger steering plus water, pause/resume and saved sound/picture/motion preferences.
 - Potion pickup with actual increased movement speed, automatic jump triggers and gentle obstacle contact.
-- Locked worlds, all nineteen genuine distance-based catches, Continue, collection unlocks, nineteen-unicorn finale, reload persistence and unlocked replay.
-- Migration from the previous eighteen-world save into Thundermans Town, completing Bolt, the nineteen-friend collection/finale, preserved preferences and progress, plus New Game reset behavior.
+- Locked worlds, all twenty genuine distance-based catches, Continue, collection unlocks, twenty-unicorn finale, reload persistence and unlocked replay.
+- Migration from the previous nineteen-world save into Fast Food Land, completing Sesame, the twenty-friend collection/finale, preserved preferences and progress, plus New Game reset behavior.
 - Corrupt storage recovery, portrait hint and touch targets at least 80 CSS px.
 - Static link-preview metadata, manifest scope and icon dimensions at both hosting paths; a cold offline launch loads the font, authored potion model, saved progress and a playable unlocked world.
 - Installation help and a simulated browser install prompt; actual Home Screen installation remains a device check.
@@ -20,7 +20,7 @@ The opt-in `?test=1` API advances the same physical simulation faster. It does n
 
 ## Screenshot review
 
-The real rendered game was captured at 1024 × 768. `docs/screenshots/` includes the title, ten worlds, boost, water spray, automatic jump, friendly catch, world menu, collection and final group celebration, plus the 390 × 844 portrait hint. A detail capture, `butterfly-detail.jpg`, uses a deliberately close camera to show the actual in-game butterfly model; it is not the ordinary chase view. Release captures add desktop and iPad-landscape gameplay and finale views for later worlds; Coral Lagoon's Pearl-near, Christmas Village's Holly-near, Pancake Picnic's Maple-near, Big City Downtown's Metro-near and Thundermans Town's Bolt-near views show each friend at a measured natural chase distance. Rainbow Meadow captures check that established scenery returns. Downtown and Thundermans Town packets include a normal-opening blue potion capture. These are browser viewports, not physical iPad captures; the gallery is refreshed after visual changes and image sizes remain modest.
+The real rendered game was captured at 1024 × 768. `docs/screenshots/` includes the title, ten worlds, boost, water spray, automatic jump, friendly catch, world menu, collection and final group celebration, plus the 390 × 844 portrait hint. A detail capture, `butterfly-detail.jpg`, uses a deliberately close camera to show the actual in-game butterfly model; it is not the ordinary chase view. Release captures add desktop and iPad-landscape gameplay and finale views for later worlds; Coral Lagoon's Pearl-near, Christmas Village's Holly-near, Pancake Picnic's Maple-near, Big City Downtown's Metro-near, Thundermans Town's Bolt-near, and Fast Food Land's Sesame-near views show each friend at a measured natural chase distance. Rainbow Meadow captures check that established scenery returns. Later-world packets include normal-opening blue potion captures. These are browser viewports, not physical iPad captures; the gallery is refreshed after visual changes and image sizes remain modest.
 
 The review corrected disconnected hoof geometry, terrain alignment, an overly subtle water stream, missing nearby mountain silhouettes, the night sky, and accessible names for the portrait Back button. Celebrations now use a flower-ringed island so the portrait camera cannot enter course scenery. Test-accelerated celebration cameras are settled before capture. The owner's reported reversed steering was corrected in the lateral basis, camera basis and road winding, with unit and browser screen-direction regression checks.
 
@@ -30,7 +30,7 @@ WebGL rendering; no WebGPU or postprocessing. Scenery is merged by material into
 
 Geometry and terrain materials created for a world or character, including the instanced planting buffers, are disposed during level changes. Shared primitives, materials and the loaded GLB are reused. The player remains a single persistent model. Context loss displays a reload action; completed progress is already saved. Backgrounding pauses active play.
 
-Coral Lagoon adds a fixed school of 24 reef fish and one instanced draw for 64 bubbles. Christmas Village adds 96 bounded snow flakes. Both use the existing scene clock, so Gentle motion holds their ambient movement still; underwater lighting resets when returning to a daylight world. These behaviors are covered by unit checks and representative Rainbow Meadow captures. This desktop/WebKit/Chromium coverage is not a physical iPad performance claim.
+Coral Lagoon adds a fixed school of 24 reef fish and one instanced draw for 64 bubbles. Christmas Village adds 96 bounded snow flakes. Both use the existing scene clock, so Gentle motion holds their ambient movement still; underwater lighting resets when returning to a daylight world. Fast Food Land uses static food scenery in 16 spatial chunks. On a Mac Apple M2/Metal renderer, the measured chase showed 229 visible calls / 1.34 million triangles at Automatic and 150 / 0.78 million at Low; the 20-friend finale showed 1,199 / 2.93 million at Automatic and 800 / 1.50 million at Low. Bounded 180-frame CPU submission samples ranged from 1.6 ms median / 2.4 ms p95 in Automatic chase to 4.9 / 5.6 ms in the Automatic finale. These are desktop-renderer observations at desktop and iPad-sized browser viewports, not GPU timings or physical iPad performance claims.
 
 ## First October graphics validation
 
