@@ -1,5 +1,47 @@
 # Release history
 
+## v1.14.0 — Splash Water Park
+
+World 21 adds Dipper, a white unicorn with a saffron mane, to a dimensional
+water park. Curving open flumes, an enclosed tube, twin racers, raised decks,
+connected stairs and supports lead into modeled receiving pools. A shallow
+splash-play pool, bucket, water wheels, umbrella loungers, float racks and
+planters fill the middle and foreground around a broad dry promenade. The
+course adds no new controls, water hazard or failure state.
+
+The opening views show an uncollected blue potion ahead; the natural near-catch
+views show Dipper on the same dry path:
+[desktop opening](screenshots/waterpark-opening-desktop.jpg) ·
+[middle](screenshots/waterpark-middle-desktop.jpg) ·
+[near Dipper](screenshots/waterpark-near-dipper-desktop.jpg) ·
+[iPad opening](screenshots/waterpark-opening-ipad-landscape.jpg) ·
+[middle](screenshots/waterpark-middle-ipad-landscape.jpg) ·
+[near Dipper](screenshots/waterpark-near-dipper-ipad-landscape.jpg).
+The complete twenty-one-friend finale fits both views:
+[desktop](screenshots/waterpark-finale-desktop.jpg) ·
+[iPad landscape](screenshots/waterpark-finale-ipad-landscape.jpg).
+[Rainbow Meadow preservation](screenshots/waterpark-meadow-preservation.jpg)
+shows the original course after selecting it from the expanded world list.
+
+Existing saves with all twenty earlier friends unlock Splash Water Park while
+preserving progress, sound/picture/motion settings and unrelated browser data.
+Focused Chromium/Metal and WebKit checks completed Dipper's catch, collection,
+21-friend finale, reload and preferences. The independent visual review cleared
+all eight route/finale views. Local validation passed 24 unit tests and the
+production build. The custom slide shells retain their indexed inner/outer
+surfaces and opposing floor normals through static batching; source smoke also
+confirmed all 413 owned world geometries are disposed on replacement.
+
+On the verified Apple M2/Metal Chromium renderer, the near-chase view submitted
+about 904,000 visible triangles and 226 calls at Automatic, or 486,000 / 146 at
+Low. The 21-friend finale submitted 3.00 million triangles and 844 calls at
+Automatic, or 1.51 million / 427 at Low. Bounded 180-frame CPU render-submission
+samples measured 1.1 ms median / 2.0 ms p95 for Automatic chase and 4.5 / 5.1 ms
+for the Automatic finale. These measurements are not GPU timings or physical
+iPad performance claims; the tablet images use an iPad-sized browser viewport.
+Research, geometry inventory and visual evidence are in the [Water Park
+brief](WORLD_THEME_RESEARCH.md#world-21-visual-inspection-and-implementation--october-23).
+
 ## v1.13.0 — Fast Food Land
 
 World 20 adds Sesame, a white unicorn with a rose mane, to a colorful fast-food
@@ -25,7 +67,7 @@ The twenty-friend finale is shown at both sizes:
 
 Local checks passed 23 unit tests, the production build, and focused migration,
 chase, catch, collection, finale, reload, preferences and preservation scenarios
-in Chromium/Metal and WebKit. A genuine eighteen-friend save unlocked the new
+in Chromium/Metal and WebKit. A genuine nineteen-friend save unlocked the new
 world and retained settings and unrelated storage. Review confirmed the food
 forms, layered route, Sesame, blue potion and complete finale. The density and
 source observations are in the [research brief](WORLD_THEME_RESEARCH.md#world-20-visual-inspection-and-implementation--october-23).

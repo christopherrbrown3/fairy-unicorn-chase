@@ -6,10 +6,10 @@ only after the preceding release is published and verified live and the
 orchestrator explicitly opens the next gate. Planning a later row is not
 implementation or completion.
 
-**Current stop instruction (October 23):** finish and release Fast Food Land,
-then STOP. Water Park and all later worlds must remain unimplemented until a
-new explicit instruction from the human owner. Completing world 20 does not
-automatically authorize the next row.
+**Current authorization (October 23):** the owner said “OK build the next one”
+after Fast Food v1.13.0 was fully released. Build and release **Water Park only**,
+then STOP. Zebra and all later worlds remain research only until new explicit
+human instruction; completing world 21 does not authorize world 22.
 
 The baseline is the v1.11.0 sculpted Blender cast. Existing worlds 1–18, their IDs,
 collected friends, sound/picture/motion preferences, forgiving controls and the
@@ -24,8 +24,8 @@ scene.
 | Order / world | Required experience | State |
 | --- | --- | --- |
 | 1 / 19 | **The Thundermans inspired:** recognizable suburban super-family home and secret laboratory, paired warm/cool twin-power motifs, rabbit and gadget displays; no villain combat or new failure state. Provisional world/friend: Thundermans Town / Bolt. | COMPLETE — v1.12.0 published and live/profile/offline verified at 55e3ae6; PR #16 merged. |
-| 2 / 20 | **Fast food:** unmistakable pizza, burgers, fries and milkshakes, with dimensional food scenery and clear pursuit visibility. Fast Food Land / Sesame. | READY FOR PR — local unit/build/focused browser checks passed; six route views plus two full-finale views reviewed SHIP; v1.13.0 publication remains pending. Stop after this release. |
-| 3 / 21 | **Water park:** recognizable dimensional slides, structural supports and pools; safe path and unchanged controls. | Research brief saved; implementation paused by owner until a new human instruction. |
+| 2 / 20 | **Fast food:** unmistakable pizza, burgers, fries and milkshakes, with dimensional food scenery and clear pursuit visibility. Fast Food Land / Sesame. | COMPLETE — v1.13.0 published and live/profile/offline verified; PR #20 merged at 2b5b09c. |
+| 3 / 21 | **Water park:** recognizable dimensional slides, structural supports and pools; safe path and unchanged controls. Splash Water Park / Dipper. | QA SHIP — research and density review passed; 24 unit tests/build, Chromium Metal + WebKit 20→21 migration/progression, Meadow preservation, eight opened route/finale captures and measured visible cost pass. PR CI, publication and live profile/offline checks pending. STOP after this release. |
 | 4 / 22 | **Zebra savannah:** many visibly striped zebras distributed through the actual playable savannah, rather than a sparse zebra ornament or only a menu illustration. | Research brief saved; implementation paused by owner until a new human instruction. |
 | 5 / 23 | **Wizard of Oz:** the player actually follows a yellow brick road that **ends at Emerald City**. Repeating green castles around an endless loop does not satisfy this requirement. The endpoint must fit the forgiving pursuit/catch model. | Research brief saved; implementation paused by owner until a new human instruction. |
 | 6 / 24 | **Princesses:** many visible princess characters as well as princess objects and scenery; an empty palace landscape is insufficient. | Research brief saved; implementation paused by owner until a new human instruction. |
@@ -141,7 +141,7 @@ offline, showing the 19-friend finale/collection. Evidence is saved locally in
 browser checks, not a physical-device claim. Root explicitly opened world20
 only after this gate was complete.
 
-## World 20 source and local QA — COMPLETE; publication pending
+## World 20 source and local QA — historical pre-publication evidence
 
 Fast Food Land / Sesame appends internal ID19 and mane `#b96d80`. Production
 changes are limited to new `src/worlds/fastfood.js`, the appended level/palette
@@ -186,3 +186,47 @@ samples were 1.6/2.4 ms median/p95 (Automatic chase), 1.0/1.5 ms (Low chase),
 timing or physical iPad claim. The final release evidence will record the actual
 v1.12→v1.13 update, deployed hashes, live gameplay and offline results. After
 publication, stop as requested; do not implement world21 automatically.
+
+
+## World 20 release — COMPLETE
+
+Release owner confirmed v1.13.0 published, PR #20 merged at
+`2b5b09c78befade3c27440f8836bbb0863620e92`, successful deployment and live
+verification. The genuine previous-release profile updated to v1.13 with all
+IDs 0–19 and sound/Low/Gentle preferences intact; live/offline gameplay and the
+20-friend finale/collection passed. Local evidence is saved in
+`output/qa-fastfood/live-http-report.json`, `live-v113-update-report.json` and
+`live-v113-offline-report.json`. These are ignored QA artifacts, not shipped
+assets. The owner subsequently opened only the Water Park gate.
+
+## World 21 — local QA and visual review SHIP; publication pending
+
+Splash Water Park / Dipper appends ID20 / mane `#e89936`. The
+[source-linked inspected-image and geometry record](WORLD_THEME_RESEARCH.md#world-21-visual-inspection-and-implementation--october-23)
+and current contract in `DESIGN_NOTES.md` document the original art. All six
+factory families and their variants passed finite position/normal/UV and exact
+pre/post-bake triangle-count checks; open and enclosed slide floor normals face
+correctly. The 21-world inventory is 414 meshes / 1,277,504 triangles; 413 owned
+geometries dispose and the scene root is removed. Inventory is not visible-frame
+performance.
+
+**Local QA passed:** 24 unit tests, production build, focused previous-release
+20→21 migration/progression in Chromium with verified Apple M2 Metal and in
+WebKit, plus selection/catch/preservation checks for Rainbow Meadow in both.
+Migration preserves IDs0–19, sound-off/Low/Gentle settings and unrelated storage;
+Dipper catch, 21/21 collection, finale and reload preserve IDs0–20/settings.
+The genuine v1.13 installed profile remains preserved for live update/offline
+validation. Eight route/finale screenshots and the Meadow preservation image
+are saved in `docs/screenshots/waterpark-*.jpg`; full state and render evidence
+are in `output/qa-waterpark/`. An independent fresh visual reviewer returned
+SHIP on all eight Water Park route/finale captures.
+
+Verified Apple M2/Metal near-chase visible cost was about 904k triangles / 226
+calls at Automatic, and 486k / 146 at Low; bounded 180-frame CPU render
+submission samples were 1.1 ms median / 2.0 ms p95 and 0.6 / 2.5 ms. The
+21-friend finale was 3.00m triangles / 844 calls at Automatic and 1.51m / 427 at
+Low; Automatic CPU submission was 4.5 / 5.1 ms median / p95. These are not GPU
+timings or physical iPad results. Physical iPad playtesting and live release
+verification remain outstanding; wait for PR CI, merge/deployment, exact v1.14.0
+tag, and genuine v1.13 client update/offline/gameplay checks before marking
+complete. **Stop after this world**; no Zebra implementation is authorized.

@@ -1,11 +1,11 @@
 # Nine worlds: research and density brief
 
 Research checked October 23, 2026. This is a design reference and acceptance
-brief, not a record of published features. World 19 is published; world 20 is implemented and local release QA is complete. Worlds
-21–27 remain planning only. The owner has explicitly requested a stop after
-Fast Food Land; a fresh human instruction is required before another world. Source facts
-are distinguished below from our original scenery decisions. We do not import
-show footage, branded product art or museum images into the game.
+brief, not proof of publication. Worlds 19 and 20 are released and live verified.
+The owner has now authorized **Water Park only**, world 21. Stop after its
+release; worlds 22–27 remain research only until a new human instruction.
+Source observations are distinguished from original scenery choices. Reference
+photographs are inspected locally, never imported as game textures or branding.
 
 ## Quality contract for every world
 
@@ -120,7 +120,7 @@ entire-world triangle inventory is bounded but is not a frame-performance
 claim. All four required food families occur in every chunk; QA must still open
 six actual gameplay views to judge their recognition and density. Existing
 Gentle motion/pause behavior, sculpted cast, controls and >18-friend finale
-layout are unchanged. No Water Park or later-world code has been started.
+layout are unchanged. This paragraph records the completed Fast Food scope; the subsequent Water Park authorization is recorded below.
 
 ## 21 — Water park
 
@@ -139,6 +139,46 @@ umbrellas and deck planters; middle: pools and splash-play structures; high
 background: layered slide towers with different curves/heights. No unsupported
 colored ribbons or a few pool circles on empty grass. Route remains a broad,
 safe dry promenade; no new sliding controls, drowning or traffic hazards.
+
+### World 21 visual inspection and implementation — October 23
+
+The following primary photographs were downloaded and actually opened. Local
+inspection copies are in ignored `output/research-water-park/`; none ship.
+
+| Inspected reference | Observed construction | Original art translation |
+| --- | --- | --- |
+| [WhiteWater Open Flume](https://www.whitewaterwest.com/products/open-flume/) — [Waterbom Bali photograph](https://www.whitewaterwest.com/wp-content/uploads/2020/02/open-flume-water-slide-waterbom-bali-Indonesia.jpg) | Green concave floor and tall sidewalls, rounded/flanged upper edges, repeated section seams, gray columns under bends, overlapping slide elevations. | A curved open shell with separate inner/outer surfaces, 0.17-unit thickness, solid top rims/end annuli, collar seams and supported bends. Original coral serpentine and yellow twin straight/wavy variants; no copied park layout. |
+| [WhiteWater AquaTube](https://www.whitewaterwest.com/products/aquatube/) — [CocoCay tower photograph](https://www.whitewaterwest.com/wp-content/uploads/2020/01/thrill-tower-aquatube-water-slide-perfect-day-at-cococay-bahamas.jpg) | Several colored tubes weave at different heights; pronounced collar joints, central platforms and cream vertical/diagonal supports; outlets reach runouts. | Compact blue enclosed winding tube, open annular mouths and visible collars. Decks connect to access stairs with rails; columns, foundation pads, transverse cradles and diagonal braces carry elevated sections. Heights are compressed for chase-camera readability. |
+| [Six Flags Body Flumes](https://www.sixflags.com/whitewater/attractions/body-flumes) — [operator photograph](https://cdn.sanity.io/images/bsnrdz4t/production/c1c08d2f84e3a162e67cc8ac8ff553a5060e9c84-6255x4170.jpg?w=1200) | Three deep blue U-section outlets enter turquoise water; visible seams, nearby stair handrails, pool coping and curved metal access rails. | Each large slide complex terminates inside a rectangular modeled receiving pool with thick coping, tile joints, entry shelves and ladder rungs. Warm dry paving separates these blue pools from the collectible blue potions. |
+| [WhiteWater Aquatic Play](https://www.whitewaterwest.com/products/play/) — [Rain Fortress photograph](https://www.whitewaterwest.com/wp-content/uploads/2019/11/RAINFO3.jpg) | Multi-level shallow-water play structure, a large tipping bucket above the deck, hand wheels, rails and a small nearby blue slide. | Static open bucket over a railed play deck, dimensional wheel spokes, connected ladder and a small thick trough entering the shallow pool. Architecture and colors are original. No timed tipping, water hazard or new interaction. |
+
+**Composition contract.** Splash Water Park / Dipper appends internal ID20;
+Dipper's saffron mane is `#e89936`. The 10.5-unit warm-stone promenade preserves
+white-character and blue-potion contrast. Low loungers have raised backs,
+striped cushions, umbrellas and drinks tables. Ring racks carry three rounded
+inflatable rings and folded towels. Planters and restrained alternating edge
+pavers connect the scenes. Middle splash pools have deck/ladder/bucket/wheel and
+mini-slide detail; the rear layer alternates 9/10/7-unit-high serpentine, enclosed
+and twin-racing slide towers. Large complexes face their receiving pools toward
+the path, with their nearest bounds beyond the foreground deck.
+
+Every one of 16 spatial chunks contains both-side foreground clusters, four
+splash-play pools and four rear slide complexes. Across the lap: 96 lounge sets,
+64 ring racks, 64 splash pools, 64 large slide complexes and 192 planters, plus
+route-edge pavers. These are scene groups, not counts offered as visual proof.
+Six actual route captures still must establish layered density, readable slide
+forms and clear pursuit at opening/middle/near-catch on desktop and iPad.
+
+**Geometry evidence.** Three bounded cached swept paths use indexed inner/outer
+skins, closed rims and annular ends; tube mouths have no center caps. All six
+factory families and three variants pass finite position/normal/UV and exact
+pre/post-bake triangle-count smoke. Full-lap scenery inventory is 414 meshes /
+1,277,504 triangles, batched into 16 spatial chunks; this is not visible-frame
+GPU cost. All 413 owned geometries emitted disposal events and the world root
+was removed. New scenery is entirely static, so pause/Gentle motion cannot leave
+an independent effect running. Current sculpted cast hashes and first 20 level
+records remain unchanged. Unit/build checks pass; browser, visual and release
+gates remain pending. No world 22+ implementation is authorized.
 
 ## 22 — Zebra savannah
 
