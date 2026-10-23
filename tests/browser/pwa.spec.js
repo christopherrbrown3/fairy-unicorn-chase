@@ -8,6 +8,12 @@ const ready = async (page, { animate = true } = {}) => {
   if (!animate)
     await page.evaluate(() => window.__fairy.game.renderer.setAnimationLoop(null));
 };
+const renderAfterResize = (page) => page.evaluate(async () => {
+  // Browser resize events update and clear the canvas before the next frame.
+  // Wait for that event before drawing a frame for a viewport capture.
+  await new Promise(requestAnimationFrame);
+  window.__fairy.game.frame();
+});
 const offlineReady = (page) => page.evaluate(async () => {
   await navigator.serviceWorker.ready;
   if (!navigator.serviceWorker.controller)
@@ -105,7 +111,7 @@ test("installation instructions and the browser install prompt are reachable", a
     for (const [name, viewport] of [["tablet", { width: 1024, height: 768 }], ["phone", { width: 390, height: 844 }]]) {
       await page.getByRole("button", { name: "Back", exact: true }).click();
       await page.setViewportSize(viewport);
-      await page.evaluate(() => window.__fairy.game.frame());
+      await renderAfterResize(page);
       logStage(`${name} title capture ready`);
       await page.screenshot({ path: `output/playwright/pwa/title-${name}.png`, animations: "disabled" });
       logStage(`${name} title captured`);
@@ -196,12 +202,12 @@ test("new releases wait for a menu action, preserve saves across tabs, and survi
     await page.getByRole("button", { name: "Pause game" }).click();
     await expect(page.getByRole("button", { name: "Update game", exact: true })).toBeVisible();
     await page.setViewportSize({ width: 390, height: 844 });
-    await page.evaluate(() => window.__fairy.game.frame());
+    await renderAfterResize(page);
     await mkdir("output/playwright/pwa", { recursive: true });
     if (browserName === "chromium") {
       await page.screenshot({ path: "output/playwright/pwa/update-phone.png", animations: "disabled" });
       await page.setViewportSize({ width: 1024, height: 768 });
-      await page.evaluate(() => window.__fairy.game.frame());
+      await renderAfterResize(page);
       await page.screenshot({ path: "output/playwright/pwa/update-tablet.png", animations: "disabled" });
     }
     await page.getByRole("button", { name: "Update game", exact: true }).click();
@@ -219,7 +225,7 @@ test("new releases wait for a menu action, preserve saves across tabs, and survi
     await other.getByRole("button", { name: "Home", exact: true }).click();
     if (browserName === "chromium") {
       await other.setViewportSize({ width: 1024, height: 768 });
-      await other.evaluate(() => window.__fairy.game.frame());
+      await renderAfterResize(other);
       await other.screenshot({ path: "output/playwright/pwa/update-title-tablet.png", animations: "disabled" });
     }
     await other.getByRole("button", { name: "Update game", exact: true }).click();
