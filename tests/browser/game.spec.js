@@ -68,6 +68,9 @@ test("keyboard, held touch controls, multitouch water, pause and preferences", a
   page,
   browserName,
 }) => {
+  // Exercise every input and preference with the render loop running. Allow
+  // software-GPU runners time for the complete sequence, not only startup.
+  test.setTimeout(180_000);
   await page.goto("/?test=1");
   await ready(page);
   await page.getByRole("button", { name: "Let’s play" }).click();
