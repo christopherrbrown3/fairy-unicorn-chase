@@ -5,10 +5,13 @@ The owner's complete brief is the scope. Checked items mean implemented and veri
 ## Active work — nine sequential worlds, October 22
 
 The [nine-world release plan](docs/NINE_WORLD_RELEASE_PLAN.md) records the exact
-requested order and per-world acceptance/release gates. Only the first addition,
-Thundermans Town, has source implementation ready for QA. Its tests, visual review and
-publication are pending. The other eight worlds have not started. All additions
-must retain the v1.11.0 sculpted cast and preserve earlier progress and PWA behavior.
+requested order and per-world acceptance/release gates. The owner's October 23
+quality requirement adds [source-linked theme research](docs/WORLD_THEME_RESEARCH.md),
+abundant varied dimensional scenery and six-view gameplay density review to
+every release. Thundermans Town's density revision is implemented; focused QA,
+fresh captures/review and publication are pending. Later eight research briefs
+are saved, but their implementation remains gated. All additions must retain
+the published v1.11.0 sculpted cast and earlier progress/PWA behavior.
 
 ## Home Screen and sharing — v1.8.0
 

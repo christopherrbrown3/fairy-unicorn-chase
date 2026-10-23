@@ -2,6 +2,25 @@
 
 ## Thundermans Town extension — October 22
 
+### October 23 research and density revision
+
+The [nine-world research brief](docs/WORLD_THEME_RESEARCH.md) is part of the
+visual contract. Both twins share heat, freeze and telekinesis; the warm/cool
+exhibits do not assign an exclusive power to either twin. The house architecture
+is an original suburban interpretation, not a claimed replica of the show set.
+
+The stronger density request adds coherent planted yards, three house variants,
+finished side walls/dormers/porches/garages, a staggered middle garden/tree layer,
+telekinesis still-life exhibits and detailed lab shelves, gauges and pipework.
+A varied nine-slot sequence replaces two-thirds of the repeated mailboxes.
+The broad warm lane and existing sculpted cast remain the focal point. All new
+scenery is static and spatially material-batched; no motion or shared UI changes.
+Acceptance now requires opened desktop and iPad landscape views at the opening,
+middle chase and near catch, judging actual density, dimensional detail, varied
+silhouettes, layered depth, pursuit readability and measured render cost. Prior
+visual approval does not establish completion of this stronger requirement.
+
+
 World 19 appends Thundermans Town and Bolt, a white sculpted unicorn with an
 electric-blue mane; names and palette remain provisional. This original fan
 scenery takes its specific cues from a suburban super-family, Phoebe and Max's
@@ -24,10 +43,14 @@ The existing sculpted character GLBs, rigs and runtime remain unchanged. Above
 with portrait adjustment; the 18-or-fewer arrangement remains unchanged. The
 nine-world plan records the growing-cast review requirement for every release.
 
-Reference: [Nickelodeon's official Thundermans fan hub](https://www.nick.com/fan-hub/the-thundermans)
-confirms the suburban superhero family, twin leads and rabbit character. The
-secret-basement gadget/potion detail also comes from the owner's supplied brief;
-the supplied Max biography URL redirected during the October 22 lookup.
+Research: Nickelodeon's official [Max profile](https://www.nick.com/info-page/ouml5i/max)
+describes his subterranean lair, gadgets, potions and Dr. Colosso, the rabbit.
+The official [Phoebe profile](https://www.nick.com/info-page/zu00oa/phoebe)
+describes her powers; Max's profile lists the same telekinesis, heat breath and
+freeze breath. The original [2013 series announcement](https://ir.paramount.com/static-files/bd566100-e1ce-45ab-9519-063923ebaad7)
+establishes the secret-superhero-family premise. These sources guide the
+original family-home and open-lab interpretation; the scenery is not a replica
+of a verified show set.
 
 ## Big City Downtown extension
 

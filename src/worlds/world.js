@@ -37,7 +37,7 @@ import { coralFan, kelp, tubeSponge, seaStar, pearlShell, coralGate, ReefLife } 
 import { christmasTree, presents, candyCane, snowFriend, holidayCottage, festiveGate, Snowfall } from "./christmas.js";
 import { pancakeStack, waffle, strawberry, sunnyEgg, orangeWedge, toastCottage, breakfastGate } from "./breakfast.js";
 import { officeTower, skylineTower, storefront, parkedTaxi, cityPlanter, cityBench, streetlight, clockTower } from "./downtown.js";
-import { familyHouse, rabbitDisplay, gadgetBench, twinPowerDisplay, heroMailbox, secretLab, thunderPylons } from "./thundermans.js";
+import { familyHouse, rabbitDisplay, gadgetBench, twinPowerDisplay, heroMailbox, secretLab, thunderPylons, neighborhoodGarden, telekinesisDisplay } from "./thundermans.js";
 
 let authoredPotion = null;
 export async function loadWorldAssets() {
@@ -131,8 +131,10 @@ export class World {
           let prop;
           switch (level.theme) {
             case "thundermans":
-              prop = [familyHouse, heroMailbox, twinPowerDisplay, rabbitDisplay, heroMailbox, gadgetBench][k % 6](chunk, 1.05);
-              if (k % 6 === 0) dist = 18 + rnd(seed) * 4;
+              prop = [familyHouse, heroMailbox, twinPowerDisplay, rabbitDisplay, telekinesisDisplay, gadgetBench, familyHouse, neighborhoodGarden, twinPowerDisplay][k](chunk, 1.05, (j + k + (side + 1) / 2) % 3);
+              if (k === 0 || k === 6) dist = 19 + rnd(seed) * 3;
+              else if (k === 7) dist = 12.5 + rnd(seed) * 2;
+              else dist = 9.4 + rnd(seed) * 3.6;
               break;
             case "downtown":
               prop = [officeTower, storefront, parkedTaxi, cityPlanter, officeTower, cityBench][k % 6](chunk);
@@ -286,6 +288,17 @@ export class World {
           }
         }
       }
+      if (level.theme === "thundermans") {
+        // A second, staggered planted layer connects the houses between exhibits.
+        // Keep even the widest foliage behind the clear pursuit corridor.
+        for (const side of [-1, 1]) {
+          for (const offset of [0.27, 0.72]) {
+            const s = (j + offset) * length / 16;
+            const yard = place(neighborhoodGarden(chunk, 1.2, j % 2), level, s, side * 22);
+            yard.rotation.y += side * Math.PI / 2;
+          }
+        }
+      }
       if (level.theme === "downtown") {
         for (let i = 0; i < 10; i++) {
           const s = (j + i / 10) * length / 16;
@@ -412,7 +425,7 @@ export class World {
       }
       if (level.theme === "thundermans") {
         const side = i % 2 ? 1 : -1;
-        const home = place(familyHouse(landmarks, 1.45), level, s + 24, side * 26);
+        const home = place(familyHouse(landmarks, 1.45, i % 3), level, s + 24, side * 26);
         home.rotation.y += side * Math.PI / 2;
         const lab = place(secretLab(landmarks, 1.4), level, s + 46, -side * 23);
         lab.rotation.y -= side * Math.PI / 2;
