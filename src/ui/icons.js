@@ -1,4 +1,5 @@
 const paths = {
+  thunder: '<path d="m18 2-12 16h9l-1 12 13-18h-10ZM4 28V21m24 7v-8"/>',
   city: '<path d="M3 29V13h8v16m0-21h10v21m0-12h8v12M16 3v5M6 18h2m-2 5h2m6-10h4m-4 5h4m-4 5h4m6-1h2M2 29h28"/>',
   pancakes: '<ellipse cx="16" cy="10" rx="12" ry="5"/><path d="M4 10v5c0 7 24 7 24 0v-5M4 16v5c0 7 24 7 24 0v-5M4 22v4c0 6 24 6 24 0v-4m-16-19 8-1 3 4-8 2Z"/>',
   install: '<rect x="8" y="2" width="16" height="28" rx="4"/><path d="M16 7v13m-5-5 5 5 5-5M14 26h4"/>',
@@ -58,4 +59,5 @@ export const worldIcon = [
   "christmas",
   "pancakes",
   "city",
+  "thunder",
 ];

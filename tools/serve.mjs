@@ -2,6 +2,7 @@
 import { createServer } from "node:http";
 import { readFile } from "node:fs/promises";
 import { resolve, extname } from "node:path";
+const port = Number(process.env.FUC_TEST_PORT || 4173);
 const root = resolve("dist"),
   types = {
     ".html": "text/html",
@@ -34,6 +35,6 @@ createServer(async (req, res) => {
     res.writeHead(404);
     res.end("Not found");
   }
-}).listen(4173, "127.0.0.1", () =>
-  console.log("Static game at http://127.0.0.1:4173"),
+}).listen(port, "127.0.0.1", () =>
+  console.log(`Static game at http://127.0.0.1:${port}`),
 );
