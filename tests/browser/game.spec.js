@@ -460,7 +460,9 @@ for (const viewport of [
 ]) {
   test(`new game menus and confirmation fit ${viewport.name}`, async ({ page, browserName }) => {
     test.skip(browserName !== "chromium", "One visual capture set is sufficient.");
-    test.setTimeout(180_000);
+    // Two WebGL startups and three full viewport captures need a larger total
+    // budget on software GPUs. Render each capture explicitly between actions.
+    test.setTimeout(300_000);
     const startedAt = Date.now();
     const reportStage = (stage) => {
       console.log(`[responsive ${viewport.name}] ${stage}: ${Date.now() - startedAt}ms elapsed`);
@@ -477,7 +479,7 @@ for (const viewport of [
     await mkdir(output, { recursive: true });
     await page.setViewportSize({ width: viewport.width, height: viewport.height });
     await page.goto("/?test=1");
-    await ready(page);
+    await ready(page, { animate: false });
     reportStage("initial ready");
     await page.evaluate(() => {
       localStorage.setItem(
@@ -493,7 +495,7 @@ for (const viewport of [
       localStorage.setItem("new-game-unrelated", "keep this value");
     });
     await page.reload();
-    await ready(page);
+    await ready(page, { animate: false });
     reportStage("save reload ready");
     await expect(page.getByRole("button", { name: "New game" })).toBeVisible();
     await expect(page.getByRole("button", { name: "Turn sound on" })).toBeVisible();
@@ -505,6 +507,7 @@ for (const viewport of [
       expect(bounds.y).toBeGreaterThanOrEqual(0);
       expect(bounds.y + bounds.height).toBeLessThanOrEqual(viewport.height);
     }
+    await page.evaluate(() => window.__fairy.game.frame());
     await page.screenshot({
       path: resolve(output, `menu-${viewport.name}.png`),
       animations: "disabled",
@@ -520,6 +523,7 @@ for (const viewport of [
     expect(dialogBounds.y).toBeGreaterThanOrEqual(0);
     expect(dialogBounds.x + dialogBounds.width).toBeLessThanOrEqual(viewport.width);
     expect(dialogBounds.y + dialogBounds.height).toBeLessThanOrEqual(viewport.height);
+    await page.evaluate(() => window.__fairy.game.frame());
     await page.screenshot({
       path: resolve(output, `confirmation-${viewport.name}.png`),
       animations: "disabled",
@@ -537,6 +541,7 @@ for (const viewport of [
         await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth),
       ).toBe(true);
       reportStage("pause ready");
+      await page.evaluate(() => window.__fairy.game.frame());
       await page.screenshot({
         path: resolve(output, `pause-${viewport.name}.png`),
         animations: "disabled",
