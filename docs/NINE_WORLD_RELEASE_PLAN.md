@@ -6,6 +6,11 @@ only after the preceding release is published and verified live and the
 orchestrator explicitly opens the next gate. Planning a later row is not
 implementation or completion.
 
+**Current stop instruction (October 23):** finish and release Fast Food Land,
+then STOP. Water Park and all later worlds must remain unimplemented until a
+new explicit instruction from the human owner. Completing world 20 does not
+automatically authorize the next row.
+
 The baseline is the v1.11.0 sculpted Blender cast. Existing worlds 1–18, their IDs,
 collected friends, sound/picture/motion preferences, forgiving controls and the
 complete-release PWA/offline/update flow must remain intact. Do not regenerate
@@ -18,15 +23,15 @@ scene.
 
 | Order / world | Required experience | State |
 | --- | --- | --- |
-| 1 / 19 | **The Thundermans inspired:** recognizable suburban super-family home and secret laboratory, paired warm/cool twin-power motifs, rabbit and gadget displays; no villain combat or new failure state. Provisional world/friend: Thundermans Town / Bolt. | October 23 density revision, local QA and independent six-view SHIP complete; final PR #16 CI, v1.12.0 publication and live checks pending. |
-| 2 / 20 | **Fast food:** unmistakable pizza, burgers, fries and milkshakes, with dimensional food scenery and clear pursuit visibility. | Research brief saved; implementation gated. |
-| 3 / 21 | **Water park:** recognizable dimensional slides, structural supports and pools; safe path and unchanged controls. | Research brief saved; implementation gated. |
-| 4 / 22 | **Zebra savannah:** many visibly striped zebras distributed through the actual playable savannah, rather than a sparse zebra ornament or only a menu illustration. | Research brief saved; implementation gated. |
-| 5 / 23 | **Wizard of Oz:** the player actually follows a yellow brick road that **ends at Emerald City**. Repeating green castles around an endless loop does not satisfy this requirement. The endpoint must fit the forgiving pursuit/catch model. | Research brief saved; implementation gated. |
-| 6 / 24 | **Princesses:** many visible princess characters as well as princess objects and scenery; an empty palace landscape is insufficient. | Research brief saved; implementation gated. |
-| 7 / 25 | **Jungle:** a recognizable overhead canopy, vines and visibly swinging monkeys. Swinging must pause with the game and respect Gentle motion. | Research brief saved; implementation gated. |
-| 8 / 26 | **Valentine’s Day:** recognizable Valentine scenery, hearts and affectionate child-friendly motifs. | Research brief saved; implementation gated. |
-| 9 / 27 | **Dense forest:** visibly dense woodland with recognizable woodland creatures in the playable scene. | Research brief saved; implementation gated. |
+| 1 / 19 | **The Thundermans inspired:** recognizable suburban super-family home and secret laboratory, paired warm/cool twin-power motifs, rabbit and gadget displays; no villain combat or new failure state. Provisional world/friend: Thundermans Town / Bolt. | COMPLETE — v1.12.0 published and live/profile/offline verified at 55e3ae6; PR #16 merged. |
+| 2 / 20 | **Fast food:** unmistakable pizza, burgers, fries and milkshakes, with dimensional food scenery and clear pursuit visibility. Fast Food Land / Sesame. | ACTIVE — source implemented; unit/build/geometry smoke pass; focused QA, six-view review and v1.13.0 publication pending. Stop after this release. |
+| 3 / 21 | **Water park:** recognizable dimensional slides, structural supports and pools; safe path and unchanged controls. | Research brief saved; implementation paused by owner until a new human instruction. |
+| 4 / 22 | **Zebra savannah:** many visibly striped zebras distributed through the actual playable savannah, rather than a sparse zebra ornament or only a menu illustration. | Research brief saved; implementation paused by owner until a new human instruction. |
+| 5 / 23 | **Wizard of Oz:** the player actually follows a yellow brick road that **ends at Emerald City**. Repeating green castles around an endless loop does not satisfy this requirement. The endpoint must fit the forgiving pursuit/catch model. | Research brief saved; implementation paused by owner until a new human instruction. |
+| 6 / 24 | **Princesses:** many visible princess characters as well as princess objects and scenery; an empty palace landscape is insufficient. | Research brief saved; implementation paused by owner until a new human instruction. |
+| 7 / 25 | **Jungle:** a recognizable overhead canopy, vines and visibly swinging monkeys. Swinging must pause with the game and respect Gentle motion. | Research brief saved; implementation paused by owner until a new human instruction. |
+| 8 / 26 | **Valentine’s Day:** recognizable Valentine scenery, hearts and affectionate child-friendly motifs. | Research brief saved; implementation paused by owner until a new human instruction. |
+| 9 / 27 | **Dense forest:** visibly dense woodland with recognizable woodland creatures in the playable scene. | Research brief saved; implementation paused by owner until a new human instruction. |
 
 ## Research and quality scope
 
@@ -73,7 +78,7 @@ the design/research/implementation plan documents. They add coherent yards,
 three house variants, finished side elevations, richer lab interiors,
 telekinesis exhibits and a staggered middle-distance garden layer. The original
 288 primary slots and eight landmark sets remain bounded; 64 additional garden
-groups connect the neighborhood. No later world code has started.
+groups connect the neighborhood. At this revision, no later world code had started.
 
 Node geometry smoke confirms all nine exported factories retain every triangle
 through material batching and a constructed world disposes its scene root.
@@ -116,5 +121,53 @@ triangles in representative Automatic views, with 3.2–3.4 ms median and
 4.0–4.1 ms p95 frame submission. Low quality measured 220–232 calls and about
 0.65 million visible triangles, with 3.1–3.2 ms median and 3.7 ms p95 across
 150 frames. These are desktop Apple M2 measurements, not physical iPad
-performance. Independent density/readability review is SHIP; final PR CI,
-v1.12.0 publication and public/profile/offline verification remain pending.
+performance. Independent density/readability review returned SHIP. Publication
+and public/profile/offline gates subsequently completed as recorded below.
+
+
+## World 19 publication gate — COMPLETE
+
+[PR #16](https://github.com/christopherrbrown3/fairy-unicorn-chase/pull/16) merged;
+[v1.12.0](https://github.com/christopherrbrown3/fairy-unicorn-chase/releases/tag/v1.12.0)
+points to `55e3ae646222f3a5b26c8db69496e488dbb66b35`. The
+[main workflow / Pages run](https://github.com/christopherrbrown3/fairy-unicorn-chase/actions/runs/39958486106)
+succeeded. Root reviewed the production reports and matched the served bundle
+SHA with the local release. A genuine cached v1.11.0 profile explicitly used
+Update game, preserving all original 18 completed IDs, sound/quality/Gentle-motion
+preferences and unrelated storage. The updated client caught Bolt online and
+offline, showing the 19-friend finale/collection. Evidence is saved locally in
+`output/qa-thundermans/live-v112-update-report.json`,
+`live-v112-gameplay-report.json` and `live-v112-offline-report.json`. These are
+browser checks, not a physical-device claim. Root explicitly opened world20
+only after this gate was complete.
+
+## World 20 source handoff — ACTIVE
+
+Fast Food Land / Sesame appends internal ID19 and mane `#b96d80`. Production
+changes are limited to new `src/worlds/fastfood.js`, the appended level/palette
+and burger icon, theme-only placement and grass/pond exclusions. Existing cast,
+other worlds, controls, camera/finale, saves and PWA code remain unchanged.
+Primary source images were actually opened and observation-to-art decisions
+are recorded in the [research brief](WORLD_THEME_RESEARCH.md#world-20-visual-inspection-and-implementation--october-23).
+
+The 288 main scenes include 64 meal trays, 64 pizza boards and 32 each of fry
+cartons, shake counters, booths, burgers and kiosks. A separate layer adds 16
+burger diners, 16 larger pizza kiosks, 32 terrace booths and 32 tall shakes;
+256 small herb/tomato planters and alternating tile trim connect the verges.
+All four food families occur throughout every spatial chunk. Everything is
+static and belongs to bounded material batches; houses from other worlds and
+character art are not reused as substitute food shapes.
+
+The full-lap scenery inventory is 454 mesh objects / 2,839,160 triangles
+(including instances, excluding cast), with 16 spatial chunks and 11 material
+meshes in a representative roadside chunk. Unlike the old global landmark
+pattern, large restaurants are chunked with their neighborhoods. This inventory
+is not a GPU/frame timing claim. Fresh actual opening/middle/near-catch captures
+on desktop/iPad landscape must confirm quality, visibility and render cost.
+
+Unit tests pass 23/23 and the production build passes at the unchanged v1.12.0
+package version; Luna owns the next release version. Factory geometry/batching
+smoke passes, and constructed world disposal removes its scene root. Focused
+QA, 20-friend finale/collection, genuine previous-release update/offline tests,
+independent visual review, CI and v1.13.0 publication remain pending. After that
+release, stop as requested; do not implement world21 automatically.

@@ -1,4 +1,5 @@
 const paths = {
+  burger: '<path d="M4 13a12 9 0 0 1 24 0ZM4 19h24M4 24h24v2c0 5-24 5-24 0ZM4 16l4 2 4-2 4 2 4-2 4 2 4-2M11 8h1m7-1h1M7 22h18"/>',
   thunder: '<path d="m18 2-12 16h9l-1 12 13-18h-10ZM4 28V21m24 7v-8"/>',
   city: '<path d="M3 29V13h8v16m0-21h10v21m0-12h8v12M16 3v5M6 18h2m-2 5h2m6-10h4m-4 5h4m-4 5h4m6-1h2M2 29h28"/>',
   pancakes: '<ellipse cx="16" cy="10" rx="12" ry="5"/><path d="M4 10v5c0 7 24 7 24 0v-5M4 16v5c0 7 24 7 24 0v-5M4 22v4c0 6 24 6 24 0v-4m-16-19 8-1 3 4-8 2Z"/>',
@@ -60,4 +61,5 @@ export const worldIcon = [
   "pancakes",
   "city",
   "thunder",
+  "burger",
 ];
