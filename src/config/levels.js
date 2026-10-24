@@ -21,6 +21,7 @@ export const MANES = [
   "#3d92d6",
   "#b96d80",
   "#e89936",
+  "#86539b",
 ];
 const worlds = [
   [
@@ -134,6 +135,7 @@ const worlds = [
   ["Thundermans Town", "Bolt", "thundermans", "#bbddeb", "#9bc6a2", "#f1d9af", "#6b9b86", "#e8b95d"],
   ["Fast Food Land", "Sesame", "fastfood", "#c8e4e6", "#aecab8", "#c3a6a1", "#79a897", "#ce685c"],
   ["Splash Water Park", "Dipper", "waterpark", "#c3e5ed", "#c7d5bc", "#e5c6a2", "#7dac9a", "#e89936"],
+  ["Zebra Savannah", "Aster", "savannah", "#c9e4e5", "#c6b87e", "#e4c5a1", "#929d70", "#86539b"],
 ];
 export const LEVELS = worlds.map(
   ([name, unicorn, theme, sky, ground, road, foliage, accent], i) => ({

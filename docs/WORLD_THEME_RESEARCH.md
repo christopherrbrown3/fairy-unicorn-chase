@@ -1,9 +1,9 @@
 # Nine worlds: research and density brief
 
-Research checked October 23, 2026. This is a design reference and acceptance
-brief, not proof of publication. Worlds 19 and 20 are released and live verified.
-The owner has now authorized **Water Park only**, world 21. Stop after its
-release; worlds 22–27 remain research only until a new human instruction.
+Research checked October 24, 2026. This is a design reference and acceptance
+brief, not proof of publication. Worlds 19–21 are released and live verified.
+The owner has now authorized **Zebra Savannah only**, world 22. Stop after its
+release; worlds 23–27 remain research only until a new human instruction.
 Source observations are distinguished from original scenery choices. Reference
 photographs are inspected locally, never imported as game textures or branding.
 
@@ -178,7 +178,7 @@ GPU cost. All 413 owned geometries emitted disposal events and the world root
 was removed. New scenery is entirely static, so pause/Gentle motion cannot leave
 an independent effect running. Current sculpted cast hashes and first 20 level
 records remain unchanged. Unit/build checks pass; browser, visual and release
-gates remain pending. No world 22+ implementation is authorized.
+gates were pending at that source handoff. Water Park is now released; the later Zebra-only authorization is recorded below.
 
 ## 22 — Zebra savannah
 
@@ -200,6 +200,46 @@ flat-topped trees. Grass clumps, shrubs, rocks and termite-mound silhouettes
 support a coherent African savannah. Every route third must visibly contain
 multiple zebras, not one distant icon. Target roughly 60–100 shared-model
 animals, adjusted to tested visibility and cost rather than count alone.
+
+### World 22 visual inspection and implementation — October 24
+
+Primary references were refreshed, and four source photographs were downloaded
+and actually opened. Inspection copies are ignored `output/research-zebra/`
+files, never shipped textures. This is an original storybook plains-zebra
+interpretation, not a scanned animal or scientific reconstruction.
+
+| Opened primary reference | Observed form or habitat | Original art choice |
+| --- | --- | --- |
+| [African Wildlife Foundation plains zebra](https://www.awf.org/wildlife-conservation/zebra), [front-view photograph](https://www.awf.org/sites/default/files/Website_SpeciesPage_Zebra01_Hero.jpg) | Rounded barrel, prominent equid face, dark muzzle, upright short mane, pale lower belly, finer facial/leg marks; upright ears rather than horns. | Independent hornless geometry: contoured barrel and neck, long face/dimensional muzzle, eyes/nostrils/ears, slim jointed legs/hooves, short mane and tasseled tail. Dark curved surface patches follow the body instead of box stripes. |
+| [AWF side-view photograph](https://www.awf.org/sites/default/files/styles/species_image/public/2020-04/Website_SpeciesPage_Zebra02_Challenges.jpg?h=29c6c1f6&itok=ZglObHSp) | Sloping neck joins the shoulder, broad flank stripes curve around the haunch; legs bend at distinct joints in the running pose. | Looking, grazing and walking-pose variants change neck/face direction and leg stance. Three stripe phases bend around rounded surfaces; finer bands mark face and legs. Static poses suggest peaceful activity; no migration simulation or hazards. |
+| [AWF adult and foal photograph](https://www.awf.org/sites/default/files/styles/horizontal_image/public/2020-04/Website_SpeciesPage_Zebra03_02_Solutions.jpg?h=05d4a2d9&itok=g36LgWwz) | A smaller foal stays beside an adult; its legs are proportionally long and markings warmer brown. | Two-adult/one-foal family groups; foals scale less in height than length/width and use warm brown markings. Family grouping also follows [San Diego Zoo's species account](https://animals.sandiegozoo.org/animals/zebra), which distinguishes plains-zebra families and describes foal coats. |
+| [San Diego Zoo savanna habitat](https://animals.sandiegozoo.org/habitats/savanna), [habitat photograph](https://animals.sandiegozoo.org/sites/default/files/2016-08/habitats_hero_savanna.jpg) | Broad golden grass carpet, scattered shrubs/trees, low distant woodland; pictured elephants demonstrate habitat scale, not zebra anatomy. | Golden tussocks/seed heads, low olive shrubs, widely branching flat-topped tree silhouettes and low rocky waterholes. Earthen termite mounds are original supporting habitat scenery, not an exact depicted species or location. |
+
+**Composition.** Zebra Savannah / Aster appends world 22 / ID21, with a unique
+deep-orchid mane `#86539b`. The broad warm path separates the white chased
+unicorn from striped animals in golden grass. Per spatial chunk, opposite sides
+have staggered foreground family groups, middle-distance waterholes with zebra
+pairs, trees, mounds and numerous low grass/plant clusters. No animal stands in
+the pursuit corridor. Full-lap inventory is 96 family animals plus 64 waterhole
+animals: 160 actual dimensional zebras. This exceeds the brief's initial
+60–100 estimate to give several groups in a camera interval; actual six-view
+readability/density and measured visible cost decide whether it succeeds.
+
+**Geometry and evidence limits.** Original smooth shared equid surfaces carry
+indexed contour-stripe patches with outward normals. Markings are stylized,
+with three reusable patterns, not the unique markings of 160 real individuals;
+anatomy is softened for the existing toy/storybook world. Foreground groups
+contain looking/grazing/walking poses and foal proportions; none uses a unicorn
+GLB. All objects are static, so there is no new clock to escape pause/Gentle
+motion. Small-detail geometry was reduced before handoff; full-lap scenery is
+492 meshes / 3,239,264 triangles in 16 chunks with 11 material meshes each.
+All 459 owned geometries dispose and the root is removed. These are inventory
+checks, not frame-rate evidence. The six factory families × three variants
+retain all triangles after baking and have finite indexed attributes; stripe
+normals point outward. First 21 level records and protected character hashes
+are unchanged. Unit/build smoke passes; gameplay captures, real visible-cost
+measurement, fresh visual review and publication/live/offline gates remain.
+After this world, STOP: Oz and all later worlds remain research only.
 
 ## 23 — Yellow brick road to Emerald City
 

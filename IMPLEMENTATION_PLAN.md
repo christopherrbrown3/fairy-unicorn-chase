@@ -15,15 +15,21 @@ Fast Food Land / Sesame is COMPLETE: v1.13.0, merged PR #20 at
 release owner, including the genuine v1.12→v1.13 update and online/offline play.
 Its former stop gate was superseded by the owner's “OK build the next one.”
 
-Splash Water Park / Dipper is the **only active task**, internal ID20/world21.
-[Inspected manufacturer/operator images](docs/WORLD_THEME_RESEARCH.md#world-21-visual-inspection-and-implementation--october-23)
-guide thick supported slide shells, receiving pools and dense layered deck art.
-Source integration, factory geometry/batching/disposal checks, unchanged cast
-hashes, 23 unit tests and production build pass. Six real route views, 21-friend
-finales, focused browser QA, render measurements, fresh visual review and all
-release/live/PWA checks remain required. **Stop after Water Park.** Zebra and
-later worlds remain research only and need new explicit human authorization.
-Preserve all earlier IDs, palettes, progress, sculpted cast and PWA behavior.
+Splash Water Park / Dipper is COMPLETE: v1.14.0, main
+`2ff9b6a8197df0981f90c2b3b2e91699641fad8c`, fully published and live verified by
+the release owner. Genuine prior-release update/offline evidence remains in
+`output/qa-waterpark/live-v114-update-report.json` and `live-v114-offline-report.json`.
+
+On October 24 the owner said “Build the next level.” Zebra Savannah / Aster is
+now the **only active task**, internal ID21/world22. [Opened plains-zebra and
+habitat photographs](docs/WORLD_THEME_RESEARCH.md#world-22-visual-inspection-and-implementation--october-24)
+guide independent striped equid models, foreground adult/foal families, calm
+poses and dense layered savannah habitat. Source integration and geometry/
+batching/disposal checks pass; first 21 records and protected cast hashes match.
+Unit/build smoke passes. Six route captures, 22-friend finales, focused browser
+QA, render measurements, fresh visual review and all release/live/PWA checks
+remain required. **Stop after Zebra Savannah.** Oz and later worlds remain
+research only and need new explicit human authorization.
 
 ## Home Screen and sharing — v1.8.0
 

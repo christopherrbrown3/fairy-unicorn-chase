@@ -6,10 +6,10 @@ only after the preceding release is published and verified live and the
 orchestrator explicitly opens the next gate. Planning a later row is not
 implementation or completion.
 
-**Current authorization (October 23):** the owner said “OK build the next one”
-after Fast Food v1.13.0 was fully released. Build and release **Water Park only**,
-then STOP. Zebra and all later worlds remain research only until new explicit
-human instruction; completing world 21 does not authorize world 22.
+**Current authorization (October 24):** the owner said “Build the next level”
+after Water Park v1.14.0 was fully published and live verified. Build and release
+**Zebra Savannah only**, then STOP. Oz and all later worlds remain research only
+until new explicit human instruction. Completing world 22 does not open world 23.
 
 The baseline is the v1.11.0 sculpted Blender cast. Existing worlds 1–18, their IDs,
 collected friends, sound/picture/motion preferences, forgiving controls and the
@@ -25,8 +25,8 @@ scene.
 | --- | --- | --- |
 | 1 / 19 | **The Thundermans inspired:** recognizable suburban super-family home and secret laboratory, paired warm/cool twin-power motifs, rabbit and gadget displays; no villain combat or new failure state. Provisional world/friend: Thundermans Town / Bolt. | COMPLETE — v1.12.0 published and live/profile/offline verified at 55e3ae6; PR #16 merged. |
 | 2 / 20 | **Fast food:** unmistakable pizza, burgers, fries and milkshakes, with dimensional food scenery and clear pursuit visibility. Fast Food Land / Sesame. | COMPLETE — v1.13.0 published and live/profile/offline verified; PR #20 merged at 2b5b09c. |
-| 3 / 21 | **Water park:** recognizable dimensional slides, structural supports and pools; safe path and unchanged controls. Splash Water Park / Dipper. | QA SHIP — research and density review passed; 24 unit tests/build, Chromium Metal + WebKit 20→21 migration/progression, Meadow preservation, eight opened route/finale captures and measured visible cost pass. PR CI, publication and live profile/offline checks pending. STOP after this release. |
-| 4 / 22 | **Zebra savannah:** many visibly striped zebras distributed through the actual playable savannah, rather than a sparse zebra ornament or only a menu illustration. | Research brief saved; implementation paused by owner until a new human instruction. |
+| 3 / 21 | **Water park:** recognizable dimensional slides, structural supports and pools; safe path and unchanged controls. Splash Water Park / Dipper. | COMPLETE — v1.14.0 published and live/update/offline verified at 2ff9b6a. |
+| 4 / 22 | **Zebra savannah:** many visibly striped zebras distributed through the actual playable savannah, rather than a sparse zebra ornament or only a menu illustration. Zebra Savannah / Aster. | ACTIVE — source/geometry/unit/build smoke ready; browser/visual/release/live gates pending. Stop after this world. |
 | 5 / 23 | **Wizard of Oz:** the player actually follows a yellow brick road that **ends at Emerald City**. Repeating green castles around an endless loop does not satisfy this requirement. The endpoint must fit the forgiving pursuit/catch model. | Research brief saved; implementation paused by owner until a new human instruction. |
 | 6 / 24 | **Princesses:** many visible princess characters as well as princess objects and scenery; an empty palace landscape is insufficient. | Research brief saved; implementation paused by owner until a new human instruction. |
 | 7 / 25 | **Jungle:** a recognizable overhead canopy, vines and visibly swinging monkeys. Swinging must pause with the game and respect Gentle motion. | Research brief saved; implementation paused by owner until a new human instruction. |
@@ -230,3 +230,32 @@ timings or physical iPad results. Physical iPad playtesting and live release
 verification remain outstanding; wait for PR CI, merge/deployment, exact v1.14.0
 tag, and genuine v1.13 client update/offline/gameplay checks before marking
 complete. **Stop after this world**; no Zebra implementation is authorized.
+
+
+## World 21 release — COMPLETE
+
+The release owner confirmed v1.14.0 fully published and live verified at
+`2ff9b6a8197df0981f90c2b3b2e91699641fad8c`. Genuine previous-release update and
+offline proof is saved in ignored `output/qa-waterpark/live-v114-update-report.json`
+and `live-v114-offline-report.json`. This supersedes the earlier pending notes.
+The owner's October 24 instruction opens only Zebra Savannah.
+
+## World 22 source handoff — release pending
+
+Zebra Savannah / Aster appends ID21 / mane `#86539b`. See the [source-linked
+opened reference photographs](WORLD_THEME_RESEARCH.md#world-22-visual-inspection-and-implementation--october-24)
+and current `DESIGN_NOTES.md` contract. Independent hornless plains-zebra models
+use organic indexed equid forms, contour stripes, three calm poses and adult/
+foal proportions. Foreground families and waterhole pairs total 160 animals,
+framed by golden grass, shrubs, mounds, rocks and flat-topped branching trees.
+All 16 scenery chunks share cached geometry and 11 material batches each.
+
+Source smoke preserves every factory triangle through baking, validates finite
+indexed attributes and outward stripe normals, verifies all prior 21 level
+records and protected cast hashes, and disposes 459 owned world geometries.
+The 492-mesh / 3,239,264-triangle full-lap inventory is not visible-frame cost.
+24 unit tests/build pass. Required next: six real route captures, desktop/tablet
+22-friend finales, fresh density/anatomy/readability review, bounded visible
+render measurements, 21→22 migration/preferences/Meadow checks, CI, publication
+and genuine prior-release live/offline update. **Stop after Zebra Savannah**;
+no Oz or other subsequent implementation is authorized.

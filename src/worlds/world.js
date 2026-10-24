@@ -43,6 +43,8 @@ import { burger, fries, milkshake, mealTray, pizzaBoard, shakeCounter, dinerBoot
 
 import { slideComplex, splashPlay, loungeSet, floatRack, deckPlanter } from "./waterpark.js";
 
+import { zebraFamily, grassIsland, flatTopTree, termiteMound, waterhole } from "./savannah.js";
+
 let authoredPotion = null;
 export async function loadWorldAssets() {
   try {
@@ -134,6 +136,12 @@ export class World {
           let dist = level.width / 2 + 3 + rnd(seed) * 9;
           let prop;
           switch (level.theme) {
+            case "savannah": {
+              const variant = (j + k + (side > 0 ? 1 : 0)) % 3;
+              prop = [grassIsland, flatTopTree, grassIsland, termiteMound, grassIsland, flatTopTree, grassIsland, grassIsland, grassIsland][k](chunk, k === 1 || k === 5 ? 1.15 : 1.25, variant);
+              dist = k === 1 || k === 5 ? 25 : k === 3 ? 18 : 10 + rnd(seed) * 8;
+              break;
+            }
             case "waterpark": {
               const variant = (j + k + (side + 1) / 2) % 3;
               prop = [loungeSet, floatRack, splashPlay, deckPlanter, loungeSet, floatRack, splashPlay, deckPlanter, loungeSet][k](chunk, 1, variant);
@@ -307,6 +315,21 @@ export class World {
                 s + f * 0.8 - 1.2,
                 side * (level.width / 2 + 0.9 + rnd(seed + f + 12) * 2.6),
               );
+          }
+        }
+      }
+      if (level.theme === "savannah") {
+        for (const side of [-1, 1]) {
+          // Two adults and a foal form a readable foreground family. Stagger
+          // both sides so several groups enter each actual camera interval.
+          const s = (j + (side < 0 ? 0.08 : 0.55)) * length / 16;
+          const family = place(zebraFamily(chunk, 1.05, (j + (side > 0 ? 1 : 0)) % 3), level, s, side * 12.6);
+          family.rotation.y += side * Math.PI / 2 + 0.25;
+          const pool = place(waterhole(chunk, 1, j % 3), level, s + 27, side * 29);
+          pool.rotation.y += side * Math.PI / 2;
+          for (let i = 0; i < 12; i++) {
+            const ps = (j + i / 12) * length / 16;
+            place(grassIsland(chunk, 0.9 + rnd(j * 17 + i) * 0.7, i % 2), level, ps, side * (7.7 + rnd(i + j) * 2));
           }
         }
       }
@@ -615,6 +638,8 @@ export class World {
                       ? foodPlanter(this.root, 0.65)
                       : level.theme === "waterpark" && item.kind === "tree"
                         ? deckPlanter(this.root, 0.65)
+                        : level.theme === "savannah" && item.kind === "tree"
+                          ? termiteMound(this.root, 0.5)
             : obstacle(this.root, item.kind);
         place(g, level, item.s, item.lane);
         bake(g);

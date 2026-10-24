@@ -1,11 +1,36 @@
 # Creative decisions
 
+## Zebra Savannah extension — October 24
+
+World 22 / internal ID21 appends Zebra Savannah and Aster, the protected white
+sculpted unicorn with unique deep-orchid mane `#86539b`. The owner authorized
+this level only after Water Park's live release. Stop after Zebra; no Oz code.
+
+[Opened animal/habitat references](docs/WORLD_THEME_RESEARCH.md#world-22-visual-inspection-and-implementation--october-24)
+anchor separate hornless plains zebras with rounded barrels, sloping necks,
+long equid faces/dark muzzles, short upright manes, tasseled tails, jointed legs,
+hooves and contour stripes. Two adults and a proportionally long-legged foal
+form each foreground family. Looking, grazing and walking poses vary their
+silhouettes; middle-distance pairs gather beside low rocky waterholes.
+
+A broad warm path stays clear for Mia/Glender, white Aster and blue potions.
+Golden tussocks and seed heads, shrubs, earthen mounds and branching flat-topped
+trees connect foreground, middle and background without forming a dense wall.
+The 160 zebras are actual scenery animals, not icons or recolored unicorns.
+Counts alone do not establish quality: six real route views must show abundant
+recognizable animals and layered habitat while the chase remains legible.
+All scenery is static and shares cached indexed geometry/materials, baked in
+16 spatial chunks. No cast/rig, controls, camera, finale, save or PWA changes.
+Unit/build and geometry checks pass; fresh gameplay, visual, performance and
+release/live verification are still required.
+
+
 ## Splash Water Park extension — October 23
 
 World 21 / internal ID20 appends Splash Water Park and Dipper, the existing
 white sculpted unicorn with a unique saffron mane (`#e89936`). Names and palette
 are original provisional choices. The owner authorized this next level only:
-finish its independent release, then stop; no Zebra implementation.
+finish its independent release, then stop. That historical gate is now complete; the subsequent Zebra-only authorization is recorded above.
 
 The [opened primary-image observations and construction contract](docs/WORLD_THEME_RESEARCH.md#world-21-visual-inspection-and-implementation--october-23)
 anchor real concave thick flumes, open-ended collared tubes, supported curves,
