@@ -205,13 +205,13 @@ animals, adjusted to tested visibility and cost rather than count alone.
 
 Primary references were refreshed, and four source photographs were downloaded
 and actually opened. Inspection copies are ignored `output/research-zebra/`
-files, never shipped textures. This is an original storybook plains-zebra
-interpretation, not a scanned animal or scientific reconstruction.
+files, never shipped textures. The owner subsequently requested a more realistic Blender-authored plains-zebra
+interpretation; it remains an original model, not a scanned animal or scientific reconstruction.
 
 | Opened primary reference | Observed form or habitat | Original art choice |
 | --- | --- | --- |
-| [African Wildlife Foundation plains zebra](https://www.awf.org/wildlife-conservation/zebra), [front-view photograph](https://www.awf.org/sites/default/files/Website_SpeciesPage_Zebra01_Hero.jpg) | Rounded barrel, prominent equid face, dark muzzle, upright short mane, pale lower belly, finer facial/leg marks; upright ears rather than horns. | Independent hornless geometry: contoured barrel and neck, long face/dimensional muzzle, eyes/nostrils/ears, slim jointed legs/hooves, short mane and tasseled tail. Dark curved surface patches follow the body instead of box stripes. |
-| [AWF side-view photograph](https://www.awf.org/sites/default/files/styles/species_image/public/2020-04/Website_SpeciesPage_Zebra02_Challenges.jpg?h=29c6c1f6&itok=ZglObHSp) | Sloping neck joins the shoulder, broad flank stripes curve around the haunch; legs bend at distinct joints in the running pose. | Looking, grazing and walking-pose variants change neck/face direction and leg stance. Three stripe phases bend around rounded surfaces; finer bands mark face and legs. Static poses suggest peaceful activity; no migration simulation or hazards. |
+| [African Wildlife Foundation plains zebra](https://www.awf.org/wildlife-conservation/zebra), [front-view photograph](https://www.awf.org/sites/default/files/Website_SpeciesPage_Zebra01_Hero.jpg) | Rounded barrel, prominent equid face, dark muzzle, upright short mane, pale lower belly, finer facial/leg marks; upright ears rather than horns. | Independent hornless geometry: contoured barrel and neck, long face/dimensional muzzle, eyes/nostrils/ears, slim jointed legs/hooves, short mane and tasseled tail. The replacement uses connected Blender skin and original UV-baked coats; there are no floating stripe patches. |
+| [AWF side-view photograph](https://www.awf.org/sites/default/files/styles/species_image/public/2020-04/Website_SpeciesPage_Zebra02_Challenges.jpg?h=29c6c1f6&itok=ZglObHSp) | Sloping neck joins the shoulder, broad flank stripes curve around the haunch; legs bend at distinct joints in the running pose. | Looking, grazing and walking-pose variants change neck/face direction and leg stance. Individually authored tapered regional strokes and forks redirect over shoulders/haunches; finer directional facial lines and uneven leg marks replace periodic bands. Static poses suggest peaceful activity; no migration simulation or hazards. |
 | [AWF adult and foal photograph](https://www.awf.org/sites/default/files/styles/horizontal_image/public/2020-04/Website_SpeciesPage_Zebra03_02_Solutions.jpg?h=05d4a2d9&itok=g36LgWwz) | A smaller foal stays beside an adult; its legs are proportionally long and markings warmer brown. | Two-adult/one-foal family groups; foals scale less in height than length/width and use warm brown markings. Family grouping also follows [San Diego Zoo's species account](https://animals.sandiegozoo.org/animals/zebra), which distinguishes plains-zebra families and describes foal coats. |
 | [San Diego Zoo savanna habitat](https://animals.sandiegozoo.org/habitats/savanna), [habitat photograph](https://animals.sandiegozoo.org/sites/default/files/2016-08/habitats_hero_savanna.jpg) | Broad golden grass carpet, scattered shrubs/trees, low distant woodland; pictured elephants demonstrate habitat scale, not zebra anatomy. | Golden tussocks/seed heads, low olive shrubs, widely branching flat-topped tree silhouettes and low rocky waterholes. Earthen termite mounds are original supporting habitat scenery, not an exact depicted species or location. |
 
@@ -225,21 +225,42 @@ animals: 160 actual dimensional zebras. This exceeds the brief's initial
 60–100 estimate to give several groups in a camera interval; actual six-view
 readability/density and measured visible cost decide whether it succeeds.
 
-**Geometry and evidence limits.** Original smooth shared equid surfaces carry
-indexed contour-stripe patches with outward normals. Markings are stylized,
-with three reusable patterns, not the unique markings of 160 real individuals;
-anatomy is softened for the existing toy/storybook world. Foreground groups
-contain looking/grazing/walking poses and foal proportions; none uses a unicorn
-GLB. All objects are static, so there is no new clock to escape pause/Gentle
-motion. Small-detail geometry was reduced before handoff; full-lap scenery is
-492 meshes / 3,239,264 triangles in 16 chunks with 11 material meshes each.
-All 459 owned geometries dispose and the root is removed. These are inventory
-checks, not frame-rate evidence. The six factory families × three variants
-retain all triangles after baking and have finite indexed attributes; stripe
-normals point outward. First 21 level records and protected character hashes
-are unchanged. Unit/build smoke passes; gameplay captures, real visible-cost
-measurement, fresh visual review and publication/live/offline gates remain.
-After this world, STOP: Oz and all later worlds remain research only.
+**Blender realism correction and evidence limits.** The owner rejected the
+initial procedural animals and requested more realistic Blender models. The
+replacement is authored and exported by `tools/blender_zebras.py` in a separate
+factory-startup Blender process, preserving the unrelated open project and
+protected cast. Anatomical section lofts are joined into a voxel-unioned,
+relaxed, decimated continuous skin. Slim limbs include knees/hocks/fetlocks;
+separate shaped hooves, cupped ears, eyes/nostrils, short mane and tassel finish
+the silhouette. Foals have proportionally longer legs and warmer coat pigment.
+
+Reopened AWF side/front photographs show unequal stripe spacing, directional
+facial lines, markings turning over the haunch and finer incomplete leg marks.
+The original UV painting uses individually placed tapered Bezier surface paths
+and forks by anatomical region. Surface-to-path distance is rasterized directly
+into continuous UV islands, with antialiased edges, island padding and a closed
+muzzle patch. Four original 2K coat PNGs include Origin, Description and exact
+impeccable:prompt metadata identifying script authorship and no AI bitmap pixels.
+No reference photo pixels are published. Looking/walking share each age coat;
+the separately constructed grazing skins use separate adult/foal coats. The
+160 animals reuse six templates and do not have individually unique markings.
+
+A first independent Blender packet review required correction of the coat and
+lower neck/shoulder blend. The corrected side/front/three-quarter/family and
+grazing-closeup packet passed fresh independent asset review on October 25.
+The accepted direct-construction geometry was preserved through coat correction.
+Fine facial waviness and orderly flank markings remain disclosed polish limits.
+The previous procedural render-cost numbers do not validate this replacement.
+The saved [master, source maps, script and exact build commands](../art/scenery/zebra/README.md)
+are reviewable. The actual GLB loads as a required startup asset; missing or
+invalid skins produce visible startup failure. Six shared skin geometries are
+instanced after ordinary feature/habitat material baking in 16 chunks. World
+disposal releases instance and merged buffers while retaining shared templates
+and maps. Actual GLTF loading/batching/disposal checks, six gameplay views,
+22-friend finales, measured visible cost,
+full visual review and publication/live/offline gates are required. All poses
+remain static, respecting pause/Gentle motion without a new clock. After this
+world, STOP: Oz and all later worlds remain research only.
 
 ## 23 — Yellow brick road to Emerald City
 

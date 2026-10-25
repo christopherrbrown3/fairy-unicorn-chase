@@ -6,24 +6,50 @@ World 22 / internal ID21 appends Zebra Savannah and Aster, the protected white
 sculpted unicorn with unique deep-orchid mane `#86539b`. The owner authorized
 this level only after Water Park's live release. Stop after Zebra; no Oz code.
 
+The owner rejected the initial procedural zebras and explicitly requested more
+realistic models authored in Blender. The earlier visual SHIP and render-cost
+numbers apply to that rejected version and do not approve this replacement.
+The corrected five-view asset packet passed fresh independent anatomical and
+material review on October 25. Release remains held for integrated gameplay QA.
+
 [Opened animal/habitat references](docs/WORLD_THEME_RESEARCH.md#world-22-visual-inspection-and-implementation--october-24)
-anchor separate hornless plains zebras with rounded barrels, sloping necks,
-long equid faces/dark muzzles, short upright manes, tasseled tails, jointed legs,
-hooves and contour stripes. Two adults and a proportionally long-legged foal
-form each foreground family. Looking, grazing and walking poses vary their
-silhouettes; middle-distance pairs gather beside low rocky waterholes.
+anchor original hornless plains zebras: connected shoulder/haunch/neck anatomy,
+long equid faces and dark muzzles, slim articulated legs, shaped hooves, cupped
+ears, short upright manes and tasseled tails. Blender creates six static
+adult/foal looking, grazing and walking templates, with original UV-painted
+coats. Foals have proportionally longer legs and warmer brown markings. The
+[editable master and reproducible source](art/scenery/zebra/README.md) preserve
+provenance; photographs are inspection references, never shipped textures.
+
+The replacement contract requires varied tapered and branching regional
+markings, redirected haunch stripes, directional facial markings and unequal
+leg bands. The lower neck must blend into the shoulder mass in standing and
+grazing poses, without a hanging chest rim. A frozen side/front/three-quarter/
+family/grazing-closeup packet passed that review. Original Bezier surface paths
+are rasterized into continuous UV islands; four 2K maps distinguish adult/foal
+and standing/grazing skins. Fine facial waviness remains a disclosed polish limit.
 
 A broad warm path stays clear for Mia/Glender, white Aster and blue potions.
-Golden tussocks and seed heads, shrubs, earthen mounds and branching flat-topped
-trees connect foreground, middle and background without forming a dense wall.
-The 160 zebras are actual scenery animals, not icons or recolored unicorns.
-Counts alone do not establish quality: six real route views must show abundant
-recognizable animals and layered habitat while the chase remains legible.
-All scenery is static and shares cached indexed geometry/materials, baked in
-16 spatial chunks. No cast/rig, controls, camera, finale, save or PWA changes.
-Unit/build and geometry checks pass; fresh gameplay, visual, performance and
-release/live verification are still required.
+Golden tussocks, seed heads, shrubs, mounds, branching flat-topped trees and
+rocky waterholes layer the habitat around the 160-animal inventory. Counts
+alone do not establish quality: six actual route views must show abundant
+recognizable animals while the chase remains legible. Imported templates and
+coat maps are shared. Each of 16 spatial chunks extracts the skins before
+material baking and creates shared-geometry instances afterward; small features
+and habitat are material-batched. Chunks own their instance and merged buffers.
+Startup must await the actual GLB and fail visibly if required templates or
+coats cannot load, with no rejected primitive fallback or empty-herd success.
 
+Source checks passed: actual GLTFLoader decoding, four loaded maps, six shared
+skins, 160 placements across 80 skin batches in 16 chunks, correct disposal and
+world re-entry, 27 unit tests and the production build. Lossless Meshopt/WebP
+keeps decoded attributes, oriented triangles and coat pixels exact; the GLB is
+2,626,960 bytes. Four 2K RGBA maps plus mipmaps estimate 85.33 MiB. Logical
+geometry is 3,051,820 skin triangles and 5,080,924 world triangles; visible GPU
+cost is still unmeasured. Browser/render checks, 21-to-22 save migration, six
+route views, two 22-friend finales and fresh full visual review are pending. PWA cache/offline and public-release gates remain
+required. Protected cast/rigs, prior world records, controls, camera, finale,
+saves and preferences stay unchanged.
 
 ## Splash Water Park extension — October 23
 

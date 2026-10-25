@@ -45,8 +45,11 @@ import { slideComplex, splashPlay, loungeSet, floatRack, deckPlanter } from "./w
 
 import { zebraFamily, grassIsland, flatTopTree, termiteMound, waterhole } from "./savannah.js";
 
+import { loadZebraAssets, detachZebraSkins, addZebraSkinInstances } from "./zebra-assets.js";
+
 let authoredPotion = null;
 export async function loadWorldAssets() {
+  await loadZebraAssets();
   try {
     const gltf = await new GLTFLoader().loadAsync(
       new URL("assets/models/sparkle-potion.glb", document.baseURI).href,
@@ -390,7 +393,9 @@ export class World {
           lamp.rotation.y += side < 0 ? Math.PI : 0;
         }
       }
+      const zebraSkins = level.theme === "savannah" ? detachZebraSkins(chunk) : null;
       bake(chunk);
+      if (zebraSkins) addZebraSkinInstances(chunk, zebraSkins);
       chunk.traverse((o) => {
         if (o.isMesh) o.castShadow = true;
       });

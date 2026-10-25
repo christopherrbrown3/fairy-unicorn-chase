@@ -23,13 +23,20 @@ the release owner. Genuine prior-release update/offline evidence remains in
 On October 24 the owner said “Build the next level.” Zebra Savannah / Aster is
 now the **only active task**, internal ID21/world22. [Opened plains-zebra and
 habitat photographs](docs/WORLD_THEME_RESEARCH.md#world-22-visual-inspection-and-implementation--october-24)
-guide independent striped equid models, foreground adult/foal families, calm
-poses and dense layered savannah habitat. Source integration and geometry/
-batching/disposal checks pass; first 21 records and protected cast hashes match.
-Unit/build smoke passes. Six route captures, 22-friend finales, focused browser
-QA, render measurements, fresh visual review and all release/live/PWA checks
-remain required. **Stop after Zebra Savannah.** Oz and later worlds remain
-research only and need new explicit human authorization.
+guide connected Blender-authored striped equid models, foreground adult/foal
+families, calm poses and dense layered savannah habitat. The owner rejected the
+initial procedural zebras and requested more realistic Blender models; previous
+visual approval and performance evidence are superseded. The replacement asset
+packet cleared a fresh anatomical/material review on October 25. Integration
+uses required startup GLB loading and six shared skin templates instanced after
+material baking in 16 chunks, with four original 2K maps. Decoded
+geometry/UV/texture/batching/disposal and protected-hash checks passed, along
+with 27 unit tests and the production build. The source smoke confirms all
+160 placements and shared-resource survival through world re-entry. Next: six
+route captures, 22-friend finales, focused browser QA,
+render measurements, fresh visual review and all release/live/PWA checks.
+**Stop after Zebra Savannah.** Oz and later worlds remain research only and
+need new explicit human authorization.
 
 ## Home Screen and sharing — v1.8.0
 
