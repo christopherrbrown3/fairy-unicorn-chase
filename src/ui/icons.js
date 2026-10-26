@@ -1,4 +1,5 @@
 const paths = {
+  zebra: '<path d="M8 29V18l-4-5 5-5 2-5 4 3 3-3 2 6 5 5-3 7-6-2-1 10M9 8l8 4m-6-7 4 4m-7 3 9 4m-6 1 4 3m-5 3h5M22 14h.1"/>',
   waterslide: '<path d="M5 24V5h9v5c0 6 5 5 5 10h9v4H16c0-7-6-6-6-14V5M5 10h5m-5 5h5m-5 5h5M3 28q3-3 6 0t6 0 6 0 6 0"/>',
   burger: '<path d="M4 13a12 9 0 0 1 24 0ZM4 19h24M4 24h24v2c0 5-24 5-24 0ZM4 16l4 2 4-2 4 2 4-2 4 2 4-2M11 8h1m7-1h1M7 22h18"/>',
   thunder: '<path d="m18 2-12 16h9l-1 12 13-18h-10ZM4 28V21m24 7v-8"/>',
@@ -64,4 +65,5 @@ export const worldIcon = [
   "thunder",
   "burger",
   "waterslide",
+  "zebra",
 ];

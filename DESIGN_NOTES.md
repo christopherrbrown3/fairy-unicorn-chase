@@ -1,11 +1,77 @@
 # Creative decisions
 
+## Zebra Savannah extension — October 24–25
+
+World 22 / internal ID 21 appends Zebra Savannah and Aster, the protected white
+sculpted unicorn with deep-orchid mane `#86539b`. The owner authorized this
+world only; stop after Zebra. The first procedural zebra version was rejected.
+The replacement uses six original Blender-authored adult/foal looking, grazing
+and walking templates with four original 2K UV coat maps. Fresh independent
+Astra review accepted the frozen art packet; fresh Luna full-game views accepted
+its art, density, protected cast and finale. The accepted stylized savannah
+keeps a broad warm path clear for Mia/Glender, Aster and blue potions, with
+golden grasses, seed heads, shrubs, mounds, flat-topped branching trees and
+rocky waterholes around 160 recognizable animals. Fine facial stripe waviness
+and repeated template markings remain disclosed polish limits.
+
+The asset contract at source freeze `026b5bbde8a31a7b347aa1a44061064f820ee349`
+was verified through actual GLTFLoader decoding and world construction: six
+shared skins, 160 placements in 80 skin batches across 16 chunks, four loaded
+maps, correct disposal and successful re-entry. Lossless Meshopt/WebP preserves
+decoded attributes, oriented triangles and coat pixels exactly. The GLB is
+2,626,960 bytes (SHA-256
+`38b4317489947bb2c38ff2ea13987a25bfe46178dc4cf5445de44a8b9a2b2fc8`); four
+2K RGBA maps with mipmaps estimate 85.33 MiB. Source smoke reports 5,080,924
+logical world triangles, not visible-frame cost. Twenty-seven unit tests and
+the production build passed.
+
+Local Chromium Metal on Apple M2 and WebKit checks passed, including 21-to-22
+save migration and a fresh isolated cold-offline catch through the 22-friend
+finale. Eight normal-flow desktop and iPad-sized Chromium captures cover opening,
+route midpoint, near chase and settled finales. The iPad-sized viewport is not a
+physical iPad. CPU submission samples (35 warmup plus 180 synchronous
+`game.frame()` submissions) measured near Auto 262 calls / 1,895,216 triangles,
+median 1.5 ms and p95 3.3 ms; near Low 175 / 1,138,102, median 1.0 ms and p95
+2.9 ms. Settled finale Auto measured 1,271 / 3,190,070, median 5.9 ms and p95
+7.3 ms; Low 836 / 1,628,640, median 4.1 ms and p95 5.4 ms. These are CPU-side
+submission timings, not GPU frame rate or device performance.
+
+The independent full-game finish review found one iPad-sized near-chase defect:
+duplicate “Sparkle speed!” encouragement. Targeted UI fix `a18846107d84311bcac9369513a40fdc8712decc` removes the duplicate encouragement
+and makes the persistent boost pill's live announcement update only on state
+transitions; it changes no art, world, camera, saves or gameplay. Luna's fresh
+same-reviewer recaptures resolved this single material fix and returned
+`disposition: ship`: both ordinary near-chase frames (1440×900 desktop and
+1180×820 iPad-sized) show one persistent boost pill and separate “Wheee!”
+encouragement at natural active-boost values, with no capture errors. The fix
+verdict identified no regressions in those two recaptures; it scores this fix
+only, and the earlier full-game review remains binding for other states. This
+closes the local gameplay-fix review, not the public release gates. PWA
+cache/offline and public-release verification against the retained v1.14 profile
+remain pending. Evidence is in
+`output/qa-zebra/final-browser/gameplay-finish-review.md`,
+`output/qa-zebra/final-browser/gameplay-fix-verdict.md`,
+`output/qa-zebra/final-browser/focused-qa-report.json`,
+`output/qa-zebra/final-browser/offline-zebra-report.json`,
+`output/qa-zebra/final-browser/performance-report.json`, and
+`output/qa-zebra/captures-blender-final/capture-report.json`.
+
+The existing app-wide palette, typography, controls and design rules in
+`DESIGN.md` and `.impeccable/design.json` remain authoritative; this extension
+adds scenery and the configured friend without changing global design files.
+The detector reported no primary findings and three advisory colors, all
+confirmed preexisting outside changed lines (`world.js:583`, `water.js:23`
+for `#557baa` and `#66b9c4`). They are recorded as existing drift, not repaired
+as part of this extension. The protected cast and prior World 21 definitions
+and mane colors matched exactly. Existing controls, camera, finale behavior,
+saves, preferences and offline behavior remain the product contract.
+
 ## Splash Water Park extension — October 23
 
 World 21 / internal ID20 appends Splash Water Park and Dipper, the existing
 white sculpted unicorn with a unique saffron mane (`#e89936`). Names and palette
 are original provisional choices. The owner authorized this next level only:
-finish its independent release, then stop; no Zebra implementation.
+finish its independent release, then stop. That historical gate is now complete; the subsequent Zebra-only authorization is recorded above.
 
 The [opened primary-image observations and construction contract](docs/WORLD_THEME_RESEARCH.md#world-21-visual-inspection-and-implementation--october-23)
 anchor real concave thick flumes, open-ended collared tubes, supported curves,

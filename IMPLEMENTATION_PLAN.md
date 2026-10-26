@@ -15,15 +15,42 @@ Fast Food Land / Sesame is COMPLETE: v1.13.0, merged PR #20 at
 release owner, including the genuine v1.12→v1.13 update and online/offline play.
 Its former stop gate was superseded by the owner's “OK build the next one.”
 
-Splash Water Park / Dipper is the **only active task**, internal ID20/world21.
-[Inspected manufacturer/operator images](docs/WORLD_THEME_RESEARCH.md#world-21-visual-inspection-and-implementation--october-23)
-guide thick supported slide shells, receiving pools and dense layered deck art.
-Source integration, factory geometry/batching/disposal checks, unchanged cast
-hashes, 23 unit tests and production build pass. Six real route views, 21-friend
-finales, focused browser QA, render measurements, fresh visual review and all
-release/live/PWA checks remain required. **Stop after Water Park.** Zebra and
-later worlds remain research only and need new explicit human authorization.
-Preserve all earlier IDs, palettes, progress, sculpted cast and PWA behavior.
+Splash Water Park / Dipper is COMPLETE: v1.14.0, main
+`2ff9b6a8197df0981f90c2b3b2e91699641fad8c`, fully published and live verified by
+the release owner. Genuine prior-release update/offline evidence remains in
+`output/qa-waterpark/live-v114-update-report.json` and `live-v114-offline-report.json`.
+
+On October 24 the owner said “Build the next level.” Zebra Savannah / Aster is
+now the **only active task**, internal ID21/world22. [Opened plains-zebra and
+habitat photographs](docs/WORLD_THEME_RESEARCH.md#world-22-visual-inspection-and-implementation--october-24)
+guide connected Blender-authored striped equid models, foreground adult/foal
+families, calm poses and dense layered savannah habitat. The owner rejected the
+initial procedural zebras and requested more realistic Blender models; previous
+visual approval and performance evidence are superseded. The replacement asset
+packet cleared a fresh anatomical/material review on October 25. Integration
+uses required startup GLB loading and six shared skin templates instanced after
+material baking in 16 chunks, with four original 2K maps. Decoded
+geometry/UV/texture/batching/disposal and protected-hash checks passed, along
+with 27 unit tests and the production build. The source smoke confirms all
+160 placements and shared-resource survival through world re-entry. Focused
+Chromium/Metal and WebKit asset-contract and save-migration checks passed;
+online catch, 22-friend collection/finale, reload and preferences passed.
+The isolated offline smoke loaded the cached GLB and completed the finale.
+Opening, midpoint, near-catch and settled finale captures at desktop and
+iPad-sized browser viewports have been inspected; measured final-camera deltas
+are below 0.01. A current-source Rainbow Meadow replay also preserved its
+appearance, existing 21-friend save, preferences and unrelated storage.
+
+The fresh gameplay review found overlapping boost-speed labels in the
+iPad-sized near-catch view. Commit `a188461` removes the duplicate transient
+label while preserving the persistent status pill; replacement desktop and
+iPad-sized near views show one visible boost label at a natural active boost
+state. The fresh fix review resolved that finding and returned `ship`; the
+earlier full review remains binding for other states. Visual review is clear.
+Release preparation is held until the final change set is approved, then
+required CI, publication and live-update gates remain. Version is 1.15.0.
+**Stop after Zebra Savannah.** Oz and later worlds remain research only and need
+new explicit human authorization.
 
 ## Home Screen and sharing — v1.8.0
 

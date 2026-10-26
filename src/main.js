@@ -169,7 +169,6 @@ try {
     },
     onEvent: (event, c) => {
       if (event !== "catch") audio.event(event);
-      if (event === "boost") view.encourage("Sparkle speed!");
       if (event === "jump") view.encourage("Wheee!");
       if (event === "bump") view.encourage("A little bump — keep going!");
       if (event === "catch") {
