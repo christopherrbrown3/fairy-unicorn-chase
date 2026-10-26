@@ -91,8 +91,9 @@ export class View {
     txt.textContent =
       c.distance < 12 ? "Almost there!" : `Follow ${c.level.unicorn}!`;
     fill.style.transform = `scaleX(${Math.max(0.08, 1 - (c.distance / c.level.lead) * 0.85)})`;
-    document.querySelector("#boost-status").textContent =
-      c.boost > 0 ? "Sparkle speed!" : "";
+    const boostStatus = document.querySelector("#boost-status"),
+      boostText = c.boost > 0 ? "Sparkle speed!" : "";
+    if (boostStatus.textContent !== boostText) boostStatus.textContent = boostText;
     if (
       c.time > 7 &&
       document.querySelector("#encouragement").textContent ===
