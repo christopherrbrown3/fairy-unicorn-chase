@@ -26,7 +26,7 @@ scene.
 | 1 / 19 | **The Thundermans inspired:** recognizable suburban super-family home and secret laboratory, paired warm/cool twin-power motifs, rabbit and gadget displays; no villain combat or new failure state. Provisional world/friend: Thundermans Town / Bolt. | COMPLETE — v1.12.0 published and live/profile/offline verified at 55e3ae6; PR #16 merged. |
 | 2 / 20 | **Fast food:** unmistakable pizza, burgers, fries and milkshakes, with dimensional food scenery and clear pursuit visibility. Fast Food Land / Sesame. | COMPLETE — v1.13.0 published and live/profile/offline verified; PR #20 merged at 2b5b09c. |
 | 3 / 21 | **Water park:** recognizable dimensional slides, structural supports and pools; safe path and unchanged controls. Splash Water Park / Dipper. | COMPLETE — v1.14.0 published and live/update/offline verified at 2ff9b6a. |
-| 4 / 22 | **Zebra savannah:** many visibly striped zebras distributed through the actual playable savannah, rather than a sparse zebra ornament or only a menu illustration. Zebra Savannah / Aster. | INTEGRATED — approved Blender replacement passed the fresh asset gate; integrated gameplay and release gates remain held. Stop after this world. |
+| 4 / 22 | **Zebra savannah:** many visibly striped zebras distributed through the actual playable savannah, rather than a sparse zebra ornament or only a menu illustration. Zebra Savannah / Aster. | VISUAL GATE CLEARED — Blender asset, unit/build, Chromium/Metal and WebKit focused browser QA, current-source Meadow preservation, eight route/finale captures and visible-cost checks passed. The single near-catch boost-label finding was fixed in `a188461` and cleared by fresh review; earlier full review remains binding elsewhere. Release/CI/deployment/live-update gates remain. Stop after this world. |
 | 5 / 23 | **Wizard of Oz:** the player actually follows a yellow brick road that **ends at Emerald City**. Repeating green castles around an endless loop does not satisfy this requirement. The endpoint must fit the forgiving pursuit/catch model. | Research brief saved; implementation paused by owner until a new human instruction. |
 | 6 / 24 | **Princesses:** many visible princess characters as well as princess objects and scenery; an empty palace landscape is insufficient. | Research brief saved; implementation paused by owner until a new human instruction. |
 | 7 / 25 | **Jungle:** a recognizable overhead canopy, vines and visibly swinging monkeys. Swinging must pause with the game and respect Gentle motion. | Research brief saved; implementation paused by owner until a new human instruction. |
@@ -249,8 +249,8 @@ prior procedural SHIP, geometry and render measurements are superseded.
 See the [opened reference photographs](WORLD_THEME_RESEARCH.md#world-22-visual-inspection-and-implementation--october-24),
 current `DESIGN_NOTES.md` contract and [Blender source provenance](../art/scenery/zebra/README.md).
 The replacement uses a connected skin, original baked UV coats and six
-adult/foal static pose templates. The coherent frozen five-view packet passed
-fresh anatomical/material review on October 25. Runtime integration requires
+adult/foal static pose templates. The coherent frozen five-view Blender packet
+passed fresh anatomical/material review on October 25. Runtime integration requires
 the GLB at startup and instances shared skins after material baking in each
 spatial chunk. Four 2K maps preserve independent posed UVs. Foreground
 families and waterhole pairs retain the intended 160-animal density, with cost
@@ -260,8 +260,22 @@ Integrated source checks passed actual GLTF decoding/coats, all six templates,
 160 placements, instance bounds, correct owned/shared disposal and re-entry.
 The lossless compressed GLB is 2,626,960 bytes; all decoded geometry attributes,
 oriented triangles and four 2K coat maps match the approved packet. Protected
-cast hashes, 27 unit tests and production build passed. Browser validation of
-startup failure, rendering, prior-21 records, six route views, two
-22-friend finales, measured visible cost, fresh full visual review, migration/
-preferences/Meadow checks, CI/publication and genuine prior-release live/offline
-update remain required. **Stop after Zebra Savannah**; no Oz implementation is authorized.
+cast hashes, 27 unit tests and production build passed. Focused Chromium/Metal
+and WebKit checks passed the loaded-asset contract and prior-21 migration,
+natural catch, collection/finale, reload and preferences. An isolated offline
+smoke completed a 22-friend finale with all four coats loaded. Eight opening,
+midpoint, near-catch and settled-finale images were opened; final captures
+record camera deltas below 0.01. A current-source Meadow replay preserved the
+prior world and save. Apple M2/Metal visible-frame counts and bounded CPU
+submission measurements are recorded in `docs/QUALITY.md`; they are not GPU or
+physical-iPad claims.
+
+The fresh gameplay finish review found duplicate boost-speed labels in the
+iPad-sized near-catch view. The scoped correction is in `a188461`: the transient
+center label was removed while the persistent accessible status pill remains.
+Replacement desktop and iPad-sized captures at a natural active boost state
+show one visible “Sparkle speed!” label each. The same reviewer resolved the
+finding and returned `ship`; that disposition covers the fix, while the earlier
+full review remains binding for other states. Visual gate is clear; release/CI/
+deployment/live-update gates remain. **Stop after Zebra Savannah**; no Oz
+implementation is authorized.

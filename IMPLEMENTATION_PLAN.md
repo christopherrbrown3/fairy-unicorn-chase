@@ -32,11 +32,25 @@ uses required startup GLB loading and six shared skin templates instanced after
 material baking in 16 chunks, with four original 2K maps. Decoded
 geometry/UV/texture/batching/disposal and protected-hash checks passed, along
 with 27 unit tests and the production build. The source smoke confirms all
-160 placements and shared-resource survival through world re-entry. Next: six
-route captures, 22-friend finales, focused browser QA,
-render measurements, fresh visual review and all release/live/PWA checks.
-**Stop after Zebra Savannah.** Oz and later worlds remain research only and
-need new explicit human authorization.
+160 placements and shared-resource survival through world re-entry. Focused
+Chromium/Metal and WebKit asset-contract and save-migration checks passed;
+online catch, 22-friend collection/finale, reload and preferences passed.
+The isolated offline smoke loaded the cached GLB and completed the finale.
+Opening, midpoint, near-catch and settled finale captures at desktop and
+iPad-sized browser viewports have been inspected; measured final-camera deltas
+are below 0.01. A current-source Rainbow Meadow replay also preserved its
+appearance, existing 21-friend save, preferences and unrelated storage.
+
+The fresh gameplay review found overlapping boost-speed labels in the
+iPad-sized near-catch view. Commit `a188461` removes the duplicate transient
+label while preserving the persistent status pill; replacement desktop and
+iPad-sized near views show one visible boost label at a natural active boost
+state. The fresh fix review resolved that finding and returned `ship`; the
+earlier full review remains binding for other states. Visual review is clear.
+Release preparation is held until the final change set is approved, then
+required CI, publication and live-update gates remain. Version is 1.15.0.
+**Stop after Zebra Savannah.** Oz and later worlds remain research only and need
+new explicit human authorization.
 
 ## Home Screen and sharing — v1.8.0
 

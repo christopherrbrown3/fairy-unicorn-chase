@@ -1,5 +1,49 @@
 # Release history
 
+## v1.15.0 — Zebra Savannah
+
+World 22 adds Aster to a savannah with Blender-authored hornless zebra adults
+and foals, three poses, original striped UV coats, waterhole families, layered
+grass, flat-topped trees and termite mounds. The compressed 2.63 MB GLB supplies
+six shared skin templates and four lossless 2048 × 2048 coat maps. The new
+world uses the established chase controls. Saves with all twenty-one earlier
+friends unlock Zebra Savannah while retaining progress, preferences and
+unrelated browser storage; the finale gathers all twenty-two friends.
+
+The reviewed browser captures cover opening, midpoint, a natural near-Aster
+catch, and the full finale at desktop and iPad-sized landscape viewports:
+[desktop opening](screenshots/zebra-opening-desktop.jpg) ·
+[midpoint](screenshots/zebra-middle-desktop.jpg) ·
+[near Aster](screenshots/zebra-near-aster-desktop.jpg) ·
+[finale](screenshots/zebra-finale-desktop.jpg) ·
+[iPad-sized opening](screenshots/zebra-opening-ipad-landscape.jpg) ·
+[midpoint](screenshots/zebra-middle-ipad-landscape.jpg) ·
+[near Aster](screenshots/zebra-near-aster-ipad-landscape.jpg) ·
+[finale](screenshots/zebra-finale-ipad-landscape.jpg).
+The near-catch views show naturally collected boost feedback once; the full
+finale captures follow the ordinary camera easing to a measured camera offset
+below 0.01. The tablet-sized captures are browser viewports, not physical iPad
+captures.
+
+Local verification passed 27 unit tests, the production build, focused
+Chromium/Metal and WebKit GLB-loading and migration checks, Aster's natural
+catch, collection/finale, reload and settings preservation, and a current-build
+Rainbow Meadow replay. A separate isolated offline smoke loaded the exact GLB
+from the service-worker cache and completed the twenty-two-friend finale. The
+genuine published v1.14 client transition and live/offline verification remain
+publication gates.
+
+On Chromium with the verified Apple M2/Metal backend, the near-catch view
+submitted 1.90 million visible triangles / 262 calls at Automatic and 1.14
+million / 175 at Low. The settled finale submitted 3.19 million / 1,271 at
+Automatic and 1.63 million / 836 at Low. Bounded 180-frame JavaScript CPU
+submission samples measured 1.5 / 3.3 ms median/p95 at Automatic and 1.0 / 2.9
+ms at Low for the near view; finale samples were 5.9 / 7.3 ms and 4.1 / 5.4 ms.
+These are renderer observations on this Mac, not GPU timings, sustained frame
+rates or physical iPad performance results. Full-lap logical geometry
+inventory is 5,080,924 triangles and includes repeated instances; it is not a
+visible-frame count.
+
 ## v1.14.0 — Splash Water Park
 
 World 21 adds Dipper, a white unicorn with a saffron mane, to a dimensional

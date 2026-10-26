@@ -1,55 +1,70 @@
 # Creative decisions
 
-## Zebra Savannah extension — October 24
+## Zebra Savannah extension — October 24–25
 
-World 22 / internal ID21 appends Zebra Savannah and Aster, the protected white
-sculpted unicorn with unique deep-orchid mane `#86539b`. The owner authorized
-this level only after Water Park's live release. Stop after Zebra; no Oz code.
+World 22 / internal ID 21 appends Zebra Savannah and Aster, the protected white
+sculpted unicorn with deep-orchid mane `#86539b`. The owner authorized this
+world only; stop after Zebra. The first procedural zebra version was rejected.
+The replacement uses six original Blender-authored adult/foal looking, grazing
+and walking templates with four original 2K UV coat maps. Fresh independent
+Astra review accepted the frozen art packet; fresh Luna full-game views accepted
+its art, density, protected cast and finale. The accepted stylized savannah
+keeps a broad warm path clear for Mia/Glender, Aster and blue potions, with
+golden grasses, seed heads, shrubs, mounds, flat-topped branching trees and
+rocky waterholes around 160 recognizable animals. Fine facial stripe waviness
+and repeated template markings remain disclosed polish limits.
 
-The owner rejected the initial procedural zebras and explicitly requested more
-realistic models authored in Blender. The earlier visual SHIP and render-cost
-numbers apply to that rejected version and do not approve this replacement.
-The corrected five-view asset packet passed fresh independent anatomical and
-material review on October 25. Release remains held for integrated gameplay QA.
+The asset contract at source freeze `026b5bbde8a31a7b347aa1a44061064f820ee349`
+was verified through actual GLTFLoader decoding and world construction: six
+shared skins, 160 placements in 80 skin batches across 16 chunks, four loaded
+maps, correct disposal and successful re-entry. Lossless Meshopt/WebP preserves
+decoded attributes, oriented triangles and coat pixels exactly. The GLB is
+2,626,960 bytes (SHA-256
+`38b4317489947bb2c38ff2ea13987a25bfe46178dc4cf5445de44a8b9a2b2fc8`); four
+2K RGBA maps with mipmaps estimate 85.33 MiB. Source smoke reports 5,080,924
+logical world triangles, not visible-frame cost. Twenty-seven unit tests and
+the production build passed.
 
-[Opened animal/habitat references](docs/WORLD_THEME_RESEARCH.md#world-22-visual-inspection-and-implementation--october-24)
-anchor original hornless plains zebras: connected shoulder/haunch/neck anatomy,
-long equid faces and dark muzzles, slim articulated legs, shaped hooves, cupped
-ears, short upright manes and tasseled tails. Blender creates six static
-adult/foal looking, grazing and walking templates, with original UV-painted
-coats. Foals have proportionally longer legs and warmer brown markings. The
-[editable master and reproducible source](art/scenery/zebra/README.md) preserve
-provenance; photographs are inspection references, never shipped textures.
+Local Chromium Metal on Apple M2 and WebKit checks passed, including 21-to-22
+save migration and a fresh isolated cold-offline catch through the 22-friend
+finale. Eight normal-flow desktop and iPad-sized Chromium captures cover opening,
+route midpoint, near chase and settled finales. The iPad-sized viewport is not a
+physical iPad. CPU submission samples (35 warmup plus 180 synchronous
+`game.frame()` submissions) measured near Auto 262 calls / 1,895,216 triangles,
+median 1.5 ms and p95 3.3 ms; near Low 175 / 1,138,102, median 1.0 ms and p95
+2.9 ms. Settled finale Auto measured 1,271 / 3,190,070, median 5.9 ms and p95
+7.3 ms; Low 836 / 1,628,640, median 4.1 ms and p95 5.4 ms. These are CPU-side
+submission timings, not GPU frame rate or device performance.
 
-The replacement contract requires varied tapered and branching regional
-markings, redirected haunch stripes, directional facial markings and unequal
-leg bands. The lower neck must blend into the shoulder mass in standing and
-grazing poses, without a hanging chest rim. A frozen side/front/three-quarter/
-family/grazing-closeup packet passed that review. Original Bezier surface paths
-are rasterized into continuous UV islands; four 2K maps distinguish adult/foal
-and standing/grazing skins. Fine facial waviness remains a disclosed polish limit.
+The independent full-game finish review found one iPad-sized near-chase defect:
+duplicate “Sparkle speed!” encouragement. Targeted UI fix `a18846107d84311bcac9369513a40fdc8712decc` removes the duplicate encouragement
+and makes the persistent boost pill's live announcement update only on state
+transitions; it changes no art, world, camera, saves or gameplay. Luna's fresh
+same-reviewer recaptures resolved this single material fix and returned
+`disposition: ship`: both ordinary near-chase frames (1440×900 desktop and
+1180×820 iPad-sized) show one persistent boost pill and separate “Wheee!”
+encouragement at natural active-boost values, with no capture errors. The fix
+verdict identified no regressions in those two recaptures; it scores this fix
+only, and the earlier full-game review remains binding for other states. This
+closes the local gameplay-fix review, not the public release gates. PWA
+cache/offline and public-release verification against the retained v1.14 profile
+remain pending. Evidence is in
+`output/qa-zebra/final-browser/gameplay-finish-review.md`,
+`output/qa-zebra/final-browser/gameplay-fix-verdict.md`,
+`output/qa-zebra/final-browser/focused-qa-report.json`,
+`output/qa-zebra/final-browser/offline-zebra-report.json`,
+`output/qa-zebra/final-browser/performance-report.json`, and
+`output/qa-zebra/captures-blender-final/capture-report.json`.
 
-A broad warm path stays clear for Mia/Glender, white Aster and blue potions.
-Golden tussocks, seed heads, shrubs, mounds, branching flat-topped trees and
-rocky waterholes layer the habitat around the 160-animal inventory. Counts
-alone do not establish quality: six actual route views must show abundant
-recognizable animals while the chase remains legible. Imported templates and
-coat maps are shared. Each of 16 spatial chunks extracts the skins before
-material baking and creates shared-geometry instances afterward; small features
-and habitat are material-batched. Chunks own their instance and merged buffers.
-Startup must await the actual GLB and fail visibly if required templates or
-coats cannot load, with no rejected primitive fallback or empty-herd success.
-
-Source checks passed: actual GLTFLoader decoding, four loaded maps, six shared
-skins, 160 placements across 80 skin batches in 16 chunks, correct disposal and
-world re-entry, 27 unit tests and the production build. Lossless Meshopt/WebP
-keeps decoded attributes, oriented triangles and coat pixels exact; the GLB is
-2,626,960 bytes. Four 2K RGBA maps plus mipmaps estimate 85.33 MiB. Logical
-geometry is 3,051,820 skin triangles and 5,080,924 world triangles; visible GPU
-cost is still unmeasured. Browser/render checks, 21-to-22 save migration, six
-route views, two 22-friend finales and fresh full visual review are pending. PWA cache/offline and public-release gates remain
-required. Protected cast/rigs, prior world records, controls, camera, finale,
-saves and preferences stay unchanged.
+The existing app-wide palette, typography, controls and design rules in
+`DESIGN.md` and `.impeccable/design.json` remain authoritative; this extension
+adds scenery and the configured friend without changing global design files.
+The detector reported no primary findings and three advisory colors, all
+confirmed preexisting outside changed lines (`world.js:583`, `water.js:23`
+for `#557baa` and `#66b9c4`). They are recorded as existing drift, not repaired
+as part of this extension. The protected cast and prior World 21 definitions
+and mane colors matched exactly. Existing controls, camera, finale behavior,
+saves, preferences and offline behavior remain the product contract.
 
 ## Splash Water Park extension — October 23
 
