@@ -1,5 +1,176 @@
 # Release history
 
+## v1.15.0 — Zebra Savannah
+
+World 22 adds Aster to a savannah with Blender-authored hornless zebra adults
+and foals, three poses, original striped UV coats, waterhole families, layered
+grass, flat-topped trees and termite mounds. The compressed 2.63 MB GLB supplies
+six shared skin templates and four lossless 2048 × 2048 coat maps. The new
+world uses the established chase controls. Saves with all twenty-one earlier
+friends unlock Zebra Savannah while retaining progress, preferences and
+unrelated browser storage; the finale gathers all twenty-two friends.
+
+The reviewed browser captures cover opening, midpoint, a natural near-Aster
+catch, and the full finale at desktop and iPad-sized landscape viewports:
+[desktop opening](screenshots/zebra-opening-desktop.jpg) ·
+[midpoint](screenshots/zebra-middle-desktop.jpg) ·
+[near Aster](screenshots/zebra-near-aster-desktop.jpg) ·
+[finale](screenshots/zebra-finale-desktop.jpg) ·
+[iPad-sized opening](screenshots/zebra-opening-ipad-landscape.jpg) ·
+[midpoint](screenshots/zebra-middle-ipad-landscape.jpg) ·
+[near Aster](screenshots/zebra-near-aster-ipad-landscape.jpg) ·
+[finale](screenshots/zebra-finale-ipad-landscape.jpg).
+The near-catch views show naturally collected boost feedback once; the full
+finale captures follow the ordinary camera easing to a measured camera offset
+below 0.01. The tablet-sized captures are browser viewports, not physical iPad
+captures.
+
+Local verification passed 27 unit tests, the production build, focused
+Chromium/Metal and WebKit GLB-loading and migration checks, Aster's natural
+catch, collection/finale, reload and settings preservation, and a current-build
+Rainbow Meadow replay. A separate isolated offline smoke loaded the exact GLB
+from the service-worker cache and completed the twenty-two-friend finale. The
+genuine published v1.14 client transition and live/offline verification remain
+publication gates.
+
+On Chromium with the verified Apple M2/Metal backend, the near-catch view
+submitted 1.90 million visible triangles / 262 calls at Automatic and 1.14
+million / 175 at Low. The settled finale submitted 3.19 million / 1,271 at
+Automatic and 1.63 million / 836 at Low. Bounded 180-frame JavaScript CPU
+submission samples measured 1.5 / 3.3 ms median/p95 at Automatic and 1.0 / 2.9
+ms at Low for the near view; finale samples were 5.9 / 7.3 ms and 4.1 / 5.4 ms.
+These are renderer observations on this Mac, not GPU timings, sustained frame
+rates or physical iPad performance results. Full-lap logical geometry
+inventory is 5,080,924 triangles and includes repeated instances; it is not a
+visible-frame count.
+
+## v1.14.0 — Splash Water Park
+
+World 21 adds Dipper, a white unicorn with a saffron mane, to a dimensional
+water park. Curving open flumes, an enclosed tube, twin racers, raised decks,
+connected stairs and supports lead into modeled receiving pools. A shallow
+splash-play pool, bucket, water wheels, umbrella loungers, float racks and
+planters fill the middle and foreground around a broad dry promenade. The
+course adds no new controls, water hazard or failure state.
+
+The opening views show an uncollected blue potion ahead; the natural near-catch
+views show Dipper on the same dry path:
+[desktop opening](screenshots/waterpark-opening-desktop.jpg) ·
+[middle](screenshots/waterpark-middle-desktop.jpg) ·
+[near Dipper](screenshots/waterpark-near-dipper-desktop.jpg) ·
+[iPad opening](screenshots/waterpark-opening-ipad-landscape.jpg) ·
+[middle](screenshots/waterpark-middle-ipad-landscape.jpg) ·
+[near Dipper](screenshots/waterpark-near-dipper-ipad-landscape.jpg).
+The complete twenty-one-friend finale fits both views:
+[desktop](screenshots/waterpark-finale-desktop.jpg) ·
+[iPad landscape](screenshots/waterpark-finale-ipad-landscape.jpg).
+[Rainbow Meadow preservation](screenshots/waterpark-meadow-preservation.jpg)
+shows the original course after selecting it from the expanded world list.
+
+Existing saves with all twenty earlier friends unlock Splash Water Park while
+preserving progress, sound/picture/motion settings and unrelated browser data.
+Focused Chromium/Metal and WebKit checks completed Dipper's catch, collection,
+21-friend finale, reload and preferences. The independent visual review cleared
+all eight route/finale views. Local validation passed 24 unit tests and the
+production build. The custom slide shells retain their indexed inner/outer
+surfaces and opposing floor normals through static batching; source smoke also
+confirmed all 413 owned world geometries are disposed on replacement.
+
+On the verified Apple M2/Metal Chromium renderer, the near-chase view submitted
+about 904,000 visible triangles and 226 calls at Automatic, or 486,000 / 146 at
+Low. The 21-friend finale submitted 3.00 million triangles and 844 calls at
+Automatic, or 1.51 million / 427 at Low. Bounded 180-frame CPU render-submission
+samples measured 1.1 ms median / 2.0 ms p95 for Automatic chase and 4.5 / 5.1 ms
+for the Automatic finale. These measurements are not GPU timings or physical
+iPad performance claims; the tablet images use an iPad-sized browser viewport.
+Research, geometry inventory and visual evidence are in the [Water Park
+brief](WORLD_THEME_RESEARCH.md#world-21-visual-inspection-and-implementation--october-23).
+
+## v1.13.0 — Fast Food Land
+
+World 20 adds Sesame, a white unicorn with a rose mane, to a colorful fast-food
+course filled with dimensional burgers, fries, pizza and milkshakes. Meal trays,
+booths, diners, kiosks and terraces form linked foreground, middle and background
+scenes around a broad playable road. Existing saves with all nineteen friends
+unlock Fast Food Land while retaining completed worlds, preferences and unrelated
+browser storage. The twenty-friend finale fits both desktop and tablet landscape
+views.
+
+The approved route review covers the opening, middle chase and natural near catch
+at desktop and iPad-landscape browser viewports:
+[desktop opening](screenshots/fast-food-opening-desktop.jpg) ·
+[middle](screenshots/fast-food-middle-desktop.jpg) ·
+[near Sesame](screenshots/fast-food-desktop-sesame-near.jpg) ·
+[iPad opening](screenshots/fast-food-opening-ipad-landscape.jpg) ·
+[middle](screenshots/fast-food-middle-ipad-landscape.jpg) ·
+[near Sesame](screenshots/fast-food-ipad-landscape-sesame-near.jpg).
+The desktop opening capture shows a blue potion pickup ahead.
+The twenty-friend finale is shown at both sizes:
+[desktop](screenshots/fast-food-finale-desktop.jpg) ·
+[iPad landscape](screenshots/fast-food-finale-ipad-landscape.jpg).
+
+Local checks passed 23 unit tests, the production build, and focused migration,
+chase, catch, collection, finale, reload, preferences and preservation scenarios
+in Chromium/Metal and WebKit. A genuine nineteen-friend save unlocked the new
+world and retained settings and unrelated storage. Review confirmed the food
+forms, layered route, Sesame, blue potion and complete finale. The density and
+source observations are in the [research brief](WORLD_THEME_RESEARCH.md#world-20-visual-inspection-and-implementation--october-23).
+Measurements on this Mac's Apple M2/Metal renderer found 229 visible calls and
+1.34 million triangles in the automatic-quality chase, and 150 calls / 0.78
+million triangles in low quality. The twenty-friend finale measured 1,199 calls
+and 2.93 million triangles in automatic quality, and 800 / 1.50 million in low
+quality. Across 180 submitted frames, median/p95 CPU submission time was
+1.6/2.4 ms in automatic chase quality and 1.0/1.5 ms in low; finale samples were
+4.9/5.6 ms and 4.1/4.7 ms. These measurements use a Mac desktop renderer at
+desktop and iPad-sized browser viewports; they are not GPU timings or physical
+iPad results. Physical iPad playtesting remains outstanding.
+
+The GitHub release notes record the deployment, bundle/cache hashes, safe update
+from v1.12.0, preserved save/preferences, offline launch, and live gameplay.
+
+## v1.12.0 — Thundermans Town
+
+World 19 adds Bolt, a white unicorn with a bright blue mane, to a super-powered
+neighborhood of family homes, open labs, gadget displays, twin-power landmarks,
+rabbit statues and thunder pylons. Existing saves with all eighteen earlier
+friends unlock Thundermans Town while preserving collection progress and
+preferences. The expanded finale gathers all nineteen friends in three raised
+rows while keeping the player, rainbow and controls in view.
+
+The route layers detailed suburban homes and planted yards around the playable
+lane, with open gadget labs, twin-power exhibits, rabbit displays and deeper
+garden rows. The visual inspiration and what the sources do not establish are
+recorded in [the design notes](../DESIGN_NOTES.md#thundermans-town-extension--october-22).
+
+The approved density review covers the opening, middle chase and near catch at
+desktop and iPad landscape sizes:
+[opening](screenshots/thundermans-town-opening-desktop.jpg) ·
+[middle](screenshots/thundermans-town-middle-desktop.jpg) ·
+[near Bolt](screenshots/thundermans-town-desktop-bolt-near.jpg) ·
+[iPad opening](screenshots/thundermans-town-opening-ipad-landscape.jpg) ·
+[iPad middle](screenshots/thundermans-town-middle-ipad-landscape.jpg) ·
+[iPad near Bolt](screenshots/thundermans-town-ipad-landscape-bolt-near.jpg).
+
+The desktop opening shows an uncollected potion on the route ahead:
+[potion view](screenshots/thundermans-town-potion-visible-ahead.jpg).
+
+The nineteen-friend finale is preserved from the original World 19 visual QA;
+the finale/cast code is unchanged by this scenery-only revision:
+[desktop](screenshots/thundermans-town-finale-desktop.jpg) ·
+[iPad landscape](screenshots/thundermans-town-finale-ipad-landscape.jpg).
+The [Rainbow Meadow preservation capture](screenshots/thundermans-town-meadow-preservation.jpg)
+also predates the density revision; Meadow and cast assets are unchanged.
+
+Local validation after the density revision passed 23 unit tests, the
+production build and focused rendered chase/migration checks in Chromium/Metal
+and WebKit. Automatic-quality Apple M2 Metal captures measured about 0.87–0.96
+million visible triangles and 266–298 draw calls; bounded frame submission
+samples were 3.2–3.4 ms median and 4.0–4.1 ms p95. Low quality measured about
+0.65 million triangles, 220–232 calls, and 3.1–3.2/3.7 ms median/p95. These are
+desktop measurements, not physical iPad results. Final CI and live release
+profile/offline checks are tracked by the release workflow; physical iPad
+playtesting remains outstanding.
+
 ## v1.11.0 — Sculpted character cast
 
 Mia, Glender and all eighteen unicorn variants use original skinned Blender

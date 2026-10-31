@@ -38,9 +38,19 @@ import { coralFan, kelp, tubeSponge, seaStar, pearlShell, coralGate, ReefLife } 
 import { christmasTree, presents, candyCane, snowFriend, holidayCottage, festiveGate, Snowfall } from "./christmas.js";
 import { pancakeStack, waffle, strawberry, sunnyEgg, orangeWedge, toastCottage, breakfastGate } from "./breakfast.js";
 import { officeTower, skylineTower, storefront, parkedTaxi, cityPlanter, cityBench, streetlight, clockTower } from "./downtown.js";
+import { familyHouse, rabbitDisplay, gadgetBench, twinPowerDisplay, heroMailbox, secretLab, thunderPylons, neighborhoodGarden, telekinesisDisplay } from "./thundermans.js";
+
+import { burger, fries, milkshake, mealTray, pizzaBoard, shakeCounter, dinerBooth, foodKiosk, burgerDiner, foodPlanter } from "./fastfood.js";
+
+import { slideComplex, splashPlay, loungeSet, floatRack, deckPlanter } from "./waterpark.js";
+
+import { zebraFamily, grassIsland, flatTopTree, termiteMound, waterhole } from "./savannah.js";
+
+import { loadZebraAssets, detachZebraSkins, addZebraSkinInstances } from "./zebra-assets.js";
 
 let authoredPotion = null;
 export async function loadWorldAssets() {
+  await loadZebraAssets();
   try {
     const gltf = await new GLTFLoader().loadAsync(
       new URL("assets/models/sparkle-potion.glb", document.baseURI).href,
@@ -140,6 +150,36 @@ export class World {
           let dist = level.width / 2 + 3 + rnd(seed) * 9;
           let prop;
           switch (level.theme) {
+            case "savannah": {
+              const variant = (j + k + (side > 0 ? 1 : 0)) % 3;
+              prop = [grassIsland, flatTopTree, grassIsland, termiteMound, grassIsland, flatTopTree, grassIsland, grassIsland, grassIsland][k](chunk, k === 1 || k === 5 ? 1.15 : 1.25, variant);
+              dist = k === 1 || k === 5 ? 25 : k === 3 ? 18 : 10 + rnd(seed) * 8;
+              break;
+            }
+            case "waterpark": {
+              const variant = (j + k + (side + 1) / 2) % 3;
+              prop = [loungeSet, floatRack, splashPlay, deckPlanter, loungeSet, floatRack, splashPlay, deckPlanter, loungeSet][k](chunk, 1, variant);
+              dist = k === 2 || k === 6 ? 19 : k === 3 || k === 7 ? 9 : 11.5;
+              break;
+            }
+            case "fastfood": {
+              // Each short neighborhood contains all four food families, grouped
+              // into meals, counters and restaurants rather than a sparse prop ring.
+              const variant = (j + k + (side + 1) / 2) % 3;
+              prop = [mealTray, pizzaBoard, fries, shakeCounter, dinerBooth, burger, foodKiosk, pizzaBoard, mealTray][k](chunk, 1.05, variant);
+              if (k === 6) dist = 18 + rnd(seed) * 2;
+              else if (k === 4) dist = 12.5 + rnd(seed) * 1.5;
+              else dist = 9.5 + rnd(seed) * 2.5;
+              if (k === 2) prop.scale.setScalar(1.35);
+              if (k === 5) prop.scale.setScalar(1.45);
+              break;
+            }
+            case "thundermans":
+              prop = [familyHouse, heroMailbox, twinPowerDisplay, rabbitDisplay, telekinesisDisplay, gadgetBench, familyHouse, neighborhoodGarden, twinPowerDisplay][k](chunk, 1.05, (j + k + (side + 1) / 2) % 3);
+              if (k === 0 || k === 6) dist = 19 + rnd(seed) * 3;
+              else if (k === 7) dist = 12.5 + rnd(seed) * 2;
+              else dist = 9.4 + rnd(seed) * 3.6;
+              break;
             case "downtown":
               prop = [officeTower, storefront, parkedTaxi, cityPlanter, officeTower, cityBench][k % 6](chunk);
               dist = [0, 1, 4].includes(k % 6) ? 16 + rnd(seed) * 5 : 9.2 + rnd(seed) * 2;
@@ -259,6 +299,7 @@ export class World {
             // Shopfronts and seats face the boulevard; parked cars follow it.
             prop.rotation.y = coursePoint(level, s).yaw + ([1, 5].includes(k % 6) ? side * Math.PI / 2 : 0);
           }
+          if (["thundermans", "fastfood", "waterpark"].includes(level.theme)) prop.rotation.y = coursePoint(level, s).yaw + side * Math.PI / 2;
           if (
             (level.theme === "castle" && k % 8 === 0) ||
             (level.theme === "palace" && k % 7 === 0) ||
@@ -291,6 +332,68 @@ export class World {
           }
         }
       }
+      if (level.theme === "savannah") {
+        for (const side of [-1, 1]) {
+          // Two adults and a foal form a readable foreground family. Stagger
+          // both sides so several groups enter each actual camera interval.
+          const s = (j + (side < 0 ? 0.08 : 0.55)) * length / 16;
+          const family = place(zebraFamily(chunk, 1.05, (j + (side > 0 ? 1 : 0)) % 3), level, s, side * 12.6);
+          family.rotation.y += side * Math.PI / 2 + 0.25;
+          const pool = place(waterhole(chunk, 1, j % 3), level, s + 27, side * 29);
+          pool.rotation.y += side * Math.PI / 2;
+          for (let i = 0; i < 12; i++) {
+            const ps = (j + i / 12) * length / 16;
+            place(grassIsland(chunk, 0.9 + rnd(j * 17 + i) * 0.7, i % 2), level, ps, side * (7.7 + rnd(i + j) * 2));
+          }
+        }
+      }
+      if (level.theme === "waterpark") {
+        // Supported slide complexes occupy the rear deck, with the pool outlets
+        // facing the promenade. Keep their whole footprint beyond the low layer.
+        for (const side of [-1, 1]) {
+          for (const offset of [0.05, 0.55]) {
+            const s = (j + offset + (side > 0 ? 0.12 : 0)) * length / 16;
+            const slides = place(slideComplex(chunk, 1, (j + (offset > 0.1 ? 1 : 0) + (side > 0 ? 1 : 0)) % 3), level, s, side * 33);
+            slides.rotation.y += side * Math.PI / 2;
+          }
+          for (let i = 0; i < 8; i++) {
+            const s = (j + i / 8) * length / 16;
+            place(box(chunk, i % 2 ? "#f3e7cd" : "#76969c", [0, 0, 0], [0.7, 0.05, 3.6]), level, s, side * 6.5, 0.04);
+            if (i % 2) place(deckPlanter(chunk, 0.8), level, s + 3, side * 8);
+          }
+        }
+      }
+      if (level.theme === "fastfood") {
+        // Restaurants are baked inside their local spatial chunk so only the
+        // nearby part of this dense food boulevard needs to submit its geometry.
+        for (const side of [-1, 1]) {
+          const s = (j + (side < 0 ? 0.2 : 0.67)) * length / 16;
+          const restaurant = place(j % 2 ? foodKiosk(chunk, 1.7, 1) : burgerDiner(chunk, 1.05, j % 3), level, s, side * 27);
+          restaurant.rotation.y += side * Math.PI / 2;
+          const terrace = place(dinerBooth(chunk, 1.1, j % 3), level, s + 9, side * 20);
+          terrace.rotation.y += side * Math.PI / 2;
+          place(milkshake(chunk, 1.8, j % 3), level, s - 10, side * 22);
+          // Raised cream-colored aprons, plants and checker trim connect the
+          // scenes, while the warm road remains visually quiet and unobstructed.
+          for (let i = 0; i < 8; i++) {
+            const ps = (j + i / 8) * length / 16;
+            const planter = place(foodPlanter(chunk, 0.7), level, ps + 2, side * 7.7);
+            planter.rotation.y += side * Math.PI / 2;
+            place(box(chunk, i % 2 ? "#fff0d2" : "#659e9f", [0, 0, 0], [1, 0.06, 4.8]), level, ps, side * 6.5, 0.04);
+          }
+        }
+      }
+      if (level.theme === "thundermans") {
+        // A second, staggered planted layer connects the houses between exhibits.
+        // Keep even the widest foliage behind the clear pursuit corridor.
+        for (const side of [-1, 1]) {
+          for (const offset of [0.27, 0.72]) {
+            const s = (j + offset) * length / 16;
+            const yard = place(neighborhoodGarden(chunk, 1.2, j % 2), level, s, side * 22);
+            yard.rotation.y += side * Math.PI / 2;
+          }
+        }
+      }
       if (level.theme === "downtown") {
         for (let i = 0; i < 10; i++) {
           const s = (j + i / 10) * length / 16;
@@ -302,7 +405,9 @@ export class World {
         }
       }
       this.glow.collect(chunk);
+      const zebraSkins = level.theme === "savannah" ? detachZebraSkins(chunk) : null;
       bake(chunk);
+      if (zebraSkins) addZebraSkinInstances(chunk, zebraSkins);
       chunk.traverse((o) => {
         if (o.isMesh) o.castShadow = true;
       });
@@ -415,6 +520,15 @@ export class World {
       }
       if (level.theme === "downtown" && i % 2 === 0) {
         place(clockTower(landmarks, 1.3), level, s + 38, (i % 4 ? 1 : -1) * 26);
+      }
+      if (level.theme === "thundermans") {
+        const side = i % 2 ? 1 : -1;
+        const home = place(familyHouse(landmarks, 1.45, i % 3), level, s + 24, side * 26);
+        home.rotation.y += side * Math.PI / 2;
+        const lab = place(secretLab(landmarks, 1.4), level, s + 46, -side * 23);
+        lab.rotation.y -= side * Math.PI / 2;
+        const pylons = place(thunderPylons(landmarks), level, s + 62, 0);
+        pylons.rotation.y += Math.PI;
       }
       if (level.theme === "minecraft") {
         place(mineGate(landmarks), level, s + 60, 0);
@@ -542,6 +656,12 @@ export class World {
                   ? strawberry(this.root, 0.8)
                   : level.theme === "downtown" && item.kind === "tree"
                     ? cityPlanter(this.root, 0.65)
+                    : level.theme === "fastfood" && item.kind === "tree"
+                      ? foodPlanter(this.root, 0.65)
+                      : level.theme === "waterpark" && item.kind === "tree"
+                        ? deckPlanter(this.root, 0.65)
+                        : level.theme === "savannah" && item.kind === "tree"
+                          ? termiteMound(this.root, 0.5)
             : obstacle(this.root, item.kind);
         place(g, level, item.s, item.lane);
         this.glow.collect(g);

@@ -1,5 +1,178 @@
 # Creative decisions
 
+## Zebra Savannah extension — October 24–25
+
+World 22 / internal ID 21 appends Zebra Savannah and Aster, the protected white
+sculpted unicorn with deep-orchid mane `#86539b`. The owner authorized this
+world only; stop after Zebra. The first procedural zebra version was rejected.
+The replacement uses six original Blender-authored adult/foal looking, grazing
+and walking templates with four original 2K UV coat maps. Fresh independent
+Astra review accepted the frozen art packet; fresh Luna full-game views accepted
+its art, density, protected cast and finale. The accepted stylized savannah
+keeps a broad warm path clear for Mia/Glender, Aster and blue potions, with
+golden grasses, seed heads, shrubs, mounds, flat-topped branching trees and
+rocky waterholes around 160 recognizable animals. Fine facial stripe waviness
+and repeated template markings remain disclosed polish limits.
+
+The asset contract at source freeze `026b5bbde8a31a7b347aa1a44061064f820ee349`
+was verified through actual GLTFLoader decoding and world construction: six
+shared skins, 160 placements in 80 skin batches across 16 chunks, four loaded
+maps, correct disposal and successful re-entry. Lossless Meshopt/WebP preserves
+decoded attributes, oriented triangles and coat pixels exactly. The GLB is
+2,626,960 bytes (SHA-256
+`38b4317489947bb2c38ff2ea13987a25bfe46178dc4cf5445de44a8b9a2b2fc8`); four
+2K RGBA maps with mipmaps estimate 85.33 MiB. Source smoke reports 5,080,924
+logical world triangles, not visible-frame cost. Twenty-seven unit tests and
+the production build passed.
+
+Local Chromium Metal on Apple M2 and WebKit checks passed, including 21-to-22
+save migration and a fresh isolated cold-offline catch through the 22-friend
+finale. Eight normal-flow desktop and iPad-sized Chromium captures cover opening,
+route midpoint, near chase and settled finales. The iPad-sized viewport is not a
+physical iPad. CPU submission samples (35 warmup plus 180 synchronous
+`game.frame()` submissions) measured near Auto 262 calls / 1,895,216 triangles,
+median 1.5 ms and p95 3.3 ms; near Low 175 / 1,138,102, median 1.0 ms and p95
+2.9 ms. Settled finale Auto measured 1,271 / 3,190,070, median 5.9 ms and p95
+7.3 ms; Low 836 / 1,628,640, median 4.1 ms and p95 5.4 ms. These are CPU-side
+submission timings, not GPU frame rate or device performance.
+
+The independent full-game finish review found one iPad-sized near-chase defect:
+duplicate “Sparkle speed!” encouragement. Targeted UI fix `a18846107d84311bcac9369513a40fdc8712decc` removes the duplicate encouragement
+and makes the persistent boost pill's live announcement update only on state
+transitions; it changes no art, world, camera, saves or gameplay. Luna's fresh
+same-reviewer recaptures resolved this single material fix and returned
+`disposition: ship`: both ordinary near-chase frames (1440×900 desktop and
+1180×820 iPad-sized) show one persistent boost pill and separate “Wheee!”
+encouragement at natural active-boost values, with no capture errors. The fix
+verdict identified no regressions in those two recaptures; it scores this fix
+only, and the earlier full-game review remains binding for other states. This
+closes the local gameplay-fix review, not the public release gates. PWA
+cache/offline and public-release verification against the retained v1.14 profile
+remain pending. Evidence is in
+`output/qa-zebra/final-browser/gameplay-finish-review.md`,
+`output/qa-zebra/final-browser/gameplay-fix-verdict.md`,
+`output/qa-zebra/final-browser/focused-qa-report.json`,
+`output/qa-zebra/final-browser/offline-zebra-report.json`,
+`output/qa-zebra/final-browser/performance-report.json`, and
+`output/qa-zebra/captures-blender-final/capture-report.json`.
+
+The existing app-wide palette, typography, controls and design rules in
+`DESIGN.md` and `.impeccable/design.json` remain authoritative; this extension
+adds scenery and the configured friend without changing global design files.
+The detector reported no primary findings and three advisory colors, all
+confirmed preexisting outside changed lines (`world.js:583`, `water.js:23`
+for `#557baa` and `#66b9c4`). They are recorded as existing drift, not repaired
+as part of this extension. The protected cast and prior World 21 definitions
+and mane colors matched exactly. Existing controls, camera, finale behavior,
+saves, preferences and offline behavior remain the product contract.
+
+## Splash Water Park extension — October 23
+
+World 21 / internal ID20 appends Splash Water Park and Dipper, the existing
+white sculpted unicorn with a unique saffron mane (`#e89936`). Names and palette
+are original provisional choices. The owner authorized this next level only:
+finish its independent release, then stop. That historical gate is now complete; the subsequent Zebra-only authorization is recorded above.
+
+The [opened primary-image observations and construction contract](docs/WORLD_THEME_RESEARCH.md#world-21-visual-inspection-and-implementation--october-23)
+anchor real concave thick flumes, open-ended collared tubes, supported curves,
+connected stairs/landings/rails and receiving pools. Original compact slide
+towers alternate curved coral, winding blue tube and twin yellow layouts.
+Foreground striped lounge sets, umbrellas, drinks tables, ring/towel racks and
+planting lead into shallow bucket/wheel/mini-slide play pools, with higher slide
+complexes behind. Density must be visible across all three chase stages; raw
+object counts do not substitute for opened desktop/iPad views.
+
+The 10.5-unit warm-stone route stays dry and clear for Mia/Glender, white Dipper
+and blue potions. Large structures stay beyond the low foreground layer. All new
+scenery is static and baked by material in 16 spatial chunks with shared source
+geometry. There is no slide gameplay, new failure state, UI redesign, camera or
+character change. Existing pause, Gentle motion, saves/preferences, 20 prior
+worlds, dynamic 21-friend finale and PWA behavior remain intact. Final desktop
+and iPad-landscape viewport captures received an independent visual SHIP review.
+Geometry inventory is not frame-rate evidence; physical iPad testing and
+live-release verification remain outstanding.
+
+
+## Fast Food Land extension — October 23
+
+World 20 appends Fast Food Land and Sesame, a white sculpted unicorn with a
+unique toasted-rose mane (`#b96d80`). Names and palette remain provisional.
+The [inspected primary-image observations](docs/WORLD_THEME_RESEARCH.md#world-20-visual-inspection-and-implementation--october-23)
+anchor ingredient shapes and dimensional food detail; the diners themselves are
+original storybook scenery. Golden sesame burgers have drooping cheese, wavy
+lettuce and single/double patties. Thick-crust pizzas and separate slices carry
+raised toppings; open fry cartons are full; three shake flavors have rim/base
+and rib detail, cream coils, straws and cherries.
+
+The first viewport and every route third should read as an abundant food
+boulevard: low meal trays/dips/napkins and herb planters in front, booths and
+three-flavor counters in the middle, larger round burger diners or pizza-roof
+kitchens behind. Stools, windows, striped awnings, squeeze bottles and checker
+trim make coherent restaurant scenes. Shape/scale/ingredient/grouping variation
+is required; a sparse ring of giant food tokens would not meet the contract.
+The quiet warm-rose road stays broad and clear, with blue potions and white
+Sesame distinct from the food. Mia/Glender remain the foreground anchor.
+
+All new scenery is static, shared and material-baked into 16 spatial chunks,
+including the restaurants. No new controls, failure state, animation system,
+player model, camera/finale or PWA change. Acceptance requires opened desktop
+and iPad landscape opening/middle/near-catch views, measured render cost, all
+20 friends in the finale and genuine previous-release progress/offline checks.
+The owner explicitly requested stopping after this release. Water Park and all
+later worlds remain unimplemented until new human authorization.
+
+## Thundermans Town extension — October 22
+
+### October 23 research and density revision
+
+The [nine-world research brief](docs/WORLD_THEME_RESEARCH.md) is part of the
+visual contract. Both twins share heat, freeze and telekinesis; the warm/cool
+exhibits do not assign an exclusive power to either twin. The house architecture
+is an original suburban interpretation, not a claimed replica of the show set.
+
+The stronger density request adds coherent planted yards, three house variants,
+finished side walls/dormers/porches/garages, a staggered middle garden/tree layer,
+telekinesis still-life exhibits and detailed lab shelves, gauges and pipework.
+A varied nine-slot sequence replaces two-thirds of the repeated mailboxes.
+The broad warm lane and existing sculpted cast remain the focal point. All new
+scenery is static and spatially material-batched; no motion or shared UI changes.
+Acceptance now requires opened desktop and iPad landscape views at the opening,
+middle chase and near catch, judging actual density, dimensional detail, varied
+silhouettes, layered depth, pursuit readability and measured render cost. Prior
+visual approval does not establish completion of this stronger requirement.
+
+
+World 19 appends Thundermans Town and Bolt, a white sculpted unicorn with an
+electric-blue mane; names and palette remain provisional. This original fan
+scenery takes its specific cues from a suburban super-family, Phoebe and Max's
+paired powers, Max's secret gadgets and a friendly Dr. Colosso-inspired rabbit.
+A two-story home with siding, porch, paired windows and attached garage anchors
+the neighborhood. Open secret-laboratory pavilions expose potion benches,
+control screens and warm/cool coil towers. Rabbit pedestals, twin-power exhibits
+and mailbox lightning badges connect the smaller scenery to those landmarks.
+
+The visual contract keeps the sculpted Mia, Glender and Bolt prominent on a warm,
+clear route. Homes and labs stand back from the road; paired lightning pylons
+stand beyond its edges with no crossbar to hide the chased friend. Cool cyan and
+warm amber identify the twin motifs, while navy equipment, cream trim and green
+lawns inherit the storybook palette. New scenery is static, shared procedural
+geometry baked into the existing spatial material batches. No downloaded show
+assets, human-character replacements, combat, flashing effect or new controls.
+
+The existing sculpted character GLBs, rigs and runtime remain unchanged. Above
+18 friends, the finale uses bounded rows, physical risers and a wider camera
+with portrait adjustment; the 18-or-fewer arrangement remains unchanged. The
+nine-world plan records the growing-cast review requirement for every release.
+
+Research: Nickelodeon's official [Max profile](https://www.nick.com/info-page/ouml5i/max)
+describes his subterranean lair, gadgets, potions and Dr. Colosso, the rabbit.
+The official [Phoebe profile](https://www.nick.com/info-page/zu00oa/phoebe)
+describes her powers; Max's profile lists the same telekinesis, heat breath and
+freeze breath. The original [2013 series announcement](https://ir.paramount.com/static-files/bd566100-e1ce-45ab-9519-063923ebaad7)
+establishes the secret-superhero-family premise. These sources guide the
+original family-home and open-lab interpretation; the scenery is not a replica
+of a verified show set.
+
 ## Big City Downtown extension
 
 World 18 appends Big City Downtown and Metro, a white unicorn with deep periwinkle hair. These names and colors are provisional. A broad blue-slate boulevard with pale sidewalks and restrained lane dashes runs through a layered pastel skyline. Tall office blocks have repeated window grids and stepped skyscrapers rise farther back. Striped shop awnings, parked yellow taxis, streetlights, planters and benches establish the street-level scale; station clock towers act as major urban landmarks.

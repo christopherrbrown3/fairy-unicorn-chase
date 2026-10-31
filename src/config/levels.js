@@ -18,6 +18,10 @@ export const MANES = [
   "#b94350",
   "#a86e43",
   "#6765b5",
+  "#3d92d6",
+  "#b96d80",
+  "#e89936",
+  "#86539b",
 ];
 const worlds = [
   [
@@ -128,6 +132,10 @@ const worlds = [
   ["Christmas Village", "Holly", "christmas", "#a5c5df", "#d4e2e9", "#dcbda0", "#b0c5d3", "#c85b6b"],
   ["Pancake Picnic", "Maple", "breakfast", "#f4d8b4", "#e8dcb9", "#a9cfd1", "#d4bd91", "#cf8e64"],
   ["Big City Downtown", "Metro", "downtown", "#bbd9e7", "#adc2bb", "#96a9af", "#8aa9a6", "#e5b45e"],
+  ["Thundermans Town", "Bolt", "thundermans", "#bbddeb", "#9bc6a2", "#f1d9af", "#6b9b86", "#e8b95d"],
+  ["Fast Food Land", "Sesame", "fastfood", "#c8e4e6", "#aecab8", "#c3a6a1", "#79a897", "#ce685c"],
+  ["Splash Water Park", "Dipper", "waterpark", "#c3e5ed", "#c7d5bc", "#e5c6a2", "#7dac9a", "#e89936"],
+  ["Zebra Savannah", "Aster", "savannah", "#c9e4e5", "#c6b87e", "#e4c5a1", "#929d70", "#86539b"],
 ];
 export const LEVELS = worlds.map(
   ([name, unicorn, theme, sky, ground, road, foliage, accent], i) => ({

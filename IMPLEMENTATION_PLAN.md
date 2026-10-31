@@ -2,6 +2,56 @@
 
 The owner's complete brief is the scope. Checked items mean implemented and verified; external completion needs live evidence.
 
+## Active work — nine sequential worlds, October 22
+
+The [nine-world release plan](docs/NINE_WORLD_RELEASE_PLAN.md) records the exact
+requested order and gates. Thundermans Town is COMPLETE: v1.12.0 / `55e3ae6`,
+merged PR #16, successful main/Pages run 39958486106, and verified genuine
+v1.11→v1.12 profile transition, preserved IDs/preferences, online/offline Bolt
+catch, 19-friend finale and collection.
+
+Fast Food Land / Sesame is COMPLETE: v1.13.0, merged PR #20 at
+`2b5b09c78befade3c27440f8836bbb0863620e92`, published and live verified by the
+release owner, including the genuine v1.12→v1.13 update and online/offline play.
+Its former stop gate was superseded by the owner's “OK build the next one.”
+
+Splash Water Park / Dipper is COMPLETE: v1.14.0, main
+`2ff9b6a8197df0981f90c2b3b2e91699641fad8c`, fully published and live verified by
+the release owner. Genuine prior-release update/offline evidence remains in
+`output/qa-waterpark/live-v114-update-report.json` and `live-v114-offline-report.json`.
+
+On October 24 the owner said “Build the next level.” Zebra Savannah / Aster is
+now the **only active task**, internal ID21/world22. [Opened plains-zebra and
+habitat photographs](docs/WORLD_THEME_RESEARCH.md#world-22-visual-inspection-and-implementation--october-24)
+guide connected Blender-authored striped equid models, foreground adult/foal
+families, calm poses and dense layered savannah habitat. The owner rejected the
+initial procedural zebras and requested more realistic Blender models; previous
+visual approval and performance evidence are superseded. The replacement asset
+packet cleared a fresh anatomical/material review on October 25. Integration
+uses required startup GLB loading and six shared skin templates instanced after
+material baking in 16 chunks, with four original 2K maps. Decoded
+geometry/UV/texture/batching/disposal and protected-hash checks passed, along
+with 27 unit tests and the production build. The source smoke confirms all
+160 placements and shared-resource survival through world re-entry. Focused
+Chromium/Metal and WebKit asset-contract and save-migration checks passed;
+online catch, 22-friend collection/finale, reload and preferences passed.
+The isolated offline smoke loaded the cached GLB and completed the finale.
+Opening, midpoint, near-catch and settled finale captures at desktop and
+iPad-sized browser viewports have been inspected; measured final-camera deltas
+are below 0.01. A current-source Rainbow Meadow replay also preserved its
+appearance, existing 21-friend save, preferences and unrelated storage.
+
+The fresh gameplay review found overlapping boost-speed labels in the
+iPad-sized near-catch view. Commit `a188461` removes the duplicate transient
+label while preserving the persistent status pill; replacement desktop and
+iPad-sized near views show one visible boost label at a natural active boost
+state. The fresh fix review resolved that finding and returned `ship`; the
+earlier full review remains binding for other states. Visual review is clear.
+Release preparation is held until the final change set is approved, then
+required CI, publication and live-update gates remain. Version is 1.15.0.
+**Stop after Zebra Savannah.** Oz and later worlds remain research only and need
+new explicit human authorization.
+
 ## Home Screen and sharing — v1.8.0
 
 - [x] Generate and save unicorn icons and an illustrated share card; wire static share metadata.
@@ -32,7 +82,13 @@ Physical Home Screen installation and an actual Messages preview remain device c
 Authenticated owner: `christopherrbrown3`. Public repository: https://github.com/christopherrbrown3/fairy-unicorn-chase. Namecheap authoritative nameservers: `dns1.registrar-servers.com`, `dns2.registrar-servers.com`. Authoritative DNS confirms explicit `fuc.christopherbrown.ai → christopherrbrown3.github.io`. Existing wildcard is untouched. Existing account-domain verification TXT is present; Pages reports domain verified. Repository Pages source is Actions, custom domain is configured, certificate approved, HTTPS enforced. Live HTTPS returns 200; HTTP and the GitHub Pages fallback redirect to HTTPS. Actual deployed JavaScript, CSS, font and GLB return 200 and render with zero game console errors.
 
 ## Next step
-Implementation is complete. The remaining owner activity is a physical iPad/child playtest, then any child-led creative changes. The first CI browser run exposed wall-clock timing assumptions on a slow software GPU; input tests now advance the real simulation after checking actual keyboard/touch input, preserving their assertions. The owner's reported reversed arrows were corrected and verified on the live site, with regression assertions on projected screen position.
+The original implementation is complete; the active scope is now the nine
+sequential worlds linked above. A physical iPad/child playtest remains pending.
+The first CI browser run exposed wall-clock timing assumptions on a slow software
+GPU; input tests now advance the real simulation after checking actual
+keyboard/touch input, preserving their assertions. The owner's reported reversed
+arrows were corrected and verified on the live site, with regression assertions
+on projected screen position.
 
 ## Validation
 Eight deterministic tests and ten browser cases passed locally in Chromium and WebKit. Root/subpath asset checks passed. GitHub Actions build, five Chromium cases and Pages deployment passed, including steering-fix run https://github.com/christopherrbrown3/fairy-unicorn-chase/actions/runs/38321320666. Nineteen real screenshots captured and inspected. Independent visual review scored both requested mechanical fixes resolved and returned ship at that scope. The polished README and gallery were committed separately near the end; GitHub's rendered README loaded all seven inline images correctly and every local documentation link exists. Physical iPad testing remains unperformed. See docs/QUALITY.md for the owner's device checklist.
