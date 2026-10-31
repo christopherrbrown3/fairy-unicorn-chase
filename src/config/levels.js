@@ -166,6 +166,11 @@ export const MAGIC = {
   particles: 90,
 };
 
+// The course rises and falls with its loop angle only, so shaders can recover
+// ground height from any world position as groundWave * sin(4 * atan(x, -z)).
+export const groundWave = (level) =>
+  level.theme === "mountain" ? 2.5 : level.theme === "cloud" ? 1.2 : 0.35;
+
 export function coursePoint(level, s, lateral = 0) {
   const t = s / level.radius;
   const r =
@@ -181,9 +186,7 @@ export function coursePoint(level, s, lateral = 0) {
   const norm = Math.hypot(tx, tz),
     fx = tx / norm,
     fz = tz / norm;
-  const h =
-    (level.theme === "mountain" ? 2.5 : level.theme === "cloud" ? 1.2 : 0.35) *
-    Math.sin(t * 4);
+  const h = groundWave(level) * Math.sin(t * 4);
   // In a chase camera, forward × up is screen-right: (-fz, 0, fx).
   return {
     x: x - fz * lateral,

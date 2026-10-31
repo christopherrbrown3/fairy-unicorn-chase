@@ -103,7 +103,7 @@ export function holidayCottage(parent, scale = 1) {
   cap.rotation.y = Math.PI / 4;
   box(g, green, [0, 1.1, 1.73], [1, 2.2, 0.1]);
   for (const x of [-1.45, 1.45]) {
-    mesh(g, geometry("box", () => new THREE.BoxGeometry(1, 1, 1)), "#ffde8c", [x, 1.85, 1.73], [0.9, 1.1, 0.08], { emissive: "#ffb951", emissiveIntensity: 0.3 });
+    mesh(g, geometry("box", () => new THREE.BoxGeometry(1, 1, 1)), "#ffde8c", [x, 1.85, 1.73], [0.9, 1.1, 0.08], { emissive: "#ffb951", emissiveIntensity: 0.3 }).userData.glow = { size: 2.2, strength: 0.3 };
     box(g, "#fff1d5", [x, 1.85, 1.8], [0.08, 1.13, 0.06]);
     box(g, "#fff1d5", [x, 1.85, 1.8], [0.93, 0.08, 0.06]);
   }

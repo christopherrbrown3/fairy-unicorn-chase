@@ -23,8 +23,9 @@ import {
   potion,
   obstacle,
 } from "./props.js";
-import { terrainMaterial } from "../art/atmosphere.js";
+import { terrainMaterial, terrainTime } from "../art/atmosphere.js";
 import { dressVerge, AmbientMagic } from "./dressing.js";
+import { Glow } from "../art/glow.js";
 import { WaterGardens } from "./water.js";
 import { makeButterfly, animateButterfly } from "../characters/butterfly.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
@@ -99,7 +100,10 @@ export class World {
       level.ground,
       [0, -1.6, 0],
     );
-    ground.material = terrainMaterial(level.ground);
+    // Snow, cloud, stone and night grounds keep their colour; meadows get warm and cool drifts.
+    const warmth = ["cloud", "christmas", "crystal", "night", "spooky", "underwater", "downtown"].includes(level.theme) ? 0.35 : 1;
+    const groundPattern = level.theme === "underwater" ? "caustics" : "";
+    ground.material = terrainMaterial(level.ground, { warmth, pattern: groundPattern });
     ground.userData.ownedMaterial = true;
     for (const [width, y, color] of [
       [35, -0.13, level.ground],
@@ -108,16 +112,23 @@ export class World {
     ]) {
       const m = mesh(this.root, roadGeometry(level, width, y), color);
       m.userData.ownedGeometry = true;
+      const road = color === level.road;
       m.material = terrainMaterial(color, {
-        road: color === level.road,
+        road,
         edge: level.ground,
         halfwidth: width,
+        verge: road ? -1 : level.width / 2,
+        warmth,
+        pattern: road && level.theme === "breakfast" ? "gingham" : groundPattern,
+        length: Math.PI * 2 * level.radius,
       });
       m.userData.ownedMaterial = true;
     }
     this.verge = dressVerge(this.root, level);
     this.water = new WaterGardens(this.root, level);
     this.ambient = new AmbientMagic(this.root, level);
+    this.glow = new Glow(this.root, 640);
+    this.glowPosition = new THREE.Vector3();
     const length = Math.PI * 2 * level.radius;
     for (let j = 0; j < 16; j++) {
       const chunk = group(this.root);
@@ -290,6 +301,7 @@ export class World {
           lamp.rotation.y += side < 0 ? Math.PI : 0;
         }
       }
+      this.glow.collect(chunk);
       bake(chunk);
       chunk.traverse((o) => {
         if (o.isMesh) o.castShadow = true;
@@ -449,6 +461,7 @@ export class World {
         40,
       );
     }
+    this.glow.collect(landmarks);
     bake(landmarks);
     if (["night", "spooky"].includes(level.theme)) {
       this.sky = group(this.root);
@@ -495,6 +508,9 @@ export class World {
         [1, 1, 1],
         { emissive: "#fff2c0", emissiveIntensity: 0.5 },
       );
+      // The moon follows the camera at sky distance, so its halo never fades.
+      this.moonGlow = new Glow(this.sky, 1, { fadeNear: 1e4, fadeFar: 2e4 });
+      this.moonGlow.add(this.moon.position, "#fff0c1", 30, 0.32);
     }
     if (level.theme === "spooky") {
       for (let i = 0; i < 28; i++) {
@@ -512,6 +528,7 @@ export class World {
         place(g, level, item.s, item.lane, 0.6);
         g.userData = { ...item, baseY: g.position.y };
         this.potions.push(g);
+        g.userData.glowIndex = this.glow.add(g.position, "#9ae9ff", 2.7, 0.62);
       } else {
         const g = level.theme === "minecraft" && item.kind === "tree"
           ? blockTree(this.root, 0.65)
@@ -527,6 +544,7 @@ export class World {
                     ? cityPlanter(this.root, 0.65)
             : obstacle(this.root, item.kind);
         place(g, level, item.s, item.lane);
+        this.glow.collect(g);
         bake(g);
       }
     }
@@ -564,7 +582,9 @@ export class World {
         31,
         direction.z * 100 - direction.x * 25,
       );
+      this.moonGlow.set(0, this.moon.position, 30);
     }
+    terrainTime.value = time;
     this.ambient.update(time, chase?.s ?? 0);
     this.verge.update(time);
     this.water.update(time);
@@ -576,6 +596,12 @@ export class World {
         p.userData.baseY + Math.sin(time * 2 + p.userData.s) * 0.15;
       const lap = chase ? Math.floor(chase.s / chase.lap) : 0;
       p.visible = !chase?.collected.has(`${lap}:${p.userData.id}`);
+      this.glowPosition.copy(p.position).y += 0.65;
+      this.glow.set(
+        p.userData.glowIndex,
+        this.glowPosition,
+        p.visible ? 2.7 + Math.sin(time * 3 + p.userData.s) * 0.22 : 0,
+      );
     }
     for (const ghost of this.ghosts) {
       const d = ghost.userData;

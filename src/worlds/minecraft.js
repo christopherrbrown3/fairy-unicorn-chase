@@ -72,7 +72,7 @@ export function friendlyCreeper(parent) {
 export function torch(parent) {
   const g = group(parent);
   box(g, "#93663f", [0, 1.4, 0], [0.2, 2.8, 0.2]);
-  mesh(g, geometry("box", () => new THREE.BoxGeometry(1, 1, 1)), "#ffd36a", [0, 2.85, 0], [0.35, 0.55, 0.35], {emissive: "#ffb53e", emissiveIntensity: 0.8});
+  mesh(g, geometry("box", () => new THREE.BoxGeometry(1, 1, 1)), "#ffd36a", [0, 2.85, 0], [0.35, 0.55, 0.35], {emissive: "#ffb53e", emissiveIntensity: 0.8}).userData.glow = { size: 2.6, strength: 0.45 };
   return g;
 }
 

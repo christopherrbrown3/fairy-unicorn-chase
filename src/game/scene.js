@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import { LEVELS, coursePoint } from "../config/levels.js";
+import { LEVELS, coursePoint, groundWave } from "../config/levels.js";
 import {
   makeRider,
   makeCollectionUnicorn,
@@ -19,7 +19,13 @@ import {
   tube,
   cylinder,
 } from "../art/primitives.js";
-import { Atmosphere, contactShadowMaterial } from "../art/atmosphere.js";
+import {
+  Atmosphere,
+  contactShadowMaterial,
+  setStorybookLevel,
+  terrainMaterial,
+  paintDetail,
+} from "../art/atmosphere.js";
 import { rainbow, flower } from "../worlds/props.js";
 
 export class GameScene {
@@ -45,9 +51,12 @@ export class GameScene {
     });
     this.renderer.setPixelRatio(this.pixelRatio());
     this.renderer.outputColorSpace = THREE.SRGBColorSpace;
-    this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    // Neutral tone mapping keeps authored pastels and character colours true;
+    // ACES washed them toward grey and shifted the golden manes.
+    this.renderer.toneMapping = THREE.NeutralToneMapping;
     this.renderer.toneMappingExposure = 1.05;
     this.renderer.shadowMap.enabled = quality !== "low";
+    paintDetail.value = quality === "low" ? 0 : 1;
     this.renderer.shadowMap.type = THREE.PCFShadowMap;
     this.scene = new THREE.Scene();
     this.fill = new THREE.HemisphereLight("#fff5e8", "#668f91", 1.65);
@@ -158,6 +167,7 @@ export class GameScene {
     this.quality = value;
     this.renderer.setPixelRatio(this.pixelRatio());
     this.setShadows(value !== "low");
+    paintDetail.value = value === "low" ? 0 : 1;
     this.frameCount = 0;
     this.averageFrame = 16;
     this.resize();
@@ -183,14 +193,22 @@ export class GameScene {
     this.world = new World(this.scene, LEVELS[id]);
     this.level = LEVELS[id];
     const dark = ["night", "crystal", "spooky"].includes(this.level.theme);
-    this.scene.fog.color.copy(this.atmosphere.setLevel(this.level));
+    const horizon = this.atmosphere.setLevel(this.level);
+    this.scene.fog.color.copy(horizon);
     this.scene.fog.near = dark ? 48 : 70;
     this.scene.fog.far = dark ? 150 : 185;
-    this.fill.color.set(dark ? "#c4c7ff" : "#fff5e8");
-    this.fill.groundColor.set(dark ? "#575b89" : "#668f91");
-    this.fill.intensity = dark ? 1.1 : 1.65;
-    this.sun.color.set(dark ? "#c5d6ff" : "#fff0d5");
-    this.sun.intensity = dark ? 1.7 : 2.65;
+    setStorybookLevel(this.level, horizon, groundWave(this.level));
+    // A warm key over a cool sky fill and a ground-tinted bounce: shade reads as
+    // soft colour rather than grey, and every world's light matches its palette.
+    this.fill.color
+      .set(dark ? "#d2cff0" : "#f2f4ff")
+      .lerp(new THREE.Color(this.level.sky), dark ? 0 : 0.25);
+    this.fill.groundColor
+      .set(this.level.ground)
+      .multiplyScalar(dark ? 0.5 : 0.6);
+    this.fill.intensity = dark ? 1.1 : 1.45;
+    this.sun.color.set(dark ? "#c5d6ff" : "#fff5e8");
+    this.sun.intensity = dark ? 1.7 : 3.05;
     this.rim.color.set(dark ? "#d6a6f1" : "#c5e7ff");
     if (this.level.theme === "underwater") {
       this.scene.fog.near = 50;
@@ -286,12 +304,14 @@ export class GameScene {
     this.world.root.visible = false;
     this.celebrationArt = group(this.scene);
     const base = coursePoint(this.level, s);
-    cylinder(
+    const island = cylinder(
       this.celebrationArt,
       this.level.ground,
       [base.x, base.y - 0.6, base.z],
       [32, 1, 32],
     );
+    island.material = terrainMaterial(this.level.ground);
+    island.userData.ownedMaterial = true;
     cylinder(
       this.celebrationArt,
       this.level.road,
@@ -323,13 +343,15 @@ export class GameScene {
       () => new THREE.ShapeGeometry(heartShape, 8),
     );
     for (let i = 0; i < 12; i++) {
+      // Hearts face the camera, away from the sun, so they carry their own soft light.
+      const color = ["#ed9ab6", "#ffce7e", "#a5dbe5"][i % 3];
       const heart = mesh(
         this.celebrationArt,
         heartGeo,
-        ["#ed9ab6", "#ffce7e", "#a5dbe5"][i % 3],
+        color,
         [0, 0, 0],
         [0.32, 0.32, 0.32],
-        { side: THREE.DoubleSide },
+        { side: THREE.DoubleSide, emissive: color, emissiveIntensity: 0.55 },
       );
       this.position(
         heart,
@@ -526,6 +548,7 @@ export class GameScene {
       if (++this.frameCount === 300 && this.averageFrame > 24) {
         this.renderer.setPixelRatio(1);
         this.setShadows(false);
+        paintDetail.value = 0;
         this.resize();
       }
     }
@@ -555,7 +578,7 @@ export function renderPortraits() {
   renderer.setSize(220, 180);
   renderer.setPixelRatio(1);
   renderer.outputColorSpace = THREE.SRGBColorSpace;
-  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMapping = THREE.NeutralToneMapping;
   renderer.toneMappingExposure = 1.05;
   const environment = createCharacterEnvironment(renderer);
   const scene = new THREE.Scene();
