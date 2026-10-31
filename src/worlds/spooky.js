@@ -6,7 +6,7 @@ const sphere = (g, color, p, s, extra = {}) => mesh(g,
   geometry("spooky-orb", () => new THREE.SphereGeometry(1, 12, 8)), color, p, s, extra);
 const litBox = (g, p, s) => mesh(g, geometry("box", () => new THREE.BoxGeometry(1, 1, 1)), "#ffe2a0", p, s, glow);
 
-export function pumpkin(parent, scale = 1) {
+export function pumpkin(parent, scale = 1, lit = true) {
   const g = group(parent);
   for (let i = 0; i < 7; i++) {
     const a = i * Math.PI * 2 / 7;
@@ -14,7 +14,9 @@ export function pumpkin(parent, scale = 1) {
   }
   cylinder(g, "#69816b", [0, 1.3, 0], [0.12, 0.3, 0.12]).rotation.z = -0.2;
   for (const x of [-0.25, 0.25]) sphere(g, "#fff0b4", [x, 0.78, 0.75], [0.09, 0.13, 0.035], glow);
-  mesh(g, geometry("pumpkin-smile", () => new THREE.TorusGeometry(0.26, 0.045, 5, 12, Math.PI)), "#fff0b4", [0, 0.55, 0.77], [1, 0.65, 1], glow).rotation.z = Math.PI;
+  const smile = mesh(g, geometry("pumpkin-smile", () => new THREE.TorusGeometry(0.26, 0.045, 5, 12, Math.PI)), "#fff0b4", [0, 0.55, 0.77], [1, 0.65, 1], glow);
+  smile.rotation.z = Math.PI;
+  if (lit) smile.userData.glow = { size: 2.1, strength: 0.55 };
   g.scale.setScalar(scale);
   return g;
 }
@@ -53,8 +55,9 @@ export function spookyHouse(parent, scale = 1) {
   box(g, "#594c6d", [0, 1.25, 1.75], [1.25, 2.5, 0.1]);
   sphere(g, "#ffd79a", [0.4, 1.25, 1.84], [0.08, 0.08, 0.06], glow);
   for (const x of [-1.5, 1.5]) for (const y of [1.5, 4]) window(g, x, y, 1.75);
-  sphere(g, "#ffe2a0", [0, 5.8, 1.9], [0.4, 0.4, 0.08], glow);
-  for (const x of [-1.2, 1.2]) pumpkin(g, 0.65).position.set(x, 0, 2.2);
+  sphere(g, "#ffe2a0", [0, 5.8, 1.9], [0.4, 0.4, 0.08], glow).userData.glow = { size: 2.2, strength: 0.45 };
+  // Porch pumpkins share the house's lantern glow rather than adding their own.
+  for (const x of [-1.2, 1.2]) pumpkin(g, 0.65, false).position.set(x, 0, 2.2);
   g.scale.setScalar(scale);
   return g;
 }
@@ -67,7 +70,7 @@ export function spookyHall(parent) {
     spookyHouse(g, 1.5).position.set(x, 0, 0);
     box(g, "#8e7e9b", [Math.sign(x) * 7.3, 3.5, -3], [1.2, 7, 10]);
     for (const z of [-6, -2, 2]) {
-      litBox(g, [Math.sign(x) * 6.65, 3.2, z], [0.12, 1.2, 0.65]);
+      litBox(g, [Math.sign(x) * 6.65, 3.2, z], [0.12, 1.2, 0.65]).userData.glow = { size: 2.4, strength: 0.4 };
       pumpkin(g, 0.9).position.set(Math.sign(x) * 6, 0, z + 0.8);
     }
   }

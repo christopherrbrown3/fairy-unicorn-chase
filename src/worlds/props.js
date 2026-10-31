@@ -181,6 +181,7 @@ export function crystal(parent, color = "#9cabea", scale = 1) {
       },
     );
     c.rotation.z = (i - 1.5) * -0.17;
+    if (i === 1) c.userData.glow = { size: 3.6, strength: 0.32 };
   }
   orb(g, "#837caa", [0, 0.13, 0], [1.0, 0.2, 0.6]);
   g.scale.setScalar(scale);

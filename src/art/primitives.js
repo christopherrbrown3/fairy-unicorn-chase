@@ -1,5 +1,6 @@
 import * as THREE from "three";
 import { mergeGeometries } from "three/addons/utils/BufferGeometryUtils.js";
+import { storybookShading } from "./atmosphere.js";
 const geometries = new Map(),
   materials = new Map();
 export const geometry = (key, create) => {
@@ -11,7 +12,9 @@ export function material(color, extra = {}) {
   if (!materials.has(key))
     materials.set(
       key,
-      new THREE.MeshStandardMaterial({ color, roughness: 0.72, ...extra }),
+      storybookShading(
+        new THREE.MeshStandardMaterial({ color, roughness: 0.72, ...extra }),
+      ),
     );
   return materials.get(key);
 }
